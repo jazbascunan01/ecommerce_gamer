@@ -5,42 +5,49 @@ import { RemoveFromCart } from "@domain/use-cases/RemoveFromCart";
 import { GetCartTotal } from "@domain/use-cases/GetCartTotal";
 import { Product } from "@domain/entities/Product";
 
-// Instancias (simulación en memoria)
-const router = Router();
-const cart = new Cart();
-const addToCart = new AddToCart(cart);
-const removeFromCart = new RemoveFromCart(cart);
-const getCartTotal = new GetCartTotal(cart);
+// Simulación en memoria de carritos por usuario
+const carts: { [userId: string]: Cart } = {};
 
-// Endpoint para agregar producto al carrito
+const router = Router();
+
+// Middleware simple para obtener o crear carrito por userId
+router.use((req, res, next) => {
+    const userId = req.headers["x-user-id"] as string;
+    if (!userId) return res.status(400).json({ error: "User ID header required" });
+    if (!carts[userId]) carts[userId] = new Cart(userId);
+    (req as any).cart = carts[userId];
+    next();
+});
+
+// Agregar producto
 router.post("/add", (req, res) => {
     try {
+        const cart = (req as any).cart as Cart;
         const { product, quantity } = req.body;
-
-        // Simulación: crear un producto temporal (en la vida real buscarías por id)
         const p = new Product(product.id, product.name, product.description, product.price, product.stock, new Date());
-        addToCart.execute(p, quantity);
-
-        res.json({ message: "Product added to cart", cart: cart.items });
+        new AddToCart(cart).execute(p, quantity);
+        res.json({ message: "Product added", cart: cart.items });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
     }
 });
 
-// Endpoint para remover producto del carrito
+// Remover producto
 router.post("/remove", (req, res) => {
     try {
+        const cart = (req as any).cart as Cart;
         const { productId } = req.body;
-        removeFromCart.execute(productId);
-        res.json({ message: "Product removed from cart", cart: cart.items });
+        new RemoveFromCart(cart).execute(productId);
+        res.json({ message: "Product removed", cart: cart.items });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
     }
 });
 
-// Endpoint para obtener total
+// Total del carrito
 router.get("/total", (req, res) => {
-    const total = getCartTotal.execute();
+    const cart = (req as any).cart as Cart;
+    const total = new GetCartTotal(cart).execute();
     res.json({ total });
 });
 
