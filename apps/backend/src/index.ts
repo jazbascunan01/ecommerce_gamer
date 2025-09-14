@@ -3,6 +3,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { userRoutes } from "./routes/userRoutes";
 import { productRoutes } from "./routes/productRoutes";
+import { cartRoutes } from "./routes/cartRoutes";
+
+
 
 const app = express();
 app.use(cors());
@@ -11,6 +14,7 @@ app.use(bodyParser.json());
 // Rutas
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
+app.use("/cart", cartRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
