@@ -5,9 +5,13 @@ import { RemoveFromCart } from "@domain/use-cases/RemoveFromCart";
 import { GetCartTotal } from "@domain/use-cases/GetCartTotal";
 import { Product } from "@domain/entities/Product";
 
-// Simulación en memoria de carritos por usuario
-const carts: { [userId: string]: Cart } = {};
+// Simulación: productos en memoria (reemplaza con DB después)
+const products: Product[] = [
+    new Product("1", "Mouse Gamer", "RGB 16000 DPI", 5999, 5, new Date()),
+    new Product("2", "Teclado Mecánico", "Switch azul", 7999, 3, new Date()),
+];
 
+const carts: { [userId: string]: Cart } = {};
 const router = Router();
 
 // Middleware simple para obtener o crear carrito por userId
@@ -23,9 +27,12 @@ router.use((req, res, next) => {
 router.post("/add", (req, res) => {
     try {
         const cart = (req as any).cart as Cart;
-        const { product, quantity } = req.body;
-        const p = new Product(product.id, product.name, product.description, product.price, product.stock, new Date());
-        new AddToCart(cart).execute(p, quantity);
+        const { productId, quantity } = req.body;
+
+        const product = products.find(p => p.id === productId);
+        if (!product) throw new Error("Product not found");
+
+        new AddToCart(cart).execute(product, quantity);
         res.json({ message: "Product added", cart: cart.items });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
@@ -49,6 +56,11 @@ router.get("/total", (req, res) => {
     const cart = (req as any).cart as Cart;
     const total = new GetCartTotal(cart).execute();
     res.json({ total });
+});
+
+// Listar productos disponibles
+router.get("/products", (req, res) => {
+    res.json(products);
 });
 
 export { router as cartRoutes };
