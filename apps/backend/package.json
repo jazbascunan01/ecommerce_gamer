@@ -6,7 +6,6 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,11 +13,13 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.4.0",
     "nodemon": "^3.1.10",
+    "prisma": "^6.16.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.16.3",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0"

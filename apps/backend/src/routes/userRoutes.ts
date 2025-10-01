@@ -1,21 +1,26 @@
 import { Router } from "express";
 import { AuthService } from "@domain/services/AuthService";
-import { RegisterUser } from "@domain/use-cases/RegisterUser";
-import { LoginUser } from "@domain/use-cases/LoginUser";
-import { User } from "@domain/entities/User";
-import * as crypto from "crypto";
+import prisma from "../prisma-client";
 
 const router = Router();
 const authService = new AuthService();
-const users: User[] = [];
 
 // Registro
 router.post("/register", async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        const registerUser = new RegisterUser(authService);
-        const user = await registerUser.execute(name, email, password);
-        users.push(user);
+
+        const existingUser = await prisma.user.findUnique({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ error: "User with this email already exists" });
+        }
+
+        const passwordHash = await authService.hashPassword(password);
+
+        const user = await prisma.user.create({
+            data: { name, email, passwordHash, role: 'client' }
+        });
+
         res.json({ id: user.id, name: user.name, email: user.email, role: user.role });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
@@ -26,8 +31,16 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
-        const loginUser = new LoginUser(authService, users);
-        const user = await loginUser.execute(email, password);
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const passwordMatch = await authService.comparePassword(password, user.passwordHash);
+        if (!passwordMatch) {
+            return res.status(400).json({ error: "Invalid password" });
+        }
+
         res.json({ id: user.id, name: user.name, email: user.email, role: user.role });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
