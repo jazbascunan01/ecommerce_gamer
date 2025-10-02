@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
 import { createCartController } from "../controllers/cart.controller";
+import { AuthenticationError, UserNotFoundError } from "@domain/errors/DomainError";
 
 export const cartRoutes = (
     cartFinder: ICartFinder,
@@ -13,21 +14,19 @@ export const cartRoutes = (
     const cartController = createCartController(cartFinder, productFinder, unitOfWorkFactory);
 
     // Middleware de autenticación
-    router.use(async (req, res, next) => {
+    router.use(async (req, res, next) => { // Ahora puede lanzar errores
         const userId = req.headers["x-user-id"] as string;
         if (!userId) {
-            return res.status(401).json({ error: "User ID header is required" });
+            return next(new AuthenticationError("Unauthorized: User ID header is missing"));
         }
-        try {
-            const user = await userFinder.findById(userId);
-            if (!user) {
-                return res.status(404).json({ error: "User not found" });
-            }
-            (req as any).userId = userId; // Adjuntamos el userId a la request
-            next();
-        } catch (error) {
-            res.status(500).json({ error: "Internal server error" });
+
+        const user = await userFinder.findById(userId);
+        if (!user) {
+            // Lanzamos un error que será capturado por el errorHandler central.
+            return next(new UserNotFoundError(userId));
         }
+        (req as any).userId = userId; // Adjuntamos el userId a la request
+        next();
     });
 
     // Las rutas ahora solo mapean al controlador

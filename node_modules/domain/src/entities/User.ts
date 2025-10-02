@@ -2,12 +2,12 @@ export type UserRole = 'client' | 'admin';
 
 export class User {
     constructor(
-        public id: string,
+        public id: string | undefined, // El ID puede no existir al crear un nuevo usuario
         public name: string,
         public email: string,
         public passwordHash: string,
         public role: UserRole,
-        public createdAt: Date
+        public createdAt: Date = new Date() // Si no se provee, se usa la fecha actual
     ) {
         if (!['client', 'admin'].includes(role)) {
             throw new Error(`Invalid role: ${role}`);

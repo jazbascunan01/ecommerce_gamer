@@ -1,6 +1,6 @@
 import { Cart } from "../entities/Cart";
 import { CartItem } from "../entities/CartItem";
-import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError, InvalidQuantityError } from "../errors/DomainError";
+import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError, InvalidQuantityError, InsufficientStockError } from "../errors/DomainError";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
 
 export class UpdateCartItem {
@@ -11,10 +11,6 @@ export class UpdateCartItem {
     ) {}
 
     async execute(userId: string, productId: string, newQuantity: number): Promise<void> {
-        if (newQuantity <= 0) {
-            throw new InvalidQuantityError(newQuantity, "Quantity must be a positive number. Use 'remove' to delete an item.");
-        }
-
         const uow = this.unitOfWorkFactory.create();
 
         const cart = await this.cartFinder.findByUserId(userId);
@@ -27,19 +23,30 @@ export class UpdateCartItem {
             throw new ProductNotFoundError(productId);
         }
 
-        const itemInCart = cart.items.find((item: CartItem) => item.product.id === productId);
+        const itemInCart = cart.findItem(productId);
         if (!itemInCart) {
             throw new ProductNotInCartError(productId);
         }
 
-        const quantityDifference = newQuantity - itemInCart.quantity;
-
-        if (product.stock < quantityDifference) {
-            throw new Error(`Not enough stock for product ${product.name}. Available: ${product.stock}`);
+        // Optimización: Si la cantidad no ha cambiado, no hacemos nada.
+        if (itemInCart.quantity === newQuantity) {
+            return;
         }
 
-        product.stock -= quantityDifference;
-        itemInCart.quantity = newQuantity;
+        // La diferencia de cantidad determina cómo ajustamos el stock del producto.
+        // Si newQuantity > itemInCart.quantity, la diferencia es positiva y el stock disminuye.
+        // Si newQuantity < itemInCart.quantity, la diferencia es negativa y el stock aumenta (se devuelve al almacén).
+        const stockAdjustment = itemInCart.quantity - newQuantity;
+        try {
+            product.adjustStock(stockAdjustment);
+        } catch (error) {
+            if (error instanceof InsufficientStockError) {
+                const availableStock = product.stock + itemInCart.quantity;
+                throw new InsufficientStockError(productId, `Not enough stock for '${product.name}'. Only ${availableStock} units available in total.`);
+            }
+            throw error; // Re-lanzar cualquier otro error inesperado
+        }
+        cart.setItemQuantity(product, newQuantity);
 
         uow.products.update(product);
         uow.carts.save(cart);

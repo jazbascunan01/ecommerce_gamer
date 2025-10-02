@@ -13,18 +13,24 @@ export class ProductNotFoundError extends DomainError {
 
 export class ProductNotInCartError extends DomainError {
     constructor(productId: string) {
-        super(`Product with ID ${productId} is not in the cart.`);
+        super(`Product with ID ${productId} not found in cart.`);
     }
 }
 
 export class InsufficientStockError extends DomainError {
-    constructor(productId: string) {
-        super(`Insufficient stock for product with ID ${productId}.`);
+    constructor(productId: string, message?: string) {
+        super(message ?? `Insufficient stock for product with ID ${productId}.`);
     }
 }
 export class InvalidQuantityError extends DomainError {
     constructor(quantity: number, message?: string) {
-        super(message ?? `Invalid quantity: ${quantity}. Quantity must be a positive number.`);
+        super(message ?? `Invalid quantity: ${quantity}. Quantity must be greater than 0.`);
+    }
+}
+
+export class InvalidEntityStateError extends DomainError {
+    constructor(message: string) {
+        super(message);
     }
 }
 
@@ -49,5 +55,11 @@ export class InvalidCredentialsError extends DomainError {
 export class CartNotFoundError extends DomainError {
     constructor(userId: string) {
         super(`Cart for user with ID ${userId} not found.`);
+    }
+}
+
+export class AuthenticationError extends DomainError {
+    constructor(message: string = "Authentication failed") {
+        super(message);
     }
 }

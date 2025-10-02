@@ -5,6 +5,6 @@ export class GetCart {
     constructor(private cartFinder: ICartFinder) {}
 
     async execute(userId: string): Promise<Cart | null> {
-        return this.cartFinder.findOrCreateByUserId(userId);
+        return this.cartFinder.findByUserId(userId);
     }
 }

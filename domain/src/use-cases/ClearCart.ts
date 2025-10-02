@@ -1,4 +1,4 @@
-import { CartNotFoundError } from "../errors/DomainError";
+import { CartNotFoundError, ProductNotFoundError } from "../errors/DomainError";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
 
 export class ClearCart {
@@ -17,10 +17,16 @@ export class ClearCart {
 
         const uow = this.unitOfWorkFactory.create();
 
-        // Devolver el stock de cada producto en el carrito
+        // Devolver el stock de cada producto en el carrito de forma segura
         for (const item of cart.items) {
-            item.product.stock += item.quantity;
-            uow.products.update(item.product);
+            // Recargamos el producto desde la BD para evitar race conditions y tener el stock más actual
+            const product = await this.productFinder.findProductById(item.product.id);
+            if (!product) {
+                // Este caso es improbable si la BD es consistente, pero es una guarda de seguridad
+                throw new ProductNotFoundError(item.product.id);
+            }
+            product.stock += item.quantity;
+            uow.products.update(product);
         }
 
         cart.clear(); // Vaciar los items del carrito

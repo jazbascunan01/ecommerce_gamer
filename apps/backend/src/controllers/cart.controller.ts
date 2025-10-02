@@ -17,76 +17,63 @@ export const createCartController = (
     productFinder: IProductFinder, 
     unitOfWorkFactory: IUnitOfWorkFactory
 ) => {
+    // Instanciamos los casos de uso una sola vez, cuando se crea el controlador.
+    const getCartCase = new GetCart(cartFinder);
+    const addToCartCase = new AddToCart(cartFinder, productFinder, unitOfWorkFactory);
+    const removeFromCartCase = new RemoveFromCart(cartFinder, productFinder, unitOfWorkFactory);
+    const updateCartItemCase = new UpdateCartItem(cartFinder, productFinder, unitOfWorkFactory);
+    const clearCartCase = new ClearCart(cartFinder, productFinder, unitOfWorkFactory);
     
-    const getCart = async (req: AuthenticatedRequest, res: Response) => {
-        const getCartCase = new GetCart(cartFinder);
+    const getCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
-            const cart = await getCartCase.execute(req.userId!); // No se necesita await aquí, pero es inofensivo
-            res.json(cart);
+            // Reutilizamos la instancia del caso de uso.
+            const cart = await getCartCase.execute(req.userId!);
+            if (!cart) {
+                // Si no hay carrito, es correcto devolver null o un objeto de carrito vacío.
+                // Devolver null es más preciso para indicar que el recurso no existe.
+                return res.status(200).json(null);
+            }
+            res.status(200).json(cart);
         } catch (err: any) {
-            res.status(400).json({ error: err.message });
+            next(err);
         }
     };
 
-    const addProductToCart = async (req: AuthenticatedRequest, res: Response) => {
-        const addToCartCase = new AddToCart(cartFinder, productFinder, unitOfWorkFactory);
+    const addProductToCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
             const { productId, quantity } = req.body;
             await addToCartCase.execute(req.userId!, productId, quantity);
             res.status(200).json({ message: "Product added to cart" });
         } catch (err: any) {
-            if (err instanceof ProductNotFoundError) {
-                return res.status(404).json({ error: err.message });
-            }
-            if (err instanceof InsufficientStockError || err instanceof InvalidQuantityError) {
-                return res.status(400).json({ error: err.message });
-            }
-            res.status(500).json({ error: "An internal server error occurred" });
+            next(err);
         }
     };
 
-    const removeProductFromCart = async (req: AuthenticatedRequest, res: Response) => {
-        const removeFromCartCase = new RemoveFromCart(cartFinder, productFinder, unitOfWorkFactory);
+    const removeProductFromCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
             const { productId } = req.body;
             await removeFromCartCase.execute(req.userId!, productId);
-            res.json({ message: "Product removed from cart" });
+            res.status(200).json({ message: "Product removed from cart" });
         } catch (err: any) {
-            // Mejoramos el manejo de errores
-            if (err instanceof ProductNotFoundError) {
-                return res.status(404).json({ error: err.message });
-            }
-            if (err instanceof CartNotFoundError || err instanceof ProductNotInCartError) {
-                return res.status(400).json({ error: err.message });
-            }
-            res.status(500).json({ error: "An internal server error occurred" });
+            next(err);
         }
     };
-    const updateCartItem = async (req: AuthenticatedRequest, res: Response) => {
-        const updateCartItemCase = new UpdateCartItem(cartFinder, productFinder, unitOfWorkFactory);
+    const updateCartItem = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
             const { productId, quantity } = req.body;
             await updateCartItemCase.execute(req.userId!, productId, quantity);
             res.status(200).json({ message: "Cart item quantity updated" });
         } catch (err: any) {
-            // Mejoramos el manejo de errores
-            if (err instanceof ProductNotFoundError || err instanceof CartNotFoundError) {
-                return res.status(404).json({ error: err.message });
-            }
-            if (err instanceof InsufficientStockError || err instanceof InvalidQuantityError || err instanceof ProductNotInCartError) {
-                return res.status(400).json({ error: err.message });
-            }
-            res.status(500).json({ error: "An internal server error occurred" });
+            next(err);
         }
     };
 
-    const clearCart = async (req: AuthenticatedRequest, res: Response) => {
-        const clearCartCase = new ClearCart(cartFinder, productFinder, unitOfWorkFactory);
+    const clearCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
             await clearCartCase.execute(req.userId!);
             res.status(200).json({ message: "Cart cleared" });
         } catch (err: any) {
-            res.status(500).json({ error: "An internal server error occurred" });
+            next(err);
         }
     };
 

@@ -62,35 +62,52 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
     async findByEmail(email: string): Promise<User | null> {
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) return null;
-        // Validamos que el rol de la BD sea uno de los roles de dominio permitidos
-        if (user.role !== 'client' && user.role !== 'admin') {
-            // Opcional: puedes loggear una advertencia o lanzar un error si un rol inválido está en la BD
-            throw new Error(`Invalid role '${user.role}' found in database for user ${user.id}`);
+        try {
+            // Mapeamos el DTO de la base de datos a la entidad de dominio.
+            // El constructor de la entidad validará las invariantes (ej. rol válido).
+            return new User(user.id, user.name, user.email, user.passwordHash, user.role as any, user.createdAt);
+        } catch (error: any) {
+            // Si la entidad no se puede construir, los datos de la BD son inconsistentes.
+            console.error(`Data integrity issue for user ${user.id}: ${error.message}`);
+            throw new Error(`Failed to map database data to User entity for user ID ${user.id}.`);
         }
-        return new User(user.id, user.name, user.email, user.passwordHash, user.role, user.createdAt);
     }
 
     async findById(id: string): Promise<User | null> {
         const user = await prisma.user.findUnique({ where: { id } });
         if (!user) return null;
-        // Validamos que el rol de la BD sea uno de los roles de dominio permitidos
-        if (user.role !== 'client' && user.role !== 'admin') {
-            // Opcional: puedes loggear una advertencia o lanzar un error si un rol inválido está en la BD
-            throw new Error(`Invalid role '${user.role}' found in database for user ${user.id}`);
+        try {
+            return new User(user.id, user.name, user.email, user.passwordHash, user.role as any, user.createdAt);
+        } catch (error: any) {
+            console.error(`Data integrity issue for user ${user.id}: ${error.message}`);
+            throw new Error(`Failed to map database data to User entity for user ID ${user.id}.`);
         }
-        return new User(user.id, user.name, user.email, user.passwordHash, user.role, user.createdAt);
     }
 
     // IProductFinder
     async findProductById(id: string): Promise<Product | null> {
         const product = await prisma.product.findUnique({ where: { id } });
         if (!product) return null;
-        return new Product(product.id, product.name, product.description, product.price, product.stock, product.createdAt);
+        try {
+            // El constructor de Product valida que el precio y el stock no sean negativos.
+            return new Product(product.id, product.name, product.description, product.price, product.stock, product.createdAt);
+        } catch (error: any) {
+            console.error(`Data integrity issue for product ${product.id}: ${error.message}`);
+            throw new Error(`Failed to map database data to Product entity for product ID ${product.id}.`);
+        }
     }
 
     async findAllProducts(): Promise<Product[]> {
-        const products = await prisma.product.findMany();
-        return products.map(p => new Product(p.id, p.name, p.description, p.price, p.stock, p.createdAt));
+        const productsData = await prisma.product.findMany();
+        return productsData.map(p => {
+            try {
+                return new Product(p.id, p.name, p.description, p.price, p.stock, p.createdAt);
+            } catch (error: any) {
+                // En una lista, podríamos optar por omitir el producto inválido y loggear el error.
+                console.error(`Skipping product with ID ${p.id} due to data integrity issue: ${error.message}`);
+                return null;
+            }
+        }).filter((p): p is Product => p !== null); // Filtramos los nulos
     }
 
     // ICartFinder
@@ -108,9 +125,16 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         }
 
         const cartItems = cart.items.map(item => {
-            const product = new Product(item.product.id, item.product.name, item.product.description, item.product.price, item.product.stock, item.product.createdAt);
-            return new CartItem(product, item.quantity);
-        });
+            try {
+                // Reconstituimos la entidad Product, que validará sus propias invariantes.
+                const product = new Product(item.product.id, item.product.name, item.product.description, item.product.price, item.product.stock, item.product.createdAt);
+                return new CartItem(product, item.quantity);
+            } catch (error: any) {
+                // Si un producto en el carrito tiene datos corruptos, lo omitimos y loggeamos el error.
+                console.error(`Skipping item with product ID ${item.productId} in cart ${cart.id} due to data integrity issue: ${error.message}`);
+                return null;
+            }
+        }).filter((item): item is CartItem => item !== null);
 
         return new Cart(cart.id, cart.userId, cartItems);
     }
@@ -124,9 +148,14 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         if (!cart) return null;
 
         const cartItems = cart.items.map(item => {
-            const product = new Product(item.product.id, item.product.name, item.product.description, item.product.price, item.product.stock, item.product.createdAt);
-            return new CartItem(product, item.quantity);
-        });
+            try {
+                const product = new Product(item.product.id, item.product.name, item.product.description, item.product.price, item.product.stock, item.product.createdAt);
+                return new CartItem(product, item.quantity);
+            } catch (error: any) {
+                console.error(`Skipping item with product ID ${item.productId} in cart ${cart.id} due to data integrity issue: ${error.message}`);
+                return null;
+            }
+        }).filter((item): item is CartItem => item !== null);
 
         return new Cart(cart.id, cart.userId, cartItems);
     }

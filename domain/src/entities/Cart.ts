@@ -14,17 +14,24 @@ export class Cart {
         return this._items; // Devuelve una vista de solo lectura del array
     }
 
-    addItem(product: Product, quantity: number) {
-        const existingItem = this.items.find(item => item.product.id === product.id);
+    /**
+     * Establece la cantidad para un producto dado.
+     * Si la cantidad es 0, el producto se elimina del carrito.
+     * Si el producto no existe, se añade.
+     * Si el producto ya existe, se actualiza su cantidad.
+     */
+    setItemQuantity(product: Product, quantity: number) {
+        if (quantity <= 0) {
+            this.removeItem(product.id);
+            return;
+        }
+
+        const existingItem = this.findItem(product.id);
         if (existingItem) {
-            existingItem.quantity += quantity;
+            existingItem.quantity = quantity;
         } else {
             this._items.push(new CartItem(product, quantity));
         }
-    }
-
-    removeItem(productId: string) {
-        this._items = this._items.filter(i => i.product.id !== productId);
     }
 
     getTotal(): number {
@@ -32,5 +39,13 @@ export class Cart {
     }
     clear(): void {
         this._items = [];
+    }
+
+    findItem(productId: string): CartItem | undefined {
+        return this._items.find(item => item.product.id === productId);
+    }
+
+    removeItem(productId: string) {
+        this._items = this._items.filter(i => i.product.id !== productId);
     }
 }

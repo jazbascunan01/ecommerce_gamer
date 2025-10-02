@@ -1,46 +1,56 @@
-import { Request, Response } from "express";
-import { RegisterUser } from "@domain/use-cases/RegisterUser";
-import { LoginUser } from "@domain/use-cases/LoginUser";
-import { IUserFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
+import { Request, Response, NextFunction } from "express";
 import { AuthService } from "@domain/services/AuthService";
-import { UserAlreadyExistsError, UserNotFoundError, InvalidCredentialsError } from "@domain/errors/DomainError";
+import { IUserFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
+import { User } from "@domain/entities/User";
+import { InvalidCredentialsError, UserAlreadyExistsError } from "@domain/errors/DomainError";
 
 export const createUserController = (
     userFinder: IUserFinder,
-    unitOfWorkFactory: IUnitOfWorkFactory,
+    uowFactory: IUnitOfWorkFactory,
     authService: AuthService
 ) => {
-    const registerUser = async (req: Request, res: Response) => {
-        const registerUserCase = new RegisterUser(userFinder, unitOfWorkFactory, authService);
+    const register = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name, email, password } = req.body;
-            const user = await registerUserCase.execute(name, email, password);
+
+            const existingUser = await userFinder.findByEmail(email);
+            if (existingUser) {
+                throw new UserAlreadyExistsError(email);
+            }
+
+            const passwordHash = await authService.hashPassword(password);
+            const user = new User(undefined, name, email, passwordHash, 'client', new Date());
+
+            const uow = uowFactory.create();
+            uow.users.save(user);
+            await uow.commit();
+
+            // No devolvemos el hash de la contraseña
             res.status(201).json({ id: user.id, name: user.name, email: user.email, role: user.role });
         } catch (err: any) {
-            if (err instanceof UserAlreadyExistsError) {
-                return res.status(409).json({ error: err.message });
-            }
-            res.status(500).json({ error: "An internal server error occurred" });
+            next(err);
         }
     };
 
-    const loginUser = async (req: Request, res: Response) => {
-        const loginUserCase = new LoginUser(userFinder, authService);
+    const login = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { email, password } = req.body;
-            const user = await loginUserCase.execute(email, password);
-            // En una app real, aquí generarías un token (JWT)
+            const user = await userFinder.findByEmail(email);
+            if (!user) {
+                // Por seguridad, usamos un error genérico de credenciales inválidas
+                throw new InvalidCredentialsError();
+            }
+
+            const passwordMatch = await authService.comparePassword(password, user.passwordHash);
+            if (!passwordMatch) {
+                throw new InvalidCredentialsError();
+            }
+
             res.status(200).json({ id: user.id, name: user.name, email: user.email, role: user.role });
         } catch (err: any) {
-            if (err instanceof UserNotFoundError || err instanceof InvalidCredentialsError) {
-                return res.status(401).json({ error: "Invalid credentials" });
-            }
-            res.status(500).json({ error: "An internal server error occurred" });
+            next(err);
         }
     };
 
-    return {
-        registerUser,
-        loginUser,
-    };
+    return { register, login };
 };

@@ -1,3 +1,5 @@
+import { InsufficientStockError, InvalidEntityStateError } from "../errors/DomainError";
+
 export class Product {
     constructor(
         public id: string,
@@ -6,5 +8,24 @@ export class Product {
         public price: number,
         public stock: number,
         public createdAt: Date
-    ) {}
+    ) {
+        if (price < 0) {
+            throw new InvalidEntityStateError("Product price cannot be negative.");
+        }
+        if (stock < 0) {
+            throw new InvalidEntityStateError("Product stock cannot be negative.");
+        }
+    }
+
+    /**
+     * Ajusta el stock del producto. Un número positivo lo incrementa, uno negativo lo disminuye.
+     * @throws Error si el ajuste resulta en un stock negativo.
+     */
+    adjustStock(amount: number): void {
+        const newStock = this.stock + amount;
+        if (newStock < 0) {
+            throw new InsufficientStockError(this.id, "Stock adjustment results in a negative value.");
+        }
+        this.stock += amount;
+    }
 }
