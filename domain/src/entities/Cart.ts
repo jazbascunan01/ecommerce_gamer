@@ -1,31 +1,36 @@
 import { CartItem } from "./CartItem";
+import {Product} from "./Product";
 
 export class Cart {
-    public items: CartItem[] = [];
+    private _items: CartItem[] = [];
+    public readonly id: string; // El ID del carrito, inmutable
 
-    constructor(public userId: string) {} // cada carrito pertenece a un usuario
+    constructor(id: string, public readonly userId: string, initialItems: CartItem[] = []) {
+        this.id = id;
+        this._items = initialItems;
+    }
 
-    addItem(item: CartItem) {
-        const existing = this.items.find(i => i.product.id === item.product.id);
-        if (existing) {
-            const totalQuantity = existing.quantity + item.quantity;
-            if (totalQuantity > item.product.stock) {
-                throw new Error("Not enough stock for this product");
-            }
-            existing.quantity += item.quantity;
+    get items(): readonly CartItem[] {
+        return this._items; // Devuelve una vista de solo lectura del array
+    }
+
+    addItem(product: Product, quantity: number) {
+        const existingItem = this.items.find(item => item.product.id === product.id);
+        if (existingItem) {
+            existingItem.quantity += quantity;
         } else {
-            if (item.quantity > item.product.stock) {
-                throw new Error("Not enough stock for this product");
-            }
-            this.items.push(item);
+            this._items.push(new CartItem(product, quantity));
         }
     }
 
     removeItem(productId: string) {
-        this.items = this.items.filter(i => i.product.id !== productId);
+        this._items = this._items.filter(i => i.product.id !== productId);
     }
 
     getTotal(): number {
         return this.items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+    }
+    clear(): void {
+        this._items = [];
     }
 }

@@ -1,15 +1,34 @@
 import { Cart } from "../entities/Cart";
 import { Product } from "../entities/Product";
+import { User } from "../entities/User";
 
 export interface IProductFinder {
-    findById(id: string): Promise<Product | null>;
+    findProductById(id: string): Promise<Product | null>;
+    findAllProducts(): Promise<Product[]>;
 }
 
-export interface ICartPersistence {
+export interface IUserFinder {
+    findByEmail(email: string): Promise<User | null>;
+    findById(id: string): Promise<User | null>;
+}
+
+export interface IUnitOfWork {
+    // Métodos para registrar cambios en las entidades
+    users: { save(user: User): void };
+    products: {
+        save: (product: Product) => void;
+        update: (product: Product) => void;
+    };
+    carts: { save(cart: Cart): void };
+    // Método para confirmar todos los cambios en una sola transacción
+    commit(): Promise<void>;
+}
+
+export interface IUnitOfWorkFactory {
+    create(): IUnitOfWork;
+}
+
+export interface ICartFinder {
     findOrCreateByUserId(userId: string): Promise<Cart>;
-    save(cart: Cart): Promise<void>;
-}
-
-export interface IProductPersistence {
-    update(product: Product): Promise<void>;
+    findByUserId(userId: string): Promise<Cart | null>;
 }

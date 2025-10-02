@@ -1,25 +1,18 @@
 import { Router } from "express";
-import prisma from "../prisma-client";
+import { IProductFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
+import { createProductController } from "../controllers/product.controller";
 
-const router = Router();
+export const productRoutes = (
+    productFinder: IProductFinder,
+    unitOfWorkFactory: IUnitOfWorkFactory
+) => {
+    const router = Router();
+    const productController = createProductController(productFinder, unitOfWorkFactory);
 
-// Crear producto
-router.post("/", async (req, res) => {
-    try {
-        const { name, description, price, stock } = req.body;
-        const product = await prisma.product.create({
-            data: { name, description, price, stock }
-        });
-        res.json(product);
-    } catch (err: any) {
-        res.status(400).json({ error: err.message });
-    }
-});
 
-// Listar productos
-router.get("/", async (req, res) => {
-    const result = await prisma.product.findMany();
-    res.json(result);
-});
+    router.get("/", productController.listProducts);
+    router.post("/", productController.createProduct);
 
-export { router as productRoutes };
+
+    return router;
+};

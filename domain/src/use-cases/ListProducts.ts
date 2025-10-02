@@ -1,9 +1,10 @@
 import { Product } from "../entities/Product";
+import { IProductFinder } from "../services/IPersistence";
 
 export class ListProducts {
-    constructor(private products: Product[]) {}
+    constructor(private productFinder: IProductFinder) {}
 
-    execute(): Product[] {
-        return [...this.products]; // devuelve un nuevo array para no exponer el original
+    async execute(): Promise<Product[]> {
+        return this.productFinder.findAllProducts();
     }
 }

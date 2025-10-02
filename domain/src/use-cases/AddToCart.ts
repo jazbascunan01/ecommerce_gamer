@@ -1,32 +1,42 @@
 import { CartItem } from "../entities/CartItem";
-import { ICartPersistence, IProductFinder, IProductPersistence } from "../services/IPersistence";
+import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
+import { InsufficientStockError, InvalidQuantityError, ProductNotFoundError } from "../errors/DomainError";
 
 export class AddToCart {
     constructor(
-        private cartPersistence: ICartPersistence,
+        private cartFinder: ICartFinder,
         private productFinder: IProductFinder,
-        private productPersistence: IProductPersistence
+        private unitOfWorkFactory: IUnitOfWorkFactory
     ) {}
 
     async execute(userId: string, productId: string, quantity: number): Promise<void> {
+        // 0. Lógica de negocio: Validar la entrada
+        if (quantity <= 0) {
+            throw new InvalidQuantityError(quantity);
+        }
+
         // 1. Lógica de negocio: Validar producto y stock
-        const product = await this.productFinder.findById(productId);
+        const product = await this.productFinder.findProductById(productId);
         if (!product) {
-            throw new Error("Product not found");
+            throw new ProductNotFoundError(productId);
         }
         if (product.stock < quantity) {
-            throw new Error("Not enough stock");
+            throw new InsufficientStockError(productId);
         }
 
         // 2. Obtener el carrito
-        const cart = await this.cartPersistence.findOrCreateByUserId(userId);
+        const cart = await this.cartFinder.findOrCreateByUserId(userId);
 
         // 3. Lógica de negocio: Modificar entidades
-        cart.addItem(new CartItem(product, quantity));
+        cart.addItem(product, quantity);
         product.stock -= quantity;
 
-        // 4. Persistir los cambios
-        await this.productPersistence.update(product);
-        await this.cartPersistence.save(cart);
+        // 4. Registrar los cambios en una Unidad de Trabajo
+        const uow = this.unitOfWorkFactory.create();
+        uow.products.update(product);
+        uow.carts.save(cart);
+
+        // 5. Confirmar todos los cambios en una única transacción atómica
+        await uow.commit();
     }
 }

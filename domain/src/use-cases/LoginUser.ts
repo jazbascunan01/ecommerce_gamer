@@ -1,16 +1,23 @@
 import { User } from "../entities/User";
+import { InvalidCredentialsError, UserNotFoundError } from "../errors/DomainError";
 import { AuthService } from "../services/AuthService";
+import { IUserFinder } from "../services/IPersistence";
 
 export class LoginUser {
-    constructor(private authService: AuthService, private users: User[]) {}
+    constructor(
+        private userFinder: IUserFinder,
+        private authService: AuthService
+    ) {}
 
     async execute(email: string, password: string): Promise<User> {
-        const user = this.users.find(u => u.email === email);
-        if (!user) throw new Error("User not found");
+        const user = await this.userFinder.findByEmail(email);
+        if (!user) {
+            throw new UserNotFoundError(email);
+        }
 
-        const passwordHash = await this.authService.hashPassword(password);
-        if (passwordHash !== user.passwordHash) {
-            throw new Error("Invalid password");
+        const isPasswordValid = await this.authService.comparePassword(password, user.passwordHash);
+        if (!isPasswordValid) {
+            throw new InvalidCredentialsError();
         }
 
         return user;

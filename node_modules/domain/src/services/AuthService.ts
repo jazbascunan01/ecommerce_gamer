@@ -1,7 +1,11 @@
-import * as crypto from "crypto";
+import * as bcrypt from 'bcrypt';
 
 export class AuthService {
     async hashPassword(password: string): Promise<string> {
-        return crypto.createHash('sha256').update(password).digest('hex');
+        const saltRounds = 10;
+        return bcrypt.hash(password, saltRounds);
+    }
+    async comparePassword(password: string, hash: string): Promise<boolean> {
+        return bcrypt.compare(password, hash);
     }
 }
