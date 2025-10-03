@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
 import { createCartController } from "../controllers/cart.controller";
 import { AuthenticationError, UserNotFoundError } from "@domain/errors/DomainError";
+import jwt from 'jsonwebtoken';
 
 export const cartRoutes = (
     cartFinder: ICartFinder,
@@ -14,19 +15,28 @@ export const cartRoutes = (
     const cartController = createCartController(cartFinder, productFinder, unitOfWorkFactory);
 
     // Middleware de autenticación
-    router.use(async (req, res, next) => { // Ahora puede lanzar errores
-        const userId = req.headers["x-user-id"] as string;
-        if (!userId) {
-            return next(new AuthenticationError("Unauthorized: User ID header is missing"));
-        }
+    router.use(async (req, res, next) => {
+        try {
+            const authHeader = req.headers.authorization;
+            if (!authHeader || !authHeader.startsWith('Bearer ')) {
+                throw new AuthenticationError("Unauthorized: No token provided.");
+            }
 
-        const user = await userFinder.findById(userId);
-        if (!user) {
-            // Lanzamos un error que será capturado por el errorHandler central.
-            return next(new UserNotFoundError(userId));
+            const token = authHeader.split(' ')[1];
+            const secretKey = 'YOUR_SUPER_SECRET_KEY'; // Debe ser la misma clave secreta
+
+            const decoded = jwt.verify(token, secretKey) as { id: string };
+            const user = await userFinder.findById(decoded.id);
+
+            if (!user) {
+                throw new UserNotFoundError(decoded.id);
+            }
+
+            (req as any).userId = user.id; // Adjuntamos el userId a la request
+            next();
+        } catch (error) {
+            next(new AuthenticationError("Unauthorized: Invalid token."));
         }
-        (req as any).userId = userId; // Adjuntamos el userId a la request
-        next();
     });
 
     // Las rutas ahora solo mapean al controlador

@@ -1,6 +1,9 @@
 {
   "name": "ecommerce_gamer",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "ts-node --project apps/backend/tsconfig.json -r tsconfig-paths/register apps/backend/src/seed.ts"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -3,6 +3,7 @@ import { AuthService } from "@domain/services/AuthService";
 import { IUserFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
 import { User } from "@domain/entities/User";
 import { InvalidCredentialsError, UserAlreadyExistsError } from "@domain/errors/DomainError";
+import jwt from 'jsonwebtoken';
 
 export const createUserController = (
     userFinder: IUserFinder,
@@ -46,7 +47,13 @@ export const createUserController = (
                 throw new InvalidCredentialsError();
             }
 
-            res.status(200).json({ id: user.id, name: user.name, email: user.email, role: user.role });
+            // Generar un token JWT
+            // ¡Asegúrate de usar una clave secreta más segura y guardarla en variables de entorno!
+            const secretKey = 'YOUR_SUPER_SECRET_KEY';
+            const token = jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn: '1h' });
+
+            res.status(200).json({ token });
+
         } catch (err: any) {
             next(err);
         }

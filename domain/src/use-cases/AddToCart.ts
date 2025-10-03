@@ -28,8 +28,7 @@ export class AddToCart {
         const cart = await this.cartFinder.findOrCreateByUserId(userId);
 
         // 3. Lógica de negocio: Modificar entidades
-        cart.addItem(product, quantity);
-        product.stock -= quantity;
+        cart.setItemQuantity(product, quantity);        product.stock -= quantity;
 
         // 4. Registrar los cambios en una Unidad de Trabajo
         const uow = this.unitOfWorkFactory.create();
