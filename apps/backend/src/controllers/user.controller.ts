@@ -4,7 +4,6 @@ import { IUserFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
 import { User } from "@domain/entities/User";
 import { InvalidCredentialsError, UserAlreadyExistsError } from "@domain/errors/DomainError";
 import jwt from 'jsonwebtoken';
-
 export const createUserController = (
     userFinder: IUserFinder,
     uowFactory: IUnitOfWorkFactory,
@@ -20,8 +19,7 @@ export const createUserController = (
             }
 
             const passwordHash = await authService.hashPassword(password);
-            const user = new User(undefined, name, email, passwordHash, 'client', new Date());
-
+            const user = new User(undefined, name, email, passwordHash, 'CUSTOMER', new Date());
             const uow = uowFactory.create();
             uow.users.save(user);
             await uow.commit();

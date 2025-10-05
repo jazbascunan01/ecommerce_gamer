@@ -1,4 +1,4 @@
-export type UserRole = 'client' | 'admin';
+export type UserRole = 'CUSTOMER' | 'ADMIN';
 
 export class User {
     constructor(
@@ -9,8 +9,6 @@ export class User {
         public role: UserRole,
         public createdAt: Date = new Date() // Si no se provee, se usa la fecha actual
     ) {
-        if (!['client', 'admin'].includes(role)) {
-            throw new Error(`Invalid role: ${role}`);
-        }
+
     }
 }

@@ -41,21 +41,39 @@ async function main() {
     }
 
     // --- Seed Users ---
-    const passwordHash = await bcrypt.hash('password123', 10);
-    const userData = {
-        id: 'user-test-1',
-        name: 'Test User',
-        email: 'testuser@example.com',
-        passwordHash: passwordHash,
-        role: 'CUSTOMER',
-    };
+    console.log('Seeding users...');
+    const passwordHash = await bcrypt.hash('password123', 10); // Same password for both
 
-    const user = await prisma.user.upsert({
-        where: { email: userData.email },
-        update: {},
-        create: userData,
-    });
-    console.log(`Created/updated user with email: ${user.email}`);
+
+    const usersData = [
+        {
+            id: 'user-customer-1',
+            name: 'Test Customer',
+            email: 'customer@example.com',
+            passwordHash: passwordHash,
+            role: 'CUSTOMER',
+        },
+        {
+            id: 'user-admin-1',
+            name: 'Test Admin',
+            email: 'admin@example.com',
+            passwordHash: passwordHash,
+            role: 'ADMIN',
+        }
+    ];
+
+    for (const u of usersData) {
+        const user = await prisma.user.upsert({
+            where: { email: u.email },
+            update: {
+                // Si quieres asegurarte de que el rol y la contraseña estén siempre actualizados
+                role: u.role,
+                passwordHash: u.passwordHash,
+            },
+            create: u,
+        });
+        console.log(`Created/updated user with email: ${user.email} (Role: ${user.role})`);
+    }
 
     console.log(`Seeding finished.`);
 }
