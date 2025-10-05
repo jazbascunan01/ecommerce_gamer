@@ -50,7 +50,7 @@ export const createUserController = (
             // Generar un token JWT
             // ¡Asegúrate de usar una clave secreta más segura y guardarla en variables de entorno!
             const secretKey = 'YOUR_SUPER_SECRET_KEY';
-            const token = jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, secretKey, { expiresIn: '1h' });
 
             res.status(200).json({ token });
 
