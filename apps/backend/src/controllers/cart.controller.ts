@@ -51,8 +51,7 @@ export const createCartController = (
 
     const removeProductFromCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
-            const { productId } = req.body;
-            await removeFromCartCase.execute(req.userId!, productId);
+            const { productId } = req.params;            await removeFromCartCase.execute(req.userId!, productId);
             res.status(200).json({ message: "Product removed from cart" });
         } catch (err: any) {
             next(err);

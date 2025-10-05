@@ -42,7 +42,7 @@ export const cartRoutes = (
     // Las rutas ahora solo mapean al controlador
     router.get("/", cartController.getCart);
     router.post("/add", cartController.addProductToCart);
-    router.post("/remove", cartController.removeProductFromCart);
+    router.delete("/items/:productId", cartController.removeProductFromCart);
     router.post("/update", cartController.updateCartItem);
     router.post("/clear", cartController.clearCart);
     return router;
