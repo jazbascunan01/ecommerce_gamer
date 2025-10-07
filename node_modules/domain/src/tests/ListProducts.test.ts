@@ -1,30 +1,40 @@
 import { Product } from "../entities/Product";
-import { CreateProduct } from "../use-cases/CreateProduct";
 import { ListProducts } from "../use-cases/ListProducts";
 
+// --- Mocking Dependencies ---
+const mockProductFinder = {
+    findAllProducts: jest.fn(),
+    findProductById: jest.fn(),
+};
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
 describe("ListProducts", () => {
-    let products: Product[];
-    let createProduct: CreateProduct;
-    let listProducts: ListProducts;
+    it("should return an empty array if no products are found", async () => {
+        // Arrange
+        mockProductFinder.findAllProducts.mockResolvedValue([]);
+        const listProducts = new ListProducts(mockProductFinder);
 
-    beforeEach(() => {
-        products = [];
-        createProduct = new CreateProduct(products);
-        listProducts = new ListProducts(products);
-    });
-
-    it("should return an empty array if no products", () => {
-        const result = listProducts.execute();
+        // Act
+        const result = await listProducts.execute();
+        
+        // Assert
         expect(result).toEqual([]);
     });
 
-    it("should return all created products", () => {
-        createProduct.execute("Mouse Gamer", "RGB 16000 DPI", 5999, 10);
-        createProduct.execute("Teclado Mecánico", "Switches rojos", 8999, 5);
-
-        const result = listProducts.execute();
+    it("should return all products found by the finder", async () => {
+        // Arrange
+        const productsInDb = [new Product("p1", "Mouse Gamer", "desc", 100, 10, new Date()), new Product("p2", "Teclado", "desc", 200, 5, new Date())];
+        mockProductFinder.findAllProducts.mockResolvedValue(productsInDb);
+        const listProducts = new ListProducts(mockProductFinder);
+        
+        // Act
+        const result = await listProducts.execute();
+        
+        // Assert
         expect(result.length).toBe(2);
-        expect(result[0].name).toBe("Mouse Gamer");
-        expect(result[1].name).toBe("Teclado Mecánico");
+        expect(result[0].name).toBe("Mouse Gamer"); // Corregido para que coincida con el mock
     });
 });

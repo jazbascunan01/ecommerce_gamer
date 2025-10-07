@@ -1,42 +1,60 @@
 import { AuthService } from "../services/AuthService";
 import { LoginUser } from "../use-cases/LoginUser";
 import { User } from "../entities/User";
-import * as crypto from "crypto";
+import { InvalidCredentialsError, UserNotFoundError } from "../errors/DomainError";
+
+// --- Mocking Dependencies ---
+const mockUserFinder = {
+    findByEmail: jest.fn(),
+    findById: jest.fn(),
+};
+
+const authService = new AuthService();
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
 
 describe("LoginUser", () => {
-    let authService: AuthService;
-    let users: User[];
-    let loginUser: LoginUser;
-
-    beforeEach(async () => {
-        authService = new AuthService();
-        users = [
-            new User(
-                crypto.randomUUID(),
-                "Karen",
-                "karen@example.com",
-                await authService.hashPassword("password123"),
-                "client",
-                new Date()
-            )
-        ];
-        loginUser = new LoginUser(authService, users);
-    });
-
     it("should login with correct credentials", async () => {
-        const user = await loginUser.execute("karen@example.com", "password123");
-        expect(user.name).toBe("Karen");
+        // Arrange
+        const userInDb = new User(
+            "user-1", "Karen", "karen@example.com",
+            await authService.hashPassword("password123"), "CUSTOMER"
+        );
+        mockUserFinder.findByEmail.mockResolvedValue(userInDb);
+        const loginUser = new LoginUser(mockUserFinder, authService);
+        
+        // Act
+        const loggedInUser = await loginUser.execute("karen@example.com", "password123");
+        
+        // Assert
+        expect(loggedInUser.name).toBe("Karen");
     });
 
     it("should throw error if email not found", async () => {
+        // Arrange
+        mockUserFinder.findByEmail.mockResolvedValue(null);
+        const loginUser = new LoginUser(mockUserFinder, authService);
+
+        // Act & Assert
         await expect(
             loginUser.execute("noone@example.com", "password123")
-        ).rejects.toThrow("User not found");
+        ).rejects.toThrow(UserNotFoundError);
     });
 
     it("should throw error if password is wrong", async () => {
+        // Arrange
+        const userInDb = new User(
+            "user-1", "Karen", "karen@example.com",
+            await authService.hashPassword("password123"), "CUSTOMER"
+        );
+        mockUserFinder.findByEmail.mockResolvedValue(userInDb);
+        const loginUser = new LoginUser(mockUserFinder, authService);
+
+        // Act & Assert
         await expect(
             loginUser.execute("karen@example.com", "wrongpassword")
-        ).rejects.toThrow("Invalid password");
+        ).rejects.toThrow(InvalidCredentialsError);
     });
 });

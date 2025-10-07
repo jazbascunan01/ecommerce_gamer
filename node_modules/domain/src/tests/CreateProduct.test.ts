@@ -1,19 +1,36 @@
-import { Product } from "../entities/Product";
 import { CreateProduct } from "../use-cases/CreateProduct";
 
+// --- Mocking Dependencies ---
+const mockUnitOfWork = {
+    products: {
+        save: jest.fn(),
+        update: jest.fn(),
+    },
+    users: { save: jest.fn() },
+    carts: { save: jest.fn() },
+    commit: jest.fn().mockResolvedValue(undefined),
+};
+
+const mockUowFactory = {
+    create: () => mockUnitOfWork,
+};
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
 describe("CreateProduct", () => {
-    let products: Product[];
-    let createProduct: CreateProduct;
-
-    beforeEach(() => {
-        products = [];
-        createProduct = new CreateProduct(products);
-    });
-
-    it("should create a new product and add it to the products array", () => {
-        const product = createProduct.execute("Mouse Gamer", "Mouse RGB 16000 DPI", 5999, 10);
+    it("should create a new product and save it via Unit of Work", async () => {
+        // Arrange
+        const createProduct = new CreateProduct(mockUowFactory);
+        
+        // Act
+        const product = await createProduct.execute("Mouse Gamer", "Mouse RGB 16000 DPI", 5999, 10);
+        
+        // Assert
         expect(product.id).toBeDefined();
         expect(product.name).toBe("Mouse Gamer");
-        expect(products.length).toBe(1);
+        expect(mockUnitOfWork.products.save).toHaveBeenCalledWith(product);
+        expect(mockUnitOfWork.commit).toHaveBeenCalledTimes(1);
     });
 });

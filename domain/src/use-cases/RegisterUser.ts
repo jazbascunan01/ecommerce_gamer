@@ -23,7 +23,7 @@ export class RegisterUser {
             name,
             email,
             passwordHash,
-            'client',
+            'CUSTOMER',
             new Date()
         );
 
