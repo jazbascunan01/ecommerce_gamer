@@ -1,0 +1,38 @@
+:host {
+  --footer-background: #1a1a1a;
+  --footer-text-color: #a0a0a0;
+  --footer-link-hover-color: #ffffff;
+  --border-color: #333;
+}
+
+.footer {
+  background-color: var(--footer-background);
+  color: var(--footer-text-color);
+  padding: 24px;
+  border-top: 1px solid var(--border-color);
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+
+  a {
+    color: var(--footer-text-color);
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--footer-link-hover-color);
+    }
+  }
+}
