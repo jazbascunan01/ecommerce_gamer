@@ -1,0 +1,10 @@
+<div class="card" [class.out-of-stock]="product.stock === 0">
+  <img [src]="product.imageUrl" [alt]="product.name" class="card-img">
+  <div class="card-body">
+    <h3 class="card-title">{{ product.name }}</h3>
+    <p class="card-price">{{ product.price | currency:'ARS' }}</p>
+    <button class="card-button" [disabled]="product.stock === 0">
+      {{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}
+    </button>
+  </div>
+</div>
