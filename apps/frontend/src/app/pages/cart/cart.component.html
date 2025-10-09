@@ -1,0 +1,52 @@
+<div class="cart-page">
+  <div class="cart-container">
+    <header class="cart-header">
+      <h1>Carrito de Compras</h1>
+    </header>
+
+    <!-- Este es el contenedor principal que dividirá la página en dos columnas -->
+    <div class="cart-layout">
+
+      <!-- Columna de la izquierda: Lista de productos -->
+      <div class="cart-items">
+        <h2>Tus Productos</h2>
+
+        <!-- Producto 1 (Ejemplo) -->
+        <div class="cart-item">
+          <img src="https://via.placeholder.com/100" alt="Producto 1" class="item-img">
+          <div class="item-details">
+            <p class="item-name">Mouse Gamer Pro X</p>
+            <p class="item-price">$5,999.00</p>
+          </div>
+          <div class="item-quantity">
+            <input type="number" value="1" min="1">
+          </div>
+          <button class="item-remove-btn">Eliminar</button>
+        </div>
+
+        <!-- Producto 2 (Ejemplo) -->
+        <div class="cart-item">
+          <img src="https://via.placeholder.com/100" alt="Producto 2" class="item-img">
+          <div class="item-details">
+            <p class="item-name">Teclado Mecánico RGB</p>
+            <p class="item-price">$12,500.00</p>
+          </div>
+          <div class="item-quantity">
+            <input type="number" value="1" min="1">
+          </div>
+          <button class="item-remove-btn">Eliminar</button>
+        </div>
+      </div>
+
+      <!-- Columna de la derecha: Resumen del pedido -->
+      <div class="order-summary">
+        <h2>Resumen del Pedido</h2>
+        <div class="summary-row"><p>Subtotal:</p> <p>$18,499.00</p></div>
+        <div class="summary-row"><p>Envío:</p> <p>Gratis</p></div>
+        <div class="summary-row total"><p>Total:</p> <p>$18,499.00</p></div>
+        <button class="checkout-btn">Proceder al Pago</button>
+      </div>
+
+    </div>
+  </div>
+</div>

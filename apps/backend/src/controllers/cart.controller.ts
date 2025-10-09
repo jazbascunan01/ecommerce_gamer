@@ -61,7 +61,7 @@ export const createCartController = (
         try {
             const { productId, quantity } = req.body;
             await updateCartItemCase.execute(req.userId!, productId, quantity);
-            res.status(200).json({ message: "Cart item quantity updated" });
+            res.status(200).json({ message: "CartComponent item quantity updated" });
         } catch (err: any) {
             next(err);
         }
@@ -70,7 +70,7 @@ export const createCartController = (
     const clearCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
             await clearCartCase.execute(req.userId!);
-            res.status(200).json({ message: "Cart cleared" });
+            res.status(200).json({ message: "CartComponent cleared" });
         } catch (err: any) {
             next(err);
         }

@@ -1,0 +1,147 @@
+.cart-page {
+  padding: 40px 20px;
+  font-family: sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  min-height: calc(100vh - 200px); // Ajusta según la altura de tu header/footer
+}
+
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cart-header {
+  text-align: center;
+  margin-bottom: 40px;
+
+  h1 {
+    font-size: 2.5rem;
+    color: #1a1a1a;
+  }
+}
+
+.cart-layout {
+  display: flex;
+  flex-wrap: wrap; // Para que se adapte en móviles
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.cart-items {
+  flex: 3; // Ocupa 3/4 del espacio
+  min-width: 300px;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+  }
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.item-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item-details {
+  flex-grow: 1;
+}
+
+.item-name {
+  font-weight: 600;
+  margin: 0 0 5px;
+}
+
+.item-price {
+  margin: 0;
+  color: #555;
+}
+
+.item-quantity input {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.item-remove-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 5px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.order-summary {
+  flex: 1; // Ocupa 1/4 del espacio
+  min-width: 280px;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: sticky; // Para que se quede fijo al hacer scroll
+  top: 20px;
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+  }
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 1rem;
+
+  &.total {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+  }
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
