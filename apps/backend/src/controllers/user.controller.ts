@@ -51,14 +51,7 @@ export const createUserController = (
             const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, secretKey, { expiresIn: '1h' });
 
             // Devolvemos el token y también los datos del usuario (sin el password hash)
-            res.status(200).json({
-                token,
-                user: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email
-                }
-            });
+            res.status(200).json({ token });
 
         } catch (err: any) {
             next(err);

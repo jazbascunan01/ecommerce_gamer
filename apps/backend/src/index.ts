@@ -11,7 +11,13 @@ import {AuthService} from "@domain/services/AuthService";
 
 
 const app = express();
-app.use(cors());
+// Configuración explícita de CORS para permitir peticiones desde el frontend de Angular
+const corsOptions = {
+  origin: 'http://localhost:4200', // La URL de tu frontend
+  optionsSuccessStatus: 200 // Para navegadores antiguos
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const authService = new AuthService();

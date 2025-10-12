@@ -12,7 +12,7 @@ const TOKEN_KEY = 'auth-token';
 export class AuthService {
   // La URL base de la API. Las rutas de usuario están en /api/users
   // según la configuración del backend.
-  private apiUrl = 'http://localhost:3000/api/users';
+  private apiUrl = 'http://localhost:3000/api/auth'; // Corregido: la ruta es /api/auth
 
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$: Observable<User | null> = this.userSubject.asObservable();
@@ -28,13 +28,12 @@ export class AuthService {
    * @returns Un observable con la respuesta del backend (que debería incluir el token y datos del usuario).
    */
   login(credentials: { email: string, password: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials).pipe(      tap(response => {
         // El 'tap' nos permite ejecutar una acción sin modificar la respuesta.
         // Asumimos que el backend devuelve un objeto con una propiedad 'token' y 'user'.
-        if (response && response.token && response.user) {
-          this.saveToken(response.token);
-          this.userSubject.next(response.user);
+        if (response && response.token) {
+          // El backend solo devuelve el token, lo manejamos aquí
+          this.handleAuthentication(response.token);
         }
       })
     );
@@ -50,6 +49,18 @@ export class AuthService {
     this.userSubject.next(null);
     // Opcional: podrías querer redirigir al usuario a la página de inicio
     // this.router.navigate(['/']);
+  }
+
+  /**
+   * Procesa el token después de un login exitoso.
+   * @param token El token JWT.
+   */
+  private handleAuthentication(token: string): void {
+    this.saveToken(token);
+    const decodedToken: any = jwtDecode(token);
+    // Reconstruimos el objeto User a partir del contenido del token
+    const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name };
+    this.userSubject.next(user);
   }
 
   /**
@@ -84,10 +95,8 @@ export class AuthService {
         } else {
           // Si el token es válido, reconstruimos el objeto de usuario y lo emitimos.
           // El token solo contiene id, email y role. El 'name' no está presente.
-          // Para ser consistentes, creamos un objeto User parcial, igual que haría el login.
-          // El backend es la fuente de verdad para el nombre completo.
-          // Por ahora, podemos usar el email o una cadena vacía para el nombre.
-          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name || '' };
+          // El token contiene id, name, email y role.
+          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name };
           this.userSubject.next(user);
         }
       } catch (error) {
