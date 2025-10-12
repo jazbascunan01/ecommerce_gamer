@@ -19,5 +19,8 @@
   "description": "",
   "devDependencies": {
     "@types/cors": "^2.8.19"
+  },
+  "dependencies": {
+    "jwt-decode": "^4.0.0"
   }
 }

@@ -3,7 +3,7 @@
   <div class="card-body">
     <h3 class="card-title">{{ product.name }}</h3>
     <p class="card-price">{{ product.price | currency:'ARS' }}</p>
-    <button class="card-button" [disabled]="product.stock === 0">
+    <button class="card-button" [disabled]="product.stock === 0" (click)="onAddToCart()">
       {{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}
     </button>
   </div>

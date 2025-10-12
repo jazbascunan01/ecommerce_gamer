@@ -59,8 +59,9 @@ export const createCartController = (
     };
     const updateCartItem = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
-            const { productId, quantity } = req.body;
-            await updateCartItemCase.execute(req.userId!, productId, quantity);
+            const { productId } = req.params; // Leemos el ID de la URL
+            const { quantity } = req.body; // Leemos la cantidad del cuerpo
+            await updateCartItemCase.execute(req.userId!, productId, quantity); // Pasamos ambos al caso de uso
             res.status(200).json({ message: "CartComponent item quantity updated" });
         } catch (err: any) {
             next(err);

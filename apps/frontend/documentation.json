@@ -2,6 +2,41 @@
     "pipes": [],
     "interfaces": [
         {
+            "name": "CartItem",
+            "id": "interface-CartItem-59382567774abf09b0a04be97af65415be14dacc044a683c4dd5b9be36cf2fd0e86d74d05b17c02218841e1f888ad93498de475a3458dd73bdf79946fb3004c0",
+            "file": "src/app/core/models/cart-item.model.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Product } from './product.model';\n\nexport interface CartItem {\n  product: Product;\n  quantity: number;\n}",
+            "properties": [
+                {
+                    "name": "product",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Product",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "quantity",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
             "name": "Product",
             "id": "interface-Product-03731674bb5ff617684cdd6adb46de32994d425931e4af74956453072f120246667d2a27c0593964890813a6fb84a8f1e11c7cc7566b5364455bc5b3f3fd5386",
             "file": "src/app/core/models/product.model.ts",
@@ -100,17 +135,771 @@
             "kind": 172,
             "methods": [],
             "extends": []
+        },
+        {
+            "name": "User",
+            "id": "interface-User-8d5212dc356cd5d6f9844dfe3991f970bcb1cb6056d646d926b687da53e34a6d8c40a7aaf45bad58d29918af1603c0b0549f8f71a320399e5fb4c253138811d2-1",
+            "file": "src/app/core/models/user.model.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface User {\n  id: string;\n  name: string;\n  email: string;\n  // Añade aquí cualquier otra propiedad que tu backend devuelva sobre el usuario\n  // por ejemplo: role: 'admin' | 'customer';\n}",
+            "properties": [
+                {
+                    "name": "email",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": [],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "User-1"
         }
     ],
-    "injectables": [],
+    "injectables": [
+        {
+            "name": "AuthService",
+            "id": "injectable-AuthService-ba2453a0235dd02fd05286a2ffca2ef649f5aadf082af4655d4ea8c6d20a9d4b6e499c434a83f93de3ca9e12459d220d7efa0989c8a1040a9bf0f320a0ee8a85",
+            "file": "src/app/core/auth/auth.service.ts",
+            "properties": [
+                {
+                    "name": "apiUrl",
+                    "defaultValue": "'http://localhost:3000/api/users'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "user$",
+                    "defaultValue": "this.userSubject.asObservable()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<User | null>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        125
+                    ]
+                },
+                {
+                    "name": "userSubject",
+                    "defaultValue": "new BehaviorSubject<User | null>(null)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "checkTokenOnLoad",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 75,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nVerifica si hay un token en localStorage al cargar la aplicación.\nSi el token existe y no ha expirado, actualiza el estado del usuario.\n",
+                    "description": "<p>Verifica si hay un token en localStorage al cargar la aplicación.\nSi el token existe y no ha expirado, actualiza el estado del usuario.</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "getToken",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string | null",
+                    "typeParameters": [],
+                    "line": 67,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nObtiene el token de localStorage.\nUsado principalmente por el AuthInterceptor.\n",
+                    "description": "<p>Obtiene el token de localStorage.\nUsado principalmente por el AuthInterceptor.</p>\n",
+                    "modifierKind": [
+                        125
+                    ]
+                },
+                {
+                    "name": "login",
+                    "args": [
+                        {
+                            "name": "credentials",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<any>",
+                    "typeParameters": [],
+                    "line": 30,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nEnvía las credenciales al backend para iniciar sesión.\n",
+                    "description": "<p>Envía las credenciales al backend para iniciar sesión.</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 878,
+                                "end": 889,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "credentials"
+                            },
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 872,
+                                "end": 877,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Objeto con email y password.</p>\n"
+                        },
+                        {
+                            "tagName": {
+                                "pos": 925,
+                                "end": 932,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "returns"
+                            },
+                            "comment": "<p>Un observable con la respuesta del backend (que debería incluir el token y datos del usuario).</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "logout",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nCierra la sesión del usuario.\n",
+                    "description": "<p>Cierra la sesión del usuario.</p>\n"
+                },
+                {
+                    "name": "saveToken",
+                    "args": [
+                        {
+                            "name": "token",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 59,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nGuarda el token en localStorage.\n",
+                    "description": "<p>Guarda el token en localStorage.</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 1983,
+                                "end": 1988,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "token"
+                            },
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 1977,
+                                "end": 1982,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>El token JWT recibido del backend.</p>\n"
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { BehaviorSubject, Observable, tap } from 'rxjs';\nimport { jwtDecode } from 'jwt-decode';\nimport { User } from '../models/user.model';\n\nconst TOKEN_KEY = 'auth-token';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class AuthService {\n  // La URL base de la API. Las rutas de usuario están en /api/users\n  // según la configuración del backend.\n  private apiUrl = 'http://localhost:3000/api/users';\n\n  private userSubject = new BehaviorSubject<User | null>(null);\n  public user$: Observable<User | null> = this.userSubject.asObservable();\n\n  constructor(private http: HttpClient) {\n    // Al iniciar el servicio, verificamos si hay un token válido en localStorage.\n    this.checkTokenOnLoad();\n  }\n\n  /**\n   * Envía las credenciales al backend para iniciar sesión.\n   * @param credentials Objeto con email y password.\n   * @returns Un observable con la respuesta del backend (que debería incluir el token y datos del usuario).\n   */\n  login(credentials: { email: string, password: string }): Observable<any> {\n    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(\n      tap(response => {\n        // El 'tap' nos permite ejecutar una acción sin modificar la respuesta.\n        // Asumimos que el backend devuelve un objeto con una propiedad 'token' y 'user'.\n        if (response && response.token && response.user) {\n          this.saveToken(response.token);\n          this.userSubject.next(response.user);\n        }\n      })\n    );\n  }\n\n  /**\n   * Cierra la sesión del usuario.\n   */\n  logout(): void {\n    // Elimina el token del almacenamiento\n    localStorage.removeItem(TOKEN_KEY);\n    // Informa a toda la aplicación que ya no hay un usuario logueado\n    this.userSubject.next(null);\n    // Opcional: podrías querer redirigir al usuario a la página de inicio\n    // this.router.navigate(['/']);\n  }\n\n  /**\n   * Guarda el token en localStorage.\n   * @param token El token JWT recibido del backend.\n   */\n  private saveToken(token: string): void {\n    localStorage.setItem(TOKEN_KEY, token);\n  }\n\n  /**\n   * Obtiene el token de localStorage.\n   * Usado principalmente por el AuthInterceptor.\n   */\n  public getToken(): string | null {\n    return localStorage.getItem(TOKEN_KEY);\n  }\n\n  /**\n   * Verifica si hay un token en localStorage al cargar la aplicación.\n   * Si el token existe y no ha expirado, actualiza el estado del usuario.\n   */\n  private checkTokenOnLoad(): void {\n    const token = this.getToken();\n    if (token) {\n      try {\n        const decodedToken: any = jwtDecode(token);\n        const isExpired = decodedToken.exp * 1000 < Date.now();\n\n        if (isExpired) {\n          this.logout(); // Si el token ha expirado, limpiamos todo.\n        } else {\n          // Si el token es válido, reconstruimos el objeto de usuario y lo emitimos.\n          // El token solo contiene id, email y role. El 'name' no está presente.\n          // Para ser consistentes, creamos un objeto User parcial, igual que haría el login.\n          // El backend es la fuente de verdad para el nombre completo.\n          // Por ahora, podemos usar el email o una cadena vacía para el nombre.\n          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name || '' };\n          this.userSubject.next(user);\n        }\n      } catch (error) {\n        this.logout(); // Si el token es inválido o malformado, limpiamos todo.\n      }\n    }\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 18,
+                "jsdoctags": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "type": "injectable"
+        },
+        {
+            "name": "CartService",
+            "id": "injectable-CartService-245fb2e46a4fd26571bb54fd963ba4e2a0ffcd62066df6d9f71b8e8a1d9278407f2e83ac9ef527a00d151157c6cbd5d1419a12c4cb3eaeb893d19d6de1174508",
+            "file": "src/app/core/state/cart.service.ts",
+            "properties": [
+                {
+                    "name": "apiUrl",
+                    "defaultValue": "'http://localhost:3000/api/users/cart'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "items$",
+                    "defaultValue": "this.itemsSubject.asObservable()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<CartItem[]>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        125
+                    ]
+                },
+                {
+                    "name": "itemsSubject",
+                    "defaultValue": "new BehaviorSubject<CartItem[]>([])",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "loading$",
+                    "defaultValue": "this.loadingSubject.asObservable()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<boolean>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        125
+                    ]
+                },
+                {
+                    "name": "loadingSubject",
+                    "defaultValue": "new BehaviorSubject<boolean>(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "totalItems$",
+                    "defaultValue": "this.items$.pipe(\n    map(items => items.reduce((total, item) => total + item.quantity, 0))\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<number>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        125
+                    ]
+                },
+                {
+                    "name": "totalPrice$",
+                    "defaultValue": "this.items$.pipe(\n    map(items => items.reduce((total, item) => total + (item.product.price * item.quantity), 0))\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<number>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "modifierKind": [
+                        125
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "addProduct",
+                    "args": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 67,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nAñade un producto al carrito.\nSi el producto ya existe, incrementa su cantidad.\nSi no, lo añade como un nuevo ítem.\n",
+                    "description": "<p>Añade un producto al carrito.\nSi el producto ya existe, incrementa su cantidad.\nSi no, lo añade como un nuevo ítem.</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "loadInitialCart",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 48,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nCarga el estado inicial del carrito desde el backend.\n",
+                    "description": "<p>Carga el estado inicial del carrito desde el backend.</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "removeProduct",
+                    "args": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 87,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nElimina un producto del carrito por su ID.\n",
+                    "description": "<p>Elimina un producto del carrito por su ID.</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateQuantity",
+                    "args": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "quantity",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 106,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nActualiza la cantidad de un producto en el carrito.\nSi la cantidad es 0 o menos, elimina el producto.\n",
+                    "description": "<p>Actualiza la cantidad de un producto en el carrito.\nSi la cantidad es 0 o menos, elimina el producto.</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 3879,
+                                "end": 3888,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "productId"
+                            },
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 3873,
+                                "end": 3878,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>El ID del producto a actualizar.</p>\n"
+                        },
+                        {
+                            "name": {
+                                "pos": 3934,
+                                "end": 3942,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "quantity"
+                            },
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 3928,
+                                "end": 3933,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>La nueva cantidad.</p>\n"
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { BehaviorSubject, Observable, map, tap, finalize } from 'rxjs';\nimport { CartItem } from '../models/cart-item.model';\nimport { Product } from '../models/product.model';\nimport { AuthService } from '../auth/auth.service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class CartService {\n  // La URL base de la API. Las rutas del carrito están anidadas bajo /api/users\n  private apiUrl = 'http://localhost:3000/api/users/cart';\n\n  private itemsSubject = new BehaviorSubject<CartItem[]>([]);\n  // Exponemos el estado del carrito como un Observable de solo lectura.\n  public items$: Observable<CartItem[]> = this.itemsSubject.asObservable();\n\n  private loadingSubject = new BehaviorSubject<boolean>(false);\n  public loading$: Observable<boolean> = this.loadingSubject.asObservable();\n\n  // Observable para la cantidad total de ítems en el carrito (para el ícono del header).\n  public totalItems$: Observable<number> = this.items$.pipe(\n    map(items => items.reduce((total, item) => total + item.quantity, 0))\n  );\n\n  // Observable para el precio total del carrito.\n  public totalPrice$: Observable<number> = this.items$.pipe(\n    map(items => items.reduce((total, item) => total + (item.product.price * item.quantity), 0))\n  );\n\n  constructor(private http: HttpClient, private authService: AuthService) {\n    // Nos suscribimos a los cambios en el estado de autenticación.\n    this.authService.user$.subscribe(user => {\n      if (user) {\n        // Si hay un usuario, cargamos su carrito.\n        this.loadInitialCart();\n      } else {\n        // Si no hay usuario (o cierra sesión), vaciamos el carrito localmente.\n        this.itemsSubject.next([]);\n      }\n    });\n  }\n\n  /**\n   * Carga el estado inicial del carrito desde el backend.\n   */\n  private loadInitialCart(): void {\n    this.loadingSubject.next(true);\n    this.http.get<CartItem[]>(`${this.apiUrl}`).pipe(\n      finalize(() => this.loadingSubject.next(false))\n    ).subscribe({\n      next: items => this.itemsSubject.next(items),\n      error: err => {\n        console.error('Error al cargar el carrito inicial:', err);\n        // Si falla (p.ej. usuario no logueado), nos aseguramos que el carrito esté vacío.\n        this.itemsSubject.next([]);\n      }\n    });\n  }\n\n  /**\n   * Añade un producto al carrito.\n   * Si el producto ya existe, incrementa su cantidad.\n   * Si no, lo añade como un nuevo ítem.\n   */\n  addProduct(product: Product): void {\n    // Ahora, en lugar de la lógica local, hacemos una petición al backend.\n    // Asumo un endpoint POST en /api/cart/add que recibe el productId.\n    const payload = { productId: product.id, quantity: 1 };\n    this.loadingSubject.next(true);\n    // La respuesta es un mensaje, no el carrito. Por eso usamos <any>.\n    this.http.post<any>(`${this.apiUrl}/items`, payload).pipe(\n      finalize(() => this.loadingSubject.next(false))\n    ).subscribe({\n      next: () => this.loadInitialCart(), // En éxito, recargamos el carrito.\n      error: err => {\n        console.error('Error al añadir producto al carrito:', err);\n        // Aquí podrías mostrar una notificación al usuario\n      }\n    });\n  }\n\n  /**\n   * Elimina un producto del carrito por su ID.\n   */\n  removeProduct(productId: string): void {\n    // Asumo un endpoint DELETE en /api/cart/items/{productId}\n    this.loadingSubject.next(true);\n    this.http.delete<any>(`${this.apiUrl}/items/${productId}`).pipe(\n      finalize(() => this.loadingSubject.next(false))\n    ).subscribe({\n      next: () => this.loadInitialCart(), // En éxito, recargamos el carrito.\n      error: err => {\n        console.error('Error al eliminar producto del carrito:', err);\n      }\n    });\n  }\n\n  /**\n   * Actualiza la cantidad de un producto en el carrito.\n   * Si la cantidad es 0 o menos, elimina el producto.\n   * @param productId El ID del producto a actualizar.\n   * @param quantity La nueva cantidad.\n   */\n  updateQuantity(productId: string, quantity: number): void {\n    // La lógica de si la cantidad es <= 0 ahora la debe manejar el backend.\n    // Asumo un endpoint PUT o PATCH en /api/cart/items/{productId}\n    const payload = { quantity };\n    this.loadingSubject.next(true);\n    this.http.patch<any>(`${this.apiUrl}/items/${productId}`, payload).pipe(\n      finalize(() => this.loadingSubject.next(false))\n    ).subscribe({\n      next: () => this.loadInitialCart(), // En éxito, recargamos el carrito.\n      error: err => {\n        console.error('Error al actualizar la cantidad del producto:', err);\n      }\n    });\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "authService",
+                        "type": "AuthService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 30,
+                "jsdoctags": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "authService",
+                        "type": "AuthService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "type": "injectable"
+        },
+        {
+            "name": "ListProducts",
+            "id": "injectable-ListProducts-6b7300c96da72a11ea858a7c4c47c06bede445e575d2c03354659e0b54e57248136393e5ca01e3a94e8917a8163923fc34a4db59e1ef19221ed92fbc5c170b7b",
+            "file": "src/app/application/list-products.ts",
+            "properties": [],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class ListProducts {\r\n  \r\n}\r\n",
+            "extends": [],
+            "type": "injectable"
+        },
+        {
+            "name": "ListProductsUseCase",
+            "id": "injectable-ListProductsUseCase-b73c840f882559149d5825e14113133131d6e94e7319477a3b7a0cde54c1e42bb46888b9b201691eb882fc4addc368d9a6522bb3ffbe2992a2df9c897a7714c0",
+            "file": "src/app/application/list-products.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "execute",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<Product[]>",
+                    "typeParameters": [],
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Observable } from 'rxjs';\nimport { Product } from '../core/models/product.model';\nimport { ProductRepository } from '../infrastructure/product-repository.service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class ListProductsUseCase {\n  // Inyectamos el repositorio (la capa de infraestructura)\n  constructor(private productRepository: ProductRepository) { }\n\n  // El caso de uso simplemente expone un método \"execute\" que orquesta la lógica.\n  execute(): Observable<Product[]> {\n    return this.productRepository.getAllProducts();\n  }\n}",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "productRepository",
+                        "type": "ProductRepository",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 9,
+                "jsdoctags": [
+                    {
+                        "name": "productRepository",
+                        "type": "ProductRepository",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "type": "injectable"
+        },
+        {
+            "name": "ProductRepository",
+            "id": "injectable-ProductRepository-39f3ffa12a03b71743014fc57f82602914d2532927aeb7782df143cbb8c44e17e3e1af3893f2e00059588b522a01df78c742c59b2239fcf6fac721879dee43c1",
+            "file": "src/app/infrastructure/product-repository.service.ts",
+            "properties": [
+                {
+                    "name": "apiUrl",
+                    "defaultValue": "'http://localhost:3000/api/products'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "getAllProducts",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<Product[]>",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { HttpClient } from '@angular/common/http';\r\nimport { Observable, map } from 'rxjs';\r\nimport { Product } from '../core/models/product.model';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class ProductRepository {\r\n  // La URL de tu API de backend\r\n  private apiUrl = 'http://localhost:3000/api/products';\r\n\r\n  constructor(private http: HttpClient) {\r\n  }\r\n\r\n  getAllProducts(): Observable<Product[]> {\r\n    // Hacemos la llamada GET y esperamos un array de tipo Product\r\n    return this.http.get<Product[]>(this.apiUrl);\r\n  }\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [],
     "directives": [],
     "components": [
         {
+            "name": "AboutComponent",
+            "id": "component-AboutComponent-ec9e487eaa5142811da38de632a1d8bf8c6a377816a059acd6a0d24e3415b9cc7d039bfe0a31fc1fbd5b5cb1dfabb26763f6a22a58898d3a7f40281ff70fc407",
+            "file": "src/app/pages/about/about.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-about",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./about.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-about',\r\n  standalone: true,\r\n  imports: [],\r\n  templateUrl: './about.component.html',\r\n  styleUrl: './about.component.scss'\r\n})\r\nexport class AboutComponent {\r\n\r\n}\r\n",
+            "styleUrl": "./about.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"about-page\">\r\n  <div class=\"about-container\">\r\n    <header class=\"about-header\">\r\n      <h1>Sobre GamerStore</h1>\r\n      <p>Tu destino número uno para hardware y periféricos de gaming.</p>\r\n    </header>\r\n\r\n    <section class=\"about-content\">\r\n      <h2>Nuestra Misión</h2>\r\n      <p>\r\n        En GamerStore, nuestra misión es simple: equipar a cada gamer con las herramientas que necesita para alcanzar la victoria. Creemos que el equipo adecuado puede marcar la diferencia entre una partida buena y una legendaria. Por eso, seleccionamos cuidadosamente cada producto de nuestro catálogo, asegurándonos de ofrecer solo lo mejor en rendimiento, durabilidad y estilo.\r\n      </p>\r\n\r\n      <h2>Nuestra Historia</h2>\r\n      <p>\r\n        GamerStore nació de la pasión de un grupo de amigos gamers que estaban cansados de buscar en múltiples sitios para encontrar el equipo perfecto. Decidimos crear una tienda única donde la comunidad pudiera encontrar todo lo que necesita, desde teclados mecánicos y mouses de alta precisión hasta los monitores más rápidos y las sillas más cómodas.\r\n      </p>\r\n      <p>\r\n        Desde nuestros humildes comienzos en un pequeño garaje, hemos crecido hasta convertirnos en un referente en la comunidad gamer, siempre manteniendo nuestro compromiso con la calidad y el servicio al cliente.\r\n      </p>\r\n    </section>\r\n  </div>\r\n</div>\r\n"
+        },
+        {
             "name": "App",
-            "id": "component-App-b75e23315573af9c22f0a971f95536a69ca0b91b34fe8951cf5c25194cdce734db4d83b22a5b323faf62dd5c750e9ae19420b61b12e92d5824fab0ab0dd6e469",
+            "id": "component-App-f56cd699b2e4b4b9d36aede6fc79574901305f0b50fb02698991669a78c01b3adbe001e2adf819230d6829e435e85ce2c7f8be6c8c9e3cc5516c96db3ace7212",
             "file": "src/app/app.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -137,7 +926,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 11,
+                    "line": 13,
                     "modifierKind": [
                         124,
                         148
@@ -149,22 +938,30 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
+            "standalone": true,
             "imports": [
                 {
                     "name": "RouterOutlet"
+                },
+                {
+                    "name": "HeaderComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "FooterComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, signal } from '@angular/core';\r\nimport { RouterOutlet } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-root',\r\n  imports: [RouterOutlet],\r\n  templateUrl: './app.html',\r\n  styleUrl: './app.scss'\r\n})\r\nexport class App {\r\n  protected readonly title = signal('frontend');\r\n}\r\n",
+            "sourceCode": "import { Component, signal } from '@angular/core';\nimport { RouterOutlet } from '@angular/router';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { FooterComponent } from './layout/footer/footer.component';\n@Component({\n  selector: 'app-root',\n  standalone: true,\n  imports: [RouterOutlet, HeaderComponent, FooterComponent],\n  templateUrl: './app.html',\n  styleUrl: './app.scss'\n})\nexport class App {\n  protected readonly title = signal('frontend');\n}\n",
             "styleUrl": "./app.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->\r\n<!-- * * * * * * * to get started with your project! * * * * * * * -->\r\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\r\n\r\n<style>\r\n  :host {\r\n    --bright-blue: oklch(51.01% 0.274 263.83);\r\n    --electric-violet: oklch(53.18% 0.28 296.97);\r\n    --french-violet: oklch(47.66% 0.246 305.88);\r\n    --vivid-pink: oklch(69.02% 0.277 332.77);\r\n    --hot-red: oklch(61.42% 0.238 15.34);\r\n    --orange-red: oklch(63.32% 0.24 31.68);\r\n\r\n    --gray-900: oklch(19.37% 0.006 300.98);\r\n    --gray-700: oklch(36.98% 0.014 302.71);\r\n    --gray-400: oklch(70.9% 0.015 304.04);\r\n\r\n    --red-to-pink-to-purple-vertical-gradient: linear-gradient(\r\n      180deg,\r\n      var(--orange-red) 0%,\r\n      var(--vivid-pink) 50%,\r\n      var(--electric-violet) 100%\r\n    );\r\n\r\n    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(\r\n      90deg,\r\n      var(--orange-red) 0%,\r\n      var(--vivid-pink) 50%,\r\n      var(--electric-violet) 100%\r\n    );\r\n\r\n    --pill-accent: var(--bright-blue);\r\n\r\n    font-family: \"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,\r\n      Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\",\r\n      \"Segoe UI Symbol\";\r\n    box-sizing: border-box;\r\n    -webkit-font-smoothing: antialiased;\r\n    -moz-osx-font-smoothing: grayscale;\r\n  }\r\n\r\n  h1 {\r\n    font-size: 3.125rem;\r\n    color: var(--gray-900);\r\n    font-weight: 500;\r\n    line-height: 100%;\r\n    letter-spacing: -0.125rem;\r\n    margin: 0;\r\n    font-family: \"Inter Tight\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,\r\n      Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\",\r\n      \"Segoe UI Symbol\";\r\n  }\r\n\r\n  p {\r\n    margin: 0;\r\n    color: var(--gray-700);\r\n  }\r\n\r\n  main {\r\n    width: 100%;\r\n    min-height: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    padding: 1rem;\r\n    box-sizing: inherit;\r\n    position: relative;\r\n  }\r\n\r\n  .angular-logo {\r\n    max-width: 9.2rem;\r\n  }\r\n\r\n  .content {\r\n    display: flex;\r\n    justify-content: space-around;\r\n    width: 100%;\r\n    max-width: 700px;\r\n    margin-bottom: 3rem;\r\n  }\r\n\r\n  .content h1 {\r\n    margin-top: 1.75rem;\r\n  }\r\n\r\n  .content p {\r\n    margin-top: 1.5rem;\r\n  }\r\n\r\n  .divider {\r\n    width: 1px;\r\n    background: var(--red-to-pink-to-purple-vertical-gradient);\r\n    margin-inline: 0.5rem;\r\n  }\r\n\r\n  .pill-group {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: start;\r\n    flex-wrap: wrap;\r\n    gap: 1.25rem;\r\n  }\r\n\r\n  .pill {\r\n    display: flex;\r\n    align-items: center;\r\n    --pill-accent: var(--bright-blue);\r\n    background: color-mix(in srgb, var(--pill-accent) 5%, transparent);\r\n    color: var(--pill-accent);\r\n    padding-inline: 0.75rem;\r\n    padding-block: 0.375rem;\r\n    border-radius: 2.75rem;\r\n    border: 0;\r\n    transition: background 0.3s ease;\r\n    font-family: var(--inter-font);\r\n    font-size: 0.875rem;\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    line-height: 1.4rem;\r\n    letter-spacing: -0.00875rem;\r\n    text-decoration: none;\r\n    white-space: nowrap;\r\n  }\r\n\r\n  .pill:hover {\r\n    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);\r\n  }\r\n\r\n  .pill-group .pill:nth-child(6n + 1) {\r\n    --pill-accent: var(--bright-blue);\r\n  }\r\n  .pill-group .pill:nth-child(6n + 2) {\r\n    --pill-accent: var(--electric-violet);\r\n  }\r\n  .pill-group .pill:nth-child(6n + 3) {\r\n    --pill-accent: var(--french-violet);\r\n  }\r\n\r\n  .pill-group .pill:nth-child(6n + 4),\r\n  .pill-group .pill:nth-child(6n + 5),\r\n  .pill-group .pill:nth-child(6n + 6) {\r\n    --pill-accent: var(--hot-red);\r\n  }\r\n\r\n  .pill-group svg {\r\n    margin-inline-start: 0.25rem;\r\n  }\r\n\r\n  .social-links {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.73rem;\r\n    margin-top: 1.5rem;\r\n  }\r\n\r\n  .social-links path {\r\n    transition: fill 0.3s ease;\r\n    fill: var(--gray-400);\r\n  }\r\n\r\n  .social-links a:hover svg path {\r\n    fill: var(--gray-900);\r\n  }\r\n\r\n  @media screen and (max-width: 650px) {\r\n    .content {\r\n      flex-direction: column;\r\n      width: max-content;\r\n    }\r\n\r\n    .divider {\r\n      height: 1px;\r\n      width: 100%;\r\n      background: var(--red-to-pink-to-purple-horizontal-gradient);\r\n      margin-block: 1.5rem;\r\n    }\r\n  }\r\n</style>\r\n\r\n<main class=\"main\">\r\n  <div class=\"content\">\r\n    <div class=\"left-side\">\r\n      <svg\r\n        xmlns=\"http://www.w3.org/2000/svg\"\r\n        viewBox=\"0 0 982 239\"\r\n        fill=\"none\"\r\n        class=\"angular-logo\"\r\n      >\r\n        <g clip-path=\"url(#a)\">\r\n          <path\r\n            fill=\"url(#b)\"\r\n            d=\"M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z\"\r\n          />\r\n          <path\r\n            fill=\"url(#c)\"\r\n            d=\"M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z\"\r\n          />\r\n        </g>\r\n        <defs>\r\n          <radialGradient\r\n            id=\"c\"\r\n            cx=\"0\"\r\n            cy=\"0\"\r\n            r=\"1\"\r\n            gradientTransform=\"rotate(118.122 171.182 60.81) scale(205.794)\"\r\n            gradientUnits=\"userSpaceOnUse\"\r\n          >\r\n            <stop stop-color=\"#FF41F8\" />\r\n            <stop offset=\".707\" stop-color=\"#FF41F8\" stop-opacity=\".5\" />\r\n            <stop offset=\"1\" stop-color=\"#FF41F8\" stop-opacity=\"0\" />\r\n          </radialGradient>\r\n          <linearGradient\r\n            id=\"b\"\r\n            x1=\"0\"\r\n            x2=\"982\"\r\n            y1=\"192\"\r\n            y2=\"192\"\r\n            gradientUnits=\"userSpaceOnUse\"\r\n          >\r\n            <stop stop-color=\"#F0060B\" />\r\n            <stop offset=\"0\" stop-color=\"#F0070C\" />\r\n            <stop offset=\".526\" stop-color=\"#CC26D5\" />\r\n            <stop offset=\"1\" stop-color=\"#7702FF\" />\r\n          </linearGradient>\r\n          <clipPath id=\"a\"><path fill=\"#fff\" d=\"M0 0h982v239H0z\" /></clipPath>\r\n        </defs>\r\n      </svg>\r\n      <h1>Hello, {{ title() }}</h1>\r\n      <p>Congratulations! Your app is running. 🎉</p>\r\n    </div>\r\n    <div class=\"divider\" role=\"separator\" aria-label=\"Divider\"></div>\r\n    <div class=\"right-side\">\r\n      <div class=\"pill-group\">\r\n        @for (item of [\r\n          { title: 'Explore the Docs', link: 'https://angular.dev' },\r\n          { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },\r\n          { title: 'Prompt and best practices for AI', link: 'https://angular.dev/ai/develop-with-ai'},\r\n          { title: 'CLI Docs', link: 'https://angular.dev/tools/cli' },\r\n          { title: 'Angular Language Service', link: 'https://angular.dev/tools/language-service' },\r\n          { title: 'Angular DevTools', link: 'https://angular.dev/tools/devtools' },\r\n        ]; track item.title) {\r\n          <a\r\n            class=\"pill\"\r\n            [href]=\"item.link\"\r\n            target=\"_blank\"\r\n            rel=\"noopener\"\r\n          >\r\n            <span>{{ item.title }}</span>\r\n            <svg\r\n              xmlns=\"http://www.w3.org/2000/svg\"\r\n              height=\"14\"\r\n              viewBox=\"0 -960 960 960\"\r\n              width=\"14\"\r\n              fill=\"currentColor\"\r\n            >\r\n              <path\r\n                d=\"M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z\"\r\n              />\r\n            </svg>\r\n          </a>\r\n        }\r\n      </div>\r\n      <div class=\"social-links\">\r\n        <a\r\n          href=\"https://github.com/angular/angular\"\r\n          aria-label=\"Github\"\r\n          target=\"_blank\"\r\n          rel=\"noopener\"\r\n        >\r\n          <svg\r\n            width=\"25\"\r\n            height=\"24\"\r\n            viewBox=\"0 0 25 24\"\r\n            fill=\"none\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            alt=\"Github\"\r\n          >\r\n            <path\r\n              d=\"M12.3047 0C5.50634 0 0 5.50942 0 12.3047C0 17.7423 3.52529 22.3535 8.41332 23.9787C9.02856 24.0946 9.25414 23.7142 9.25414 23.3871C9.25414 23.0949 9.24389 22.3207 9.23876 21.2953C5.81601 22.0377 5.09414 19.6444 5.09414 19.6444C4.53427 18.2243 3.72524 17.8449 3.72524 17.8449C2.61064 17.082 3.81137 17.0973 3.81137 17.0973C5.04697 17.1835 5.69604 18.3647 5.69604 18.3647C6.79321 20.2463 8.57636 19.7029 9.27978 19.3881C9.39052 18.5924 9.70736 18.0499 10.0591 17.7423C7.32641 17.4347 4.45429 16.3765 4.45429 11.6618C4.45429 10.3185 4.9311 9.22133 5.72065 8.36C5.58222 8.04931 5.16694 6.79833 5.82831 5.10337C5.82831 5.10337 6.85883 4.77319 9.2121 6.36459C10.1965 6.09082 11.2424 5.95546 12.2883 5.94931C13.3342 5.95546 14.3801 6.09082 15.3644 6.36459C17.7023 4.77319 18.7328 5.10337 18.7328 5.10337C19.3942 6.79833 18.9789 8.04931 18.8559 8.36C19.6403 9.22133 20.1171 10.3185 20.1171 11.6618C20.1171 16.3888 17.2409 17.4296 14.5031 17.7321C14.9338 18.1012 15.3337 18.8559 15.3337 20.0084C15.3337 21.6552 15.3183 22.978 15.3183 23.3779C15.3183 23.7009 15.5336 24.0854 16.1642 23.9623C21.0871 22.3484 24.6094 17.7341 24.6094 12.3047C24.6094 5.50942 19.0999 0 12.3047 0Z\"\r\n            />\r\n          </svg>\r\n        </a>\r\n        <a\r\n          href=\"https://twitter.com/angular\"\r\n          aria-label=\"Twitter\"\r\n          target=\"_blank\"\r\n          rel=\"noopener\"\r\n        >\r\n          <svg\r\n            width=\"24\"\r\n            height=\"24\"\r\n            viewBox=\"0 0 24 24\"\r\n            fill=\"none\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            alt=\"Twitter\"\r\n          >\r\n            <path\r\n              d=\"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z\"\r\n            />\r\n          </svg>\r\n        </a>\r\n        <a\r\n          href=\"https://www.youtube.com/channel/UCbn1OgGei-DV7aSRo_HaAiw\"\r\n          aria-label=\"Youtube\"\r\n          target=\"_blank\"\r\n          rel=\"noopener\"\r\n        >\r\n          <svg\r\n            width=\"29\"\r\n            height=\"20\"\r\n            viewBox=\"0 0 29 20\"\r\n            fill=\"none\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            alt=\"Youtube\"\r\n          >\r\n            <path\r\n              fill-rule=\"evenodd\"\r\n              clip-rule=\"evenodd\"\r\n              d=\"M27.4896 1.52422C27.9301 1.96749 28.2463 2.51866 28.4068 3.12258C29.0004 5.35161 29.0004 10 29.0004 10C29.0004 10 29.0004 14.6484 28.4068 16.8774C28.2463 17.4813 27.9301 18.0325 27.4896 18.4758C27.0492 18.9191 26.5 19.2389 25.8972 19.4032C23.6778 20 14.8068 20 14.8068 20C14.8068 20 5.93586 20 3.71651 19.4032C3.11363 19.2389 2.56449 18.9191 2.12405 18.4758C1.68361 18.0325 1.36732 17.4813 1.20683 16.8774C0.613281 14.6484 0.613281 10 0.613281 10C0.613281 10 0.613281 5.35161 1.20683 3.12258C1.36732 2.51866 1.68361 1.96749 2.12405 1.52422C2.56449 1.08095 3.11363 0.76113 3.71651 0.596774C5.93586 0 14.8068 0 14.8068 0C14.8068 0 23.6778 0 25.8972 0.596774C26.5 0.76113 27.0492 1.08095 27.4896 1.52422ZM19.3229 10L11.9036 5.77905V14.221L19.3229 10Z\"\r\n            />\r\n          </svg>\r\n        </a>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</main>\r\n\r\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->\r\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\r\n\r\n\r\n<router-outlet />\r\n"
+            "templateData": "<app-header></app-header>\n\n<main>\n  <router-outlet />\n</main>\n\n<app-footer></app-footer>\n"
         },
         {
             "name": "ButtonComponent",
@@ -301,6 +1098,301 @@
             }
         },
         {
+            "name": "CartComponent",
+            "id": "component-CartComponent-0ee7906bb093a36db19f96259db6657c07f84841c8dd974af0b6ad70a25e96ebdeb0955437d3f6139ba013788003d00795c78148793d8f6c89376ce9393b94a9",
+            "file": "src/app/pages/cart/cart.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-cart",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./cart.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "cartItems$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<CartItem[]>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
+                },
+                {
+                    "name": "isLoading$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<boolean>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17
+                },
+                {
+                    "name": "totalPrice$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<number>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onQuantityChange",
+                    "args": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "newQuantity",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 29,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "newQuantity",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onRemoveProduct",
+                    "args": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                },
+                {
+                    "name": "CurrencyPipe",
+                    "type": "pipe"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { CartService } from '../../core/state/cart.service';\nimport { Observable } from 'rxjs';\nimport { CartItem } from '../../core/models/cart-item.model';\nimport { AsyncPipe, CurrencyPipe } from '@angular/common';\n\n@Component({\n  selector: 'app-cart',\n  standalone: true,\n  imports: [AsyncPipe, CurrencyPipe],\n  templateUrl: './cart.component.html',\n  styleUrl: './cart.component.scss'\n})\nexport class CartComponent {\n  cartItems$: Observable<CartItem[]>;\n  totalPrice$: Observable<number>;\n  isLoading$: Observable<boolean>;\n\n  constructor(private cartService: CartService) {\n    this.cartItems$ = this.cartService.items$;\n    this.totalPrice$ = this.cartService.totalPrice$;\n    this.isLoading$ = this.cartService.loading$;\n  }\n\n  onRemoveProduct(productId: string): void {\n    this.cartService.removeProduct(productId);\n  }\n\n  onQuantityChange(productId: string, newQuantity: string): void {\n    const quantity = parseInt(newQuantity, 10);\n    // Nos aseguramos de que el valor sea un número válido antes de enviarlo\n    if (!isNaN(quantity)) {\n      this.cartService.updateQuantity(productId, quantity);\n    }\n  }\n}\n",
+            "styleUrl": "./cart.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "cartService",
+                        "type": "CartService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 17,
+                "jsdoctags": [
+                    {
+                        "name": "cartService",
+                        "type": "CartService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "templateData": "<div class=\"cart-page\">\n  <div class=\"cart-container\">\n    <header class=\"cart-header\">\n      <h1>Carrito de Compras</h1>\n    </header>\n\n    <!-- Usamos el pipe async para obtener los items y los guardamos en la variable 'items' -->\n    @if (cartItems$ | async; as items) {\n\n      <!-- Mostramos el layout principal solo si hay items en el carrito -->\n      @if (items.length > 0) {\n        <!-- Añadimos una clase 'loading' cuando isLoading$ es true para poder aplicar estilos (ej. opacidad) -->\n        <div class=\"cart-layout\" [class.loading]=\"isLoading$ | async\">\n          <!-- Columna de la izquierda: Lista de productos -->\n          <div class=\"cart-items\">\n            <h2>Tus Productos</h2>\n\n            <!-- Iteramos sobre los productos reales del carrito -->\n            @for (item of items; track item.product.id) {\n              <div class=\"cart-item\">\n                <img [src]=\"item.product.imageUrl\" [alt]=\"item.product.name\" class=\"item-img\">\n                <div class=\"item-details\">\n                  <p class=\"item-name\">{{ item.product.name }}</p>\n                  <!-- Usamos el pipe currency para formatear el precio -->\n                  <p class=\"item-price\">{{ item.product.price | currency:'ARS' }}</p>\n                </div>\n                <div class=\"item-quantity\">\n                  <!-- Usamos una variable de referencia #quantityInput para acceder al valor de forma segura -->\n                  <input #quantityInput type=\"number\" [value]=\"item.quantity\" min=\"1\" (change)=\"onQuantityChange(item.product.id, quantityInput.value)\" [disabled]=\"isLoading$ | async\">\n                </div>\n                <button class=\"item-remove-btn\" (click)=\"onRemoveProduct(item.product.id)\" [disabled]=\"isLoading$ | async\">Eliminar</button>\n              </div>\n            }\n          </div>\n\n          <!-- Columna de la derecha: Resumen del pedido -->\n          <div class=\"order-summary\">\n            <h2>Resumen del Pedido</h2>\n            <!-- Mostramos el total dinámico con el pipe currency -->\n            <div class=\"summary-row total\"><p>Total:</p> <p>{{ (totalPrice$ | async) | currency:'ARS' }}</p></div>\n            <button class=\"checkout-btn\" [disabled]=\"isLoading$ | async\">Proceder al Pago</button>\n          </div>\n        </div>\n      } @else {\n        <!-- Mensaje que se muestra si el carrito está vacío -->\n        <div class=\"cart-empty\">\n          <h2>Tu carrito está vacío</h2>\n          <p>¡Añade productos para verlos aquí!</p>\n          <a routerLink=\"/products\" class=\"back-to-shop-btn\">Ver Productos</a>\n        </div>\n      }\n    }\n  </div>\n</div>\n"
+        },
+        {
+            "name": "Checkout",
+            "id": "component-Checkout-1392663003ffd891118bc160a706723017c805573e10a5b127a944ca9cfca48d240159116e995ed96a2e9205bd5787135c17e641323262a56f4ab0256c566cf2",
+            "file": "src/app/pages/checkout/checkout.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-checkout",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./checkout.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-checkout',\r\n  imports: [],\r\n  templateUrl: './checkout.component.html',\r\n  styleUrl: './checkout.scss'\r\n})\r\nexport class Checkout {\r\n\r\n}\r\n",
+            "styleUrl": "./checkout.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<p>checkout works!</p>\r\n"
+        },
+        {
+            "name": "ContactComponent",
+            "id": "component-ContactComponent-93f6dc7dbf15fecae4785eb85d0ac72ebeeb5149ea0de1c00aeb19bf3d0e4b02e3fd97170bc1baa5da87400a6c0c6a45bf4d010fc7755d2e6594760ff9ab30bb",
+            "file": "src/app/pages/contact/contact.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-contact",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./contact.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-contact',\n  standalone: true,\n  imports: [],\n  templateUrl: './contact.component.html',\n  styleUrl: './contact.component.scss'\n})\nexport class ContactComponent {\n\n}\n",
+            "styleUrl": "./contact.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"contact-page\">\r\n  <div class=\"contact-container\">\r\n    <header class=\"contact-header\">\r\n      <h1>Contáctanos</h1>\r\n      <p>¿Tienes alguna pregunta o comentario? Nos encantaría saber de ti.</p>\r\n    </header>\r\n\r\n    <div class=\"contact-content\">\r\n      <div class=\"contact-form-container\">\r\n        <h2>Envíanos un mensaje</h2>\r\n        <form class=\"contact-form\" (submit)=\"$event.preventDefault()\">\r\n          <div class=\"form-group\">\r\n            <label for=\"name\">Nombre</label>\r\n            <input type=\"text\" id=\"name\" name=\"name\" required>\r\n          </div>\r\n          <div class=\"form-group\">\r\n            <label for=\"email\">Correo Electrónico</label>\r\n            <input type=\"email\" id=\"email\" name=\"email\" required>\r\n          </div>\r\n          <div class=\"form-group\">\r\n            <label for=\"message\">Mensaje</label>\r\n            <textarea id=\"message\" name=\"message\" rows=\"6\" required></textarea>\r\n          </div>\r\n          <button type=\"submit\" class=\"submit-btn\">Enviar Mensaje</button>\r\n        </form>\r\n      </div>\r\n\r\n      <div class=\"contact-info\">\r\n        <h2>Información de Contacto</h2>\r\n        <p><strong>Correo Electrónico:</strong><br>soporte@gamerstore.com</p>\r\n        <p><strong>Teléfono:</strong><br>+54 9 11 1234-5678</p>\r\n        <p><strong>Horario de Atención:</strong><br>Lunes a Viernes, 9:00 - 18:00</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+        },
+        {
+            "name": "FooterComponent",
+            "id": "component-FooterComponent-03dc3eb32ff7b29dd94b2a298885b42d650264095bba959e5d725277282a647b374488fe109d7b2affb0dd98188248920eb4df33b62c61b03f4e6c079d08896e",
+            "file": "src/app/layout/footer/footer.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-footer",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./footer.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "RouterModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { RouterModule } from '@angular/router';\n@Component({\n  selector: 'app-footer',\n  standalone: true,\n  imports: [RouterModule],\n  templateUrl: './footer.component.html',\n  styleUrl: './footer.component.scss'\n})\nexport class FooterComponent {\n\n}\n",
+            "styleUrl": "./footer.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<footer class=\"footer\">\r\n  <div class=\"footer-container\">\r\n    <div class=\"footer-copyright\">\r\n      <p>&copy; 2024 GamerStore. Todos los derechos reservados.</p>\r\n    </div>\r\n    <div class=\"footer-links\">\r\n      <a routerLink=\"/privacy-policy\">Política de Privacidad</a>\r\n      <a routerLink=\"/terms-of-service\">Términos de Servicio</a>\r\n    </div>\r\n  </div>\r\n</footer>\r\n"
+        },
+        {
             "name": "HeaderComponent",
             "id": "component-HeaderComponent-48b9abe37706bc42f20cfa97ed9f943678344ea7d254c0c82183c657750c2191b43486fe730c778627b2ea6aa0e2f33a7abcf3ce08b68ad18b062ad99ea97acb",
             "file": "src/stories/header.component.ts",
@@ -385,6 +1477,239 @@
             ],
             "stylesData": "",
             "extends": []
+        },
+        {
+            "name": "HeaderComponent",
+            "id": "component-HeaderComponent-8e0fd4d2d40f8a7c163eeb8f21f3065b5f352e4a6e300b50c2f304f57986ebb88ed11bab0a4d159e01ea8b2f91580290d76719d90208534d0fe4b9280cbe0c10-1",
+            "file": "src/app/layout/header/header.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-header",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./header.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "totalItemsInCart$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<number>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport {RouterLink, RouterModule} from '@angular/router';\nimport { CartService } from '../../core/state/cart.service';\nimport { Observable } from 'rxjs';\nimport { AsyncPipe } from '@angular/common';\n\n@Component({\n  selector: 'app-header',\n  standalone: true,\n  imports: [RouterLink, AsyncPipe],  templateUrl: './header.component.html',\n  styleUrl: './header.component.scss'\n})\nexport class HeaderComponent {\n  totalItemsInCart$: Observable<number>;\n\n  constructor(private cartService: CartService) {\n    this.totalItemsInCart$ = this.cartService.totalItems$;\n  }\n}\n",
+            "styleUrl": "./header.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "cartService",
+                        "type": "CartService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 14,
+                "jsdoctags": [
+                    {
+                        "name": "cartService",
+                        "type": "CartService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "HeaderComponent-1",
+            "templateData": "<header class=\"header\">\n  <div class=\"header-container\">\n    <div class=\"header-logo\">\n      <a routerLink=\"/\">\n        <!-- Un logo simple en SVG para no depender de un archivo de imagen -->\n        <svg width=\"40\" height=\"40\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n          <path d=\"M9 3L4.5 6L9 9M15 3L19.5 6L15 9\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          <path d=\"M4.5 18L9 21L13.5 18\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          <path d=\"M19.5 18L15 21L10.5 18\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          <path d=\"M4.5 6V18\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          <path d=\"M19.5 6V18\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          <path d=\"M9 9L13.5 12L9 15\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n        </svg>\n        <span>GamerStore</span>\n      </a>\n    </div>\n    <nav class=\"header-nav\">\n      <a routerLink=\"/products\" routerLinkActive=\"active\">Productos</a>\n      <a routerLink=\"/about\" routerLinkActive=\"active\">Nosotros</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\">Contacto</a>\n    </nav>\n    <div class=\"header-actions\">\n      <a routerLink=\"/cart\" class=\"cart-button\">\n        <span class=\"cart-icon\">🛒</span>\n        <!-- Usamos el pipe async para obtener el valor del observable -->\n        @if (totalItemsInCart$ | async; as total) {\n          @if (total > 0) { <span class=\"cart-count\">{{ total }}</span> }\n        }\n      </a>\n    </div>\n  </div>\n</header>\n"
+        },
+        {
+            "name": "LoginComponent",
+            "id": "component-LoginComponent-1d7476129dff8cb1552d81771ce9440175e1fabb40d21d0e744ac2cf3a8298610621bfa56d26c5b0baad2ec471a423859b77e77c8bd0003117b6fca9cfae1d63",
+            "file": "src/app/pages/login/login.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-login",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./login.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "errorMessage",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19
+                },
+                {
+                    "name": "isLoading",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20
+                },
+                {
+                    "name": "loginForm",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FormGroup",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onSubmit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 33,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ReactiveFormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { AuthService } from '../../core/auth/auth.service';\r\nimport { CommonModule } from '@angular/common';\r\n\r\n@Component({\r\n  selector: 'app-login',\r\n  standalone: true,\r\n  imports: [\r\n    CommonModule, // Necesario para directivas como ngIf\r\n    ReactiveFormsModule // El módulo para formularios reactivos\r\n  ],\r\n  templateUrl: './login.component.html',\r\n  styleUrl: './login.component.scss'\r\n})\r\nexport class LoginComponent {\r\n  loginForm: FormGroup;\r\n  errorMessage: string | null = null;\r\n  isLoading = false;\r\n\r\n  constructor(\r\n    private fb: FormBuilder,\r\n    private authService: AuthService,\r\n    private router: Router\r\n  ) {\r\n    this.loginForm = this.fb.group({\r\n      email: ['', [Validators.required, Validators.email]],\r\n      password: ['', [Validators.required]]\r\n    });\r\n  }\r\n\r\n  onSubmit(): void {\r\n    if (this.loginForm.invalid) {\r\n      return;\r\n    }\r\n\r\n    this.isLoading = true;\r\n    this.errorMessage = null;\r\n    this.authService.login(this.loginForm.value).subscribe({\r\n      next: () => this.router.navigate(['/products']),\r\n      error: () => this.errorMessage = 'Credenciales inválidas. Por favor, inténtalo de nuevo.',\r\n      complete: () => this.isLoading = false\r\n    });\r\n  }\r\n}\r\n",
+            "styleUrl": "./login.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "fb",
+                        "type": "FormBuilder",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "authService",
+                        "type": "AuthService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 20,
+                "jsdoctags": [
+                    {
+                        "name": "fb",
+                        "type": "FormBuilder",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "authService",
+                        "type": "AuthService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "templateData": "<div class=\"login-container\">\r\n  <form class=\"login-form\" [formGroup]=\"loginForm\" (ngSubmit)=\"onSubmit()\">\r\n    <h2>Iniciar Sesión</h2>\r\n\r\n    <div class=\"form-group\">\r\n      <label for=\"email\">Email</label>\r\n      <input id=\"email\" type=\"email\" formControlName=\"email\" placeholder=\"tu@email.com\">\r\n      <!-- Mensajes de error para el campo email -->\r\n      @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)) {\r\n        <div class=\"error-message\">\r\n          @if (loginForm.get('email')?.hasError) {\r\n            <p>El email es requerido.</p>\r\n          }\r\n          @if (loginForm.get('email')?.hasError) {\r\n            <p>Por favor, introduce un email válido.</p>\r\n          }\r\n        </div>\r\n      }\r\n    </div>\r\n\r\n    <div class=\"form-group\">\r\n      <label for=\"password\">Contraseña</label>\r\n      <input id=\"password\" type=\"password\" formControlName=\"password\" placeholder=\"••••••••\">\r\n    </div>\r\n\r\n    @if (errorMessage) {\r\n      <div class=\"error-message server-error\">{{ errorMessage }}</div>\r\n    }\r\n\r\n    <button type=\"submit\" [disabled]=\"loginForm.invalid || isLoading\">\r\n      {{ isLoading ? 'Cargando...' : 'Iniciar Sesión' }}\r\n    </button>\r\n  </form>\r\n</div>\r\n"
         },
         {
             "name": "PageComponent",
@@ -482,7 +1807,7 @@
         },
         {
             "name": "ProductCardComponent",
-            "id": "component-ProductCardComponent-14cbec90ba2226fefc2aef333ff7048f88eebe24af42e95ebefea40c675dda07d5f8a7c4cd0771ed6e1fc1f30e29fa910c9bcdb1d772e34608582f5f32d0b7e6",
+            "id": "component-ProductCardComponent-55bea9023f38eaf3e008a351802522db61fd0d0ddc65b653abb2d7ccb14abb853070e380cc134bbd2cd1b33439ac50587015c4f5b20139ae6025c62715f13c06",
             "file": "src/app/components/product-card/product-card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -504,24 +1829,40 @@
                     "name": "product",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 12,
+                    "line": 14,
                     "type": "Product",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "onAddToCart",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
-            "imports": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CurrencyPipe",
+                    "type": "pipe"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\nimport { Product } from '../../core/models/product.model';\r\n// Usaremos este tipo temporalmente\r\n\r\n\r\n@Component({\r\n  selector: 'app-product-card',\r\n  templateUrl: './product-card.component.html',\r\n  styleUrls: ['./product-card.component.scss']\r\n})\r\nexport class ProductCardComponent {\r\n  @Input() product!: Product;\r\n}\r\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { Product } from '../../core/models/product.model';\nimport { CurrencyPipe } from '@angular/common';\nimport { CartService } from '../../core/state/cart.service';\n\n@Component({\n  selector: 'app-product-card',\n  standalone: true,\n  imports: [CurrencyPipe],\n  templateUrl: './product-card.component.html',\n  styleUrls: ['./product-card.component.scss']\n})\nexport class ProductCardComponent {\n  @Input() product!: Product;\n  constructor(private cartService: CartService) {}\n\n  onAddToCart(): void {\n    this.cartService.addProduct(this.product);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -530,8 +1871,138 @@
                 }
             ],
             "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "cartService",
+                        "type": "CartService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 14,
+                "jsdoctags": [
+                    {
+                        "name": "cartService",
+                        "type": "CartService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
             "extends": [],
-            "templateData": "<div class=\"card\" [class.out-of-stock]=\"product.stock === 0\">\r\n  <img [src]=\"product.imageUrl\" [alt]=\"product.name\" class=\"card-img\">\r\n  <div class=\"card-body\">\r\n    <h3 class=\"card-title\">{{ product.name }}</h3>\r\n    <p class=\"card-price\">{{ product.price | currency:'ARS' }}</p>\r\n    <button class=\"card-button\" [disabled]=\"product.stock === 0\">\r\n      {{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}\r\n    </button>\r\n  </div>\r\n</div>\r\n"
+            "templateData": "<div class=\"card\" [class.out-of-stock]=\"product.stock === 0\">\n  <img [src]=\"product.imageUrl\" [alt]=\"product.name\" class=\"card-img\">\n  <div class=\"card-body\">\n    <h3 class=\"card-title\">{{ product.name }}</h3>\n    <p class=\"card-price\">{{ product.price | currency:'ARS' }}</p>\n    <button class=\"card-button\" [disabled]=\"product.stock === 0\" (click)=\"onAddToCart()\">\n      {{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}\n    </button>\n  </div>\n</div>\n"
+        },
+        {
+            "name": "ProductListComponent",
+            "id": "component-ProductListComponent-dd1b2dc6f0050efc31951a9e496d674fceabead6a83428124785999de774d20bb45b4c91188e93fa074f63e9ddaf14ac0685e6d28eacca43406fd4c66600a2e4",
+            "file": "src/app/pages/product-list/product-list.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-product-list",
+            "styleUrls": [
+                "./product-list.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./product-list.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "products$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<Product[]>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 21,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ProductCardComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { Observable } from 'rxjs';\nimport { Product } from '../../core/models/product.model';\nimport { ListProductsUseCase } from '../../application/list-products.service';\nimport { ProductCardComponent } from '../../components/product-card/product-card.component';\nimport { CommonModule } from '@angular/common';\n\n@Component({\n  selector: 'app-product-list',\n  standalone: true,\n  imports: [CommonModule, ProductCardComponent],\n  templateUrl: './product-list.component.html',\n  styleUrls: ['./product-list.component.scss'],})\nexport class ProductListComponent implements OnInit {\n  // Guardamos el observable que nos devuelve el caso de uso\n  products$!: Observable<Product[]>;\n\n  // Inyectamos nuestro caso de uso\n  constructor(private listProducts: ListProductsUseCase) {}\n\n  ngOnInit(): void {\n    this.products$ = this.listProducts.execute();\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".product-grid {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));\r\n  gap: 24px;\r\n  padding: 24px;\r\n}\r\n",
+                    "styleUrl": "./product-list.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "listProducts",
+                        "type": "ListProductsUseCase",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 16,
+                "jsdoctags": [
+                    {
+                        "name": "listProducts",
+                        "type": "ListProductsUseCase",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"product-list-container\">\n  <div class=\"product-grid\">\n      @for (product of products$ | async; track product.id) {\n        <app-product-card [product]=\"product\"></app-product-card>\n      }\n      </div>\n</div>\n"
         }
     ],
     "modules": [],
@@ -545,7 +2016,19 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ApplicationConfig",
-                "defaultValue": "{\r\n  providers: [\r\n    provideBrowserGlobalErrorListeners(),\r\n    provideZoneChangeDetection({ eventCoalescing: true }),\r\n    provideRouter(routes)\r\n  ]\r\n}"
+                "defaultValue": "{\n  providers: [\n    provideBrowserGlobalErrorListeners(),\n    // Añadimos el proveedor para que HttpClient esté disponible en toda la app\n    // y le decimos que use nuestro interceptor para todas las peticiones.\n    provideHttpClient(withInterceptors([authInterceptor])),\n    provideZoneChangeDetection({ eventCoalescing: true }),\n    provideRouter(routes)\n  ]\n}"
+            },
+            {
+                "name": "authInterceptor",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/interceptors/auth.interceptor.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "HttpInterceptorFn",
+                "defaultValue": "(req, next) => {\n  // 1. Inyectamos el AuthService para acceder a la lógica del token.\n  const authService = inject(AuthService);\n  const token = authService.getToken();\n\n  // 2. Si no hay token, dejamos pasar la petición original sin modificarla.\n  // Esto es crucial para peticiones públicas como el login o el registro.\n  if (!token) {\n    return next(req);\n  }\n\n  // 3. Si hay un token, clonamos la petición y le añadimos la cabecera de autorización.\n  // Las peticiones en Angular son inmutables, por eso debemos clonarlas.\n  const authReq = req.clone({\n    setHeaders: {\n      Authorization: `Bearer ${token}`\n    }\n  });\n\n  // 4. Dejamos pasar la nueva petición con la cabecera ya incluida.\n  return next(authReq);\n}",
+                "rawdescription": "Interceptor funcional que se encarga de añadir el token de autenticación\na las cabeceras de las peticiones HTTP salientes.",
+                "description": "<p>Interceptor funcional que se encarga de añadir el token de autenticación\na las cabeceras de las peticiones HTTP salientes.</p>\n"
             },
             {
                 "name": "routes",
@@ -555,7 +2038,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Routes",
-                "defaultValue": "[]"
+                "defaultValue": "[\n  { path: 'products', component: ProductListComponent },\n  { path: 'about', component: AboutComponent },\n  { path: 'contact', component: ContactComponent },\n  {\n    path: 'cart',\n    loadComponent: () => \"import('./pages/cart/cart.component').then(m => m.CartComponent)\"\n  },\n  {\n    path: 'login',\n    loadComponent: () => \"import('./pages/login/login.component').then(m => m.LoginComponent)\"\n  },\n  { path: '', redirectTo: '/products', pathMatch: 'full' }\n]"
+            },
+            {
+                "name": "TOKEN_KEY",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/core/auth/auth.service.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "string",
+                "defaultValue": "'auth-token'"
             }
         ],
         "functions": [],
@@ -571,7 +2064,21 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ApplicationConfig",
-                    "defaultValue": "{\r\n  providers: [\r\n    provideBrowserGlobalErrorListeners(),\r\n    provideZoneChangeDetection({ eventCoalescing: true }),\r\n    provideRouter(routes)\r\n  ]\r\n}"
+                    "defaultValue": "{\n  providers: [\n    provideBrowserGlobalErrorListeners(),\n    // Añadimos el proveedor para que HttpClient esté disponible en toda la app\n    // y le decimos que use nuestro interceptor para todas las peticiones.\n    provideHttpClient(withInterceptors([authInterceptor])),\n    provideZoneChangeDetection({ eventCoalescing: true }),\n    provideRouter(routes)\n  ]\n}"
+                }
+            ],
+            "src/app/core/interceptors/auth.interceptor.ts": [
+                {
+                    "name": "authInterceptor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/interceptors/auth.interceptor.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "HttpInterceptorFn",
+                    "defaultValue": "(req, next) => {\n  // 1. Inyectamos el AuthService para acceder a la lógica del token.\n  const authService = inject(AuthService);\n  const token = authService.getToken();\n\n  // 2. Si no hay token, dejamos pasar la petición original sin modificarla.\n  // Esto es crucial para peticiones públicas como el login o el registro.\n  if (!token) {\n    return next(req);\n  }\n\n  // 3. Si hay un token, clonamos la petición y le añadimos la cabecera de autorización.\n  // Las peticiones en Angular son inmutables, por eso debemos clonarlas.\n  const authReq = req.clone({\n    setHeaders: {\n      Authorization: `Bearer ${token}`\n    }\n  });\n\n  // 4. Dejamos pasar la nueva petición con la cabecera ya incluida.\n  return next(authReq);\n}",
+                    "rawdescription": "Interceptor funcional que se encarga de añadir el token de autenticación\na las cabeceras de las peticiones HTTP salientes.",
+                    "description": "<p>Interceptor funcional que se encarga de añadir el token de autenticación\na las cabeceras de las peticiones HTTP salientes.</p>\n"
                 }
             ],
             "src/app/app.routes.ts": [
@@ -583,7 +2090,19 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Routes",
-                    "defaultValue": "[]"
+                    "defaultValue": "[\n  { path: 'products', component: ProductListComponent },\n  { path: 'about', component: AboutComponent },\n  { path: 'contact', component: ContactComponent },\n  {\n    path: 'cart',\n    loadComponent: () => \"import('./pages/cart/cart.component').then(m => m.CartComponent)\"\n  },\n  {\n    path: 'login',\n    loadComponent: () => \"import('./pages/login/login.component').then(m => m.LoginComponent)\"\n  },\n  { path: '', redirectTo: '/products', pathMatch: 'full' }\n]"
+                }
+            ],
+            "src/app/core/auth/auth.service.ts": [
+                {
+                    "name": "TOKEN_KEY",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/core/auth/auth.service.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "defaultValue": "'auth-token'"
                 }
             ]
         },
@@ -594,10 +2113,56 @@
     "routes": {
         "name": "<root>",
         "kind": "module",
-        "children": []
+        "children": [
+            {
+                "name": "ProductListComponent",
+                "kind": "component",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "AboutComponent",
+                "kind": "component",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "ContactComponent",
+                "kind": "component",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "products",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "about",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "contact",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "cart",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "login",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "/products",
+                "kind": "route-redirect",
+                "filename": "src/app/app.routes.ts"
+            }
+        ]
     },
     "coverage": {
-        "count": 9,
+        "count": 10,
         "status": "low",
         "files": [
             {
@@ -630,12 +2195,68 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/application/list-products.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ListProductsUseCase",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/application/list-products.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ListProducts",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/components/product-card/product-card.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ProductCardComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/auth/auth.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "AuthService",
+                "coveragePercent": 50,
+                "coverageCount": "5/10",
+                "status": "medium"
+            },
+            {
+                "filePath": "src/app/core/auth/auth.service.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TOKEN_KEY",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/interceptors/auth.interceptor.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "authInterceptor",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/core/models/cart-item.model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "CartItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -645,6 +2266,105 @@
                 "name": "Product",
                 "coveragePercent": 0,
                 "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/models/user.model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "User",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/core/state/cart.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CartService",
+                "coveragePercent": 30,
+                "coverageCount": "4/13",
+                "status": "medium"
+            },
+            {
+                "filePath": "src/app/infrastructure/product-repository.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ProductRepository",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/footer/footer.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FooterComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/header/header.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "HeaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/about/about.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AboutComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/cart/cart.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CartComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/checkout/checkout.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "Checkout",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/contact/contact.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ContactComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/login/login.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LoginComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/product-list/product-list.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ProductListComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {

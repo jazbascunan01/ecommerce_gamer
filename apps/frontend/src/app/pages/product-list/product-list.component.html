@@ -1,7 +1,7 @@
-<div class="product-grid">
-  <!-- El pipe 'async' se suscribe y desuscribe automáticamente por nosotros -->
-  <app-product-card
-    *ngFor="let product of products$ | async"
-    [product]="product">
-  </app-product-card>
+<div class="product-list-container">
+  <div class="product-grid">
+      @for (product of products$ | async; track product.id) {
+        <app-product-card [product]="product"></app-product-card>
+      }
+      </div>
 </div>

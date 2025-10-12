@@ -12,7 +12,8 @@ export const createAuthMiddleware = (userFinder: IUserFinder) => {
             }
 
             const token = authHeader.split(' ')[1];
-            const secretKey = process.env.JWT_SECRET || 'default_secret';
+            // Usar la misma clave secreta que en el user.controller.ts
+            const secretKey = 'YOUR_SUPER_SECRET_KEY';
 
             const decoded = jwt.verify(token, secretKey) as { id: string };
             const user = await userFinder.findById(decoded.id);
@@ -25,7 +26,6 @@ export const createAuthMiddleware = (userFinder: IUserFinder) => {
             (req as any).userRole = user.role; // Adjuntamos también el rol para usarlo en otros middlewares
             next();
         } catch (error) {
-            next(new AuthenticationError("Unauthorized: Invalid token."));
-        }
+            next(new AuthenticationError("Token inválido o expirado."));        }
     };
 };

@@ -19,10 +19,23 @@
       <a routerLink="/about" routerLinkActive="active">Nosotros</a>
       <a routerLink="/contact" routerLinkActive="active">Contacto</a>
     </nav>
-    <div class="header-actions">
+    <div class="header-actions">      
+      <!-- Usamos el pipe async para suscribirnos automáticamente al observable user$ -->
+      @if (user$ | async; as user) {
+        <!-- Contenido para usuarios logueados -->
+        <span class="user-greeting">Hola, {{ user.name }}</span>
+        <a (click)="logout()" class="nav-link logout-button">Cerrar Sesión</a>
+      } @else {
+        <!-- Contenido para usuarios no logueados -->
+        <a routerLink="/login" class="nav-link">Iniciar Sesión</a>
+      }
+
       <a routerLink="/cart" class="cart-button">
         <span class="cart-icon">🛒</span>
-        <span class="cart-count">0</span>
+        <!-- Usamos el pipe async para obtener el valor del observable -->
+        @if (totalItemsInCart$ | async; as total) {
+          @if (total > 0) { <span class="cart-count">{{ total }}</span> }
+        }
       </a>
     </div>
   </div>

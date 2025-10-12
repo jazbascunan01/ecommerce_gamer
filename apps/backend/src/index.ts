@@ -17,10 +17,11 @@ app.use(bodyParser.json());
 const authService = new AuthService();
 const persistence = new PrismaPersistence();
 // Rutas
-// --- Rutas de Autenticación ---
-app.use("/api/auth", userRoutes(persistence, persistence, authService));
 
-// --- Rutas de Productos y Carrito (Ejemplos) ---
+// --- Rutas ---
+// Las rutas de autenticación no necesitan middleware de autenticación
+app.use("/api/auth", userRoutes(persistence, persistence, authService));
+// Las rutas de productos y carrito sí necesitan el middleware
 app.use("/api/products", productRoutes(persistence, persistence));
 app.use("/api/cart", cartRoutes(persistence, persistence, persistence, persistence));
 

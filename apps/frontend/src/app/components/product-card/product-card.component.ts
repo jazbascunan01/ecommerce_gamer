@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Product } from '../../core/models/product.model';
 import { CurrencyPipe } from '@angular/common';
-
+import { CartService } from '../../core/state/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -12,4 +12,9 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class ProductCardComponent {
   @Input() product!: Product;
+  constructor(private cartService: CartService) {}
+
+  onAddToCart(): void {
+    this.cartService.addProduct(this.product);
+  }
 }

@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { AuthenticationError } from '@domain/errors/DomainError';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 export const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
     try {
