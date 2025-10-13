@@ -1,7 +1,6 @@
 import { User } from "../entities/User";
 import { AuthService } from "../services/AuthService";
 import { IUserFinder, IUnitOfWorkFactory } from "../services/IPersistence";
-import * as crypto from "crypto";
 import { UserAlreadyExistsError } from "../errors/DomainError";
 
 export class RegisterUser {
@@ -18,8 +17,10 @@ export class RegisterUser {
         }
 
         const passwordHash = await this.authService.hashPassword(password);
+        
+        // Creamos la entidad User. Dejamos que la base de datos genere el ID.
         const user = new User(
-            crypto.randomUUID(),
+            undefined, // El ID será generado por Prisma
             name,
             email,
             passwordHash,
@@ -28,9 +29,9 @@ export class RegisterUser {
         );
 
         const uow = this.unitOfWorkFactory.create();
-        uow.users.save(user);
+        const savedUser = await uow.users.save(user);
         await uow.commit();
 
-        return user;
+        return savedUser;
     }
 }

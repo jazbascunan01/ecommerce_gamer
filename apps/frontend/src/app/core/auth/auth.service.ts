@@ -40,6 +40,15 @@ export class AuthService {
   }
 
   /**
+   * Envía los datos de un nuevo usuario al backend para su registro.
+   * @param userData Objeto con name, email y password.
+   * @returns Un observable con la respuesta del backend.
+   */
+  register(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, userData);
+  }
+
+  /**
    * Cierra la sesión del usuario.
    */
   logout(): void {

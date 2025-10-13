@@ -14,7 +14,7 @@ export interface IUserFinder {
 
 export interface IUnitOfWork {
     // Métodos para registrar cambios en las entidades
-    users: { save(user: User): void };
+    users: { save(user: User): Promise<User> };
     products: {
         save: (product: Product) => void;
         update: (product: Product) => void;
