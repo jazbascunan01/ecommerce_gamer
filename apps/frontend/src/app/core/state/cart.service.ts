@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap, finalize } from 'rxjs';
+import { BehaviorSubject, Observable, map, finalize } from 'rxjs';
 import { CartItem } from '../models/cart-item.model';
 import { Product } from '../models/product.model';
 import { AuthService } from '../auth/auth.service';
-import { ListProductsUseCase } from '../../application/list-products.service'; // 1. Importamos el caso de uso
+import { ListProductsUseCase } from '../../application/list-products.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class CartService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private listProductsUseCase: ListProductsUseCase // 2. Inyectamos el caso de uso
+    private listProductsUseCase: ListProductsUseCase
   ) {
     this.authService.user$.subscribe(user => {
       if (user) {
@@ -39,14 +39,17 @@ export class CartService {
     });
   }
 
-  private loadInitialCart(): void {
+  public loadInitialCart(): void {
     this.loadingSubject.next(true);
-    this.http.get<CartItem[]>(`${this.apiUrl}`).pipe(
+    // La respuesta del backend es un objeto {..., _items: [...]}, no un array directamente.
+    // Usamos el operador map de RxJS para transformar la respuesta y extraer el array _items.
+    this.http.get<any>(`${this.apiUrl}`).pipe(
+      map(response => response._items || []), // Extraemos el array, si no existe, devolvemos uno vacío.
       finalize(() => this.loadingSubject.next(false))
     ).subscribe({
-      next: items => this.itemsSubject.next(items),
+      next: items => this.itemsSubject.next(items), // Ahora 'items' es el array correcto.
       error: err => {
-        console.error('Error al cargar el carrito inicial:', err);
+        console.error('Error al cargar el carrito:', err); // Mantenemos el log de error por si acaso.
         this.itemsSubject.next([]);
       }
     });
@@ -59,8 +62,8 @@ export class CartService {
       finalize(() => this.loadingSubject.next(false))
     ).subscribe({
       next: () => {
-        this.loadInitialCart(); // Recargamos el carrito
-        this.listProductsUseCase.refresh(); // 3. ¡Recargamos la lista de productos!
+        this.loadInitialCart();
+        this.listProductsUseCase.refresh();
       },
       error: err => {
         console.error('Error al añadir producto al carrito:', err);
@@ -75,7 +78,7 @@ export class CartService {
     ).subscribe({
       next: () => {
         this.loadInitialCart();
-        this.listProductsUseCase.refresh(); // Hacemos lo mismo al eliminar
+        this.listProductsUseCase.refresh();
       },
       error: err => {
         console.error('Error al eliminar producto del carrito:', err);
@@ -91,7 +94,7 @@ export class CartService {
     ).subscribe({
       next: () => {
         this.loadInitialCart();
-        this.listProductsUseCase.refresh(); // Y también al actualizar
+        this.listProductsUseCase.refresh();
       },
       error: err => {
         console.error('Error al actualizar la cantidad del producto:', err);
