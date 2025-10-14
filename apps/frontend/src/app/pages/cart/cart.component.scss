@@ -1,23 +1,33 @@
+// Usamos las mismas variables para mantener la consistencia
+:host {
+  --page-bg: #0b0c10;
+  --container-bg: #1a1a1d;
+  --input-bg: #252a34;
+  --text-color: #c5c6c7;
+  --accent-color: #66fcf1;
+  --accent-hover-color: #45a29e;
+  --border-color: #4b5d67;
+  --error-color: #ff6b6b;
+  --success-color: #28a745;
+  --success-hover-color: #218838;
+}
+
 .cart-page {
   padding: 40px 20px;
-  font-family: sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  min-height: calc(100vh - 200px); // Ajusta según la altura de tu header/footer
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  min-height: calc(100vh - 70px); // 70px es la altura del header
 }
 
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.cart-header {
-  text-align: center;
-  margin-bottom: 40px;
 
   h1 {
     font-size: 2.5rem;
-    color: #1a1a1a;
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
   }
 }
 
@@ -31,15 +41,17 @@
 .cart-items {
   flex: 3; // Ocupa 3/4 del espacio
   min-width: 300px;
-  background-color: #ffffff;
+  background-color: var(--container-bg);
   padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
 
   h2 {
     margin-top: 0;
     margin-bottom: 25px;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    color: white;
   }
 }
 
@@ -48,7 +60,7 @@
   align-items: center;
   gap: 20px;
   padding: 20px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
 
   &:last-child {
     border-bottom: none;
@@ -68,28 +80,41 @@
 
 .item-name {
   font-weight: 600;
+  font-size: 1.1rem;
   margin: 0 0 5px;
+  color: white;
 }
 
 .item-price {
   margin: 0;
-  color: #555;
+  color: var(--text-color);
 }
 
 .item-quantity input {
   width: 60px;
   padding: 8px;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
+  background-color: var(--input-bg);
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.2);
+  }
 }
 
 .item-remove-btn {
   background: none;
   border: none;
-  color: #dc3545;
+  color: var(--error-color);
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: bold;
   padding: 5px;
 
   &:hover {
@@ -100,23 +125,25 @@
 .order-summary {
   flex: 1; // Ocupa 1/4 del espacio
   min-width: 280px;
-  background-color: #ffffff;
+  background-color: var(--container-bg);
   padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
   position: sticky; // Para que se quede fijo al hacer scroll
-  top: 20px;
+  top: 90px; // 70px del header + 20px de margen
 
   h2 {
     margin-top: 0;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    color: white;
   }
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  padding: 15px 0;
   font-size: 1rem;
 
   &.total {
@@ -124,24 +151,63 @@
     font-size: 1.2rem;
     margin-top: 20px;
     padding-top: 15px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--border-color);
+    color: white;
   }
 }
 
 .checkout-btn {
   width: 100%;
   padding: 15px;
-  background-color: #28a745;
+  background-color: var(--success-color);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
   transition: background-color 0.2s;
 
-  &:hover {
-    background-color: #218838;
+  &:hover:not(:disabled) {
+    background-color: var(--success-hover-color);
   }
+
+  &:disabled {
+    background-color: #4b5d67;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-color);
+
+  h2 {
+    font-size: 2rem;
+    color: white;
+  }
+
+  .back-to-shop-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: var(--accent-color);
+    color: var(--container-bg);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--accent-hover-color);
+    }
+  }
+}
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
 }

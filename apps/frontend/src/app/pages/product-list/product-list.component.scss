@@ -1,6 +1,13 @@
+.product-list-container {
+  background-color: #0b0c10; // Mismo fondo ultra oscuro que en login/register
+  min-height: calc(100vh - 70px); // 70px es la altura del header
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
   padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
