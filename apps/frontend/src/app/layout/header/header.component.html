@@ -23,18 +23,17 @@
         <!-- Contenido para usuarios logueados -->
         <span class="user-greeting">Hola, {{ user.name }}</span>
         <a (click)="logout()" class="nav-link logout-button">Cerrar Sesión</a>
+        <a routerLink="/cart" class="cart-button">
+          <span class="cart-icon">🛒</span>
+          @if (totalItemsInCart$ | async; as total) {
+            @if (total > 0) { <span class="cart-count">{{ total }}</span> }
+          }
+        </a>
       } @else {
         <!-- Contenido para usuarios no logueados -->
         <a routerLink="/login" class="auth-link login">Iniciar Sesión</a>
         <a routerLink="/register" class="auth-link register">Registrarse</a>
       }
-
-      <a routerLink="/cart" class="cart-button">
-        <span class="cart-icon">🛒</span>
-        @if (totalItemsInCart$ | async; as total) {
-          @if (total > 0) { <span class="cart-count">{{ total }}</span> }
-        }
-      </a>
     </div>
   </div>
 </header>
