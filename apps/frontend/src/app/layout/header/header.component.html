@@ -2,7 +2,6 @@
   <div class="header-container">
     <div class="header-logo">
       <a routerLink="/">
-        <!-- Un logo simple en SVG para no depender de un archivo de imagen -->
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 3L4.5 6L9 9M15 3L19.5 6L15 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M4.5 18L9 21L13.5 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -19,20 +18,19 @@
       <a routerLink="/about" routerLinkActive="active">Nosotros</a>
       <a routerLink="/contact" routerLinkActive="active">Contacto</a>
     </nav>
-    <div class="header-actions">      
-      <!-- Usamos el pipe async para suscribirnos automáticamente al observable user$ -->
+    <div class="header-actions">
       @if (user$ | async; as user) {
         <!-- Contenido para usuarios logueados -->
         <span class="user-greeting">Hola, {{ user.name }}</span>
         <a (click)="logout()" class="nav-link logout-button">Cerrar Sesión</a>
       } @else {
         <!-- Contenido para usuarios no logueados -->
-        <a routerLink="/login" class="nav-link">Iniciar Sesión</a>
+        <a routerLink="/login" class="auth-link login">Iniciar Sesión</a>
+        <a routerLink="/register" class="auth-link register">Registrarse</a>
       }
 
       <a routerLink="/cart" class="cart-button">
         <span class="cart-icon">🛒</span>
-        <!-- Usamos el pipe async para obtener el valor del observable -->
         @if (totalItemsInCart$ | async; as total) {
           @if (total > 0) { <span class="cart-count">{{ total }}</span> }
         }
