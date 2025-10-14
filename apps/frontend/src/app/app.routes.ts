@@ -19,5 +19,9 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent)
   },
+  {
+    path: 'products/:id',
+    loadComponent: () => import('./pages/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
+  },
   { path: '', redirectTo: '/products', pathMatch: 'full' }
 ];

@@ -1,0 +1,28 @@
+<!-- Usamos el pipe async para suscribirnos al observable product$ y manejar los estados de carga, error y éxito -->
+<div class="product-detail-container">
+  <ng-container *ngIf="product$ | async as product; else loadingOrError">
+    <div class="product-card">
+      <div class="product-image">
+        <img [src]="product.imageUrl" [alt]="product.name">
+      </div>
+      <div class="product-info">
+        <h1 class="product-name">{{ product.name }}</h1>
+        <p class="product-price">{{ product.price | currency:'ARS' }}</p>
+        <p class="product-description">{{ product.description }}</p>
+        <p class="product-stock" [class.out-of-stock]="product.stock === 0">
+          Stock: {{ product.stock > 0 ? product.stock + ' unidades' : 'Agotado' }}
+        </p>
+        <button class="add-to-cart-btn" (click)="onAddToCart(product)" [disabled]="product.stock === 0">
+          {{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}
+        </button>
+        <a routerLink="/products" class="back-link">‹ Volver a la lista</a>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Template para mostrar mientras se carga o si hay un error -->
+<ng-template #loadingOrError>
+  <p class="loading-message">Cargando detalles del producto...</p>
+  <!-- Podríamos tener una lógica más compleja aquí para diferenciar entre carga y error -->
+</ng-template>
