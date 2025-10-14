@@ -41,34 +41,43 @@ export class CartService {
 
   public loadInitialCart(): void {
     this.loadingSubject.next(true);
-    // La respuesta del backend es un objeto {..., _items: [...]}, no un array directamente.
-    // Usamos el operador map de RxJS para transformar la respuesta y extraer el array _items.
     this.http.get<any>(`${this.apiUrl}`).pipe(
-      map(response => response._items || []), // Extraemos el array, si no existe, devolvemos uno vacío.
+      map(response => response._items || []),
       finalize(() => this.loadingSubject.next(false))
     ).subscribe({
-      next: items => this.itemsSubject.next(items), // Ahora 'items' es el array correcto.
+      next: items => this.itemsSubject.next(items),
       error: err => {
-        console.error('Error al cargar el carrito:', err); // Mantenemos el log de error por si acaso.
+        console.error('Error al cargar el carrito:', err);
         this.itemsSubject.next([]);
       }
     });
   }
 
   addProduct(product: Product): void {
-    const payload = { productId: product.id, quantity: 1 };
-    this.loadingSubject.next(true);
-    this.http.post<any>(`${this.apiUrl}/items`, payload).pipe(
-      finalize(() => this.loadingSubject.next(false))
-    ).subscribe({
-      next: () => {
-        this.loadInitialCart();
-        this.listProductsUseCase.refresh();
-      },
-      error: err => {
-        console.error('Error al añadir producto al carrito:', err);
+    const currentItems = this.itemsSubject.getValue();
+    const itemInCart = currentItems.find(item => item.product.id === product.id);
+    if (itemInCart) {
+      // --- SI EL PRODUCTO YA EXISTE ---
+      const newQuantity = itemInCart.quantity + 1;
+
+      if (product.stock<0) {
+        console.warn(`No se puede agregar más. Stock máximo (${product.stock}) alcanzado para ${product.name}.`);
+        return;
       }
-    });
+
+      this.updateQuantity(product.id, newQuantity);
+    } else {
+      // --- SI EL PRODUCTO ES NUEVO ---
+      const payload = { productId: product.id, quantity: 1 };
+      this.loadingSubject.next(true);
+      this.http.post<any>(`${this.apiUrl}/items`, payload).pipe(
+        finalize(() => this.loadingSubject.next(false))
+      ).subscribe({
+        next: () => this.loadInitialCart(),
+        error: err => console.error('Error al añadir producto al carrito:', err)
+      });
+    }
+
   }
 
   removeProduct(productId: string): void {

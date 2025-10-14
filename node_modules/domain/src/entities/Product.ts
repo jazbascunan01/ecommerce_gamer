@@ -28,4 +28,12 @@ export class Product {
         }
         this.stock += amount;
     }
+
+    /**
+     * Decreases the stock of the product by a given amount.
+     * @param amount The amount to decrease the stock by.
+     */
+    decreaseStock(amount: number): void {
+        this.adjustStock(-amount);
+    }
 }
