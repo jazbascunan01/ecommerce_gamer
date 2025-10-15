@@ -11,7 +11,7 @@ export const productRoutes = (
     const productController = createProductController(productFinder, unitOfWorkFactory);
 
     router.get("/", productController.listProducts);
-    router.post("/", adminAuth, productController.createProduct); // Ruta protegida
-
+    router.post("/", adminAuth, productController.createProduct);
+    router.get("/:id", productController.findProductById);
     return router;
 };

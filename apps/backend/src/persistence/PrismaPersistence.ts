@@ -7,15 +7,17 @@ import { PrismaPromise } from "@prisma/client";
 import prisma from "../prisma-client";
 
 class PrismaUnitOfWork implements IUnitOfWork {
-    public users: { save: (user: User) => void; };
+    public users: { save: (user: User) => Promise<User>; };
     public products: { save: (product: Product) => void; update: (product: Product) => void; };    public carts: { save: (cart: Cart) => void; };
 
     private operations: PrismaPromise<any>[] = [];
 
     constructor() {
         this.users = {
-            save: (user) => {
-                this.operations.push(prisma.user.create({ data: { ...user } }));
+            save: (user: User) => {
+                const op = prisma.user.create({ data: { ...user, id: undefined } });
+                this.operations.push(op);
+                return op as unknown as Promise<User>;
             }
         };
         this.products = {

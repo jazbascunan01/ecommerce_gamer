@@ -1,30 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "@domain/services/AuthService";
 import { IUserFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
-import { User } from "@domain/entities/User";
-import { InvalidCredentialsError, UserAlreadyExistsError } from "@domain/errors/DomainError";
+import { InvalidCredentialsError } from "@domain/errors/DomainError";
 import jwt from 'jsonwebtoken';
+import { RegisterUser } from "@domain/use-cases/RegisterUser";
+
 export const createUserController = (
     userFinder: IUserFinder,
     uowFactory: IUnitOfWorkFactory,
     authService: AuthService
 ) => {
+    // Instanciamos el caso de uso aquí, inyectando sus dependencias.
+    const registerUserCase = new RegisterUser(userFinder, uowFactory, authService);
+
     const register = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name, email, password } = req.body;
 
-            const existingUser = await userFinder.findByEmail(email);
-            if (existingUser) {
-                throw new UserAlreadyExistsError(email);
-            }
-
-            const passwordHash = await authService.hashPassword(password);
-            const user = new User(undefined, name, email, passwordHash, 'CUSTOMER', new Date());
-            const uow = uowFactory.create();
-            uow.users.save(user);
-            await uow.commit();
+            // Delegamos toda la lógica de registro al caso de uso.
+            const user = await registerUserCase.execute(name, email, password);
 
             // No devolvemos el hash de la contraseña
+            // El objeto 'user' que recibimos ya tiene el ID asignado por la base de datos.
             res.status(201).json({ id: user.id, name: user.name, email: user.email, role: user.role });
         } catch (err: any) {
             next(err);
@@ -51,14 +48,7 @@ export const createUserController = (
             const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, secretKey, { expiresIn: '1h' });
 
             // Devolvemos el token y también los datos del usuario (sin el password hash)
-            res.status(200).json({
-                token,
-                user: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email
-                }
-            });
+            res.status(200).json({ token });
 
         } catch (err: any) {
             next(err);

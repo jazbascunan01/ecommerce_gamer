@@ -9,7 +9,7 @@
   --error-color: #ff6b6b;
 }
 
-.login-container {
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +18,7 @@
   background-color: #0b0c10; // Un fondo aún más oscuro para la página
 }
 
-.login-form {
+.register-form {
   background-color: var(--form-bg);
   padding: 2.5rem;
   border-radius: 10px;
@@ -99,20 +99,12 @@ button[type="submit"] {
   font-size: 0.85rem;
   margin-top: 0.5rem;
 
-  &.server-error {
-    background-color: rgba(255, 107, 107, 0.1);
-    border: 1px solid var(--error-color);
-    padding: 0.8rem;
-    border-radius: 5px;
-    text-align: center;
-  }
-
   p {
     margin: 0;
   }
 }
 
-.register-link {
+.login-link {
   text-align: center;
   font-size: 0.9rem;
   color: var(--text-color);
