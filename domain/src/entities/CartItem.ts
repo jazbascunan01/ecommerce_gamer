@@ -35,6 +35,10 @@ export class CartItem extends Entity<CartItemProps> {
         this.props.quantity = quantity;
     }
 
+    get id(): UniqueEntityID {
+        return this._id;
+    }
+
     toJSON() {
         return {
             id: this.id.toString(),
