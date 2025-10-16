@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  background-color: var(--background-dark);
+  color: var(--text-color);
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
