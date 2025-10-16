@@ -4,7 +4,9 @@
       <p class="card-price">{{ product.price | currency:'ARS' }}</p>
     </div>
   </a>
-  <div class="card-footer">
-    <button class="card-button" [disabled]="product.stock === 0" (click)="onAddToCart()">{{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}</button>
-  </div>
+  @if (user$ | async) {
+    <div class="card-footer">
+      <button class="card-button" [disabled]="product.stock === 0" (click)="onAddToCart()">{{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}</button>
+    </div>
+  }
 </div>
