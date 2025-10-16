@@ -13,8 +13,8 @@ export const createProductController = (
 
     const createProduct = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { name, description, price, stock } = req.body;
-            const product = await createProductCase.execute(name, description, price, stock);
+            const { name, description, price, stock, imageUrl } = req.body;
+            const product = await createProductCase.execute(name, description, price, stock, imageUrl);
             res.status(201).json(product);
         } catch (err: any) {
             next(err);

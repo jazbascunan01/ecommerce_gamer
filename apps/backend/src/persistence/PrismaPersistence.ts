@@ -3,40 +3,93 @@ import { CartItem } from "@domain/entities/CartItem";
 import { Product } from "@domain/entities/Product";
 import { User } from "@domain/entities/User";
 import { ICartFinder, IProductFinder, IUnitOfWork, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
-import { PrismaPromise } from "@prisma/client";
-import prisma from "../prisma-client";
+import { Prisma, PrismaPromise } from "@prisma/client";import prisma from "../prisma-client";
+import { UniqueEntityID } from "@domain/core/UniqueEntityID";
+
+// Definimos un tipo que representa la estructura del carrito que obtenemos de Prisma,
+// incluyendo los items y los productos dentro de cada item.
+const cartWithItemsAndProduct = Prisma.validator<Prisma.CartDefaultArgs>()({
+    include: { items: { include: { product: true } } },
+});
+
+// Creamos un tipo a partir del validador anterior.
+type PrismaCartWithItems = Prisma.CartGetPayload<typeof cartWithItemsAndProduct>;
+
+const cartFromPersistence = (cart: PrismaCartWithItems): Cart => {
+    const cartItems = cart.items.map((item) => {
+        try {
+            const product = Product.create({
+                name: item.product.name,
+                description: item.product.description,
+                price: item.product.price,
+                stock: item.product.stock,
+                imageUrl: item.product.imageUrl,
+                createdAt: item.product.createdAt,
+            }, new UniqueEntityID(item.product.id));
+
+            return CartItem.create({
+                product: product,
+                quantity: item.quantity,
+            }, new UniqueEntityID(item.id));
+        } catch (error: any) {
+            console.error(`Skipping item with product ID ${item.productId} in cart ${cart.id} due to data integrity issue: ${error.message}`);
+            return null;
+        }
+    }).filter((item): item is CartItem => item !== null);
+
+    return Cart.create({
+        userId: new UniqueEntityID(cart.userId),        items: cartItems,
+    }, new UniqueEntityID(cart.id));
+};
 
 class PrismaUnitOfWork implements IUnitOfWork {
     public users: { save: (user: User) => Promise<User>; };
-    public products: { save: (product: Product) => void; update: (product: Product) => void; };    public carts: { save: (cart: Cart) => void; };
+    public products: { save: (product: Product) => void; update: (product: Product) => void; };
+    public carts: { save: (cart: Cart) => void; };
 
     private operations: PrismaPromise<any>[] = [];
 
     constructor() {
         this.users = {
             save: (user: User) => {
-                const op = prisma.user.create({ data: { ...user, id: undefined } });
+                const op = prisma.user.create({ data: {
+                        name: user.name,
+                        email: user.email,
+                        passwordHash: user.passwordHash,
+                        role: user.role,
+                        createdAt: user.createdAt
+                    } });
                 this.operations.push(op);
                 return op as unknown as Promise<User>;
             }
         };
         this.products = {
             save: (product) => {
-                this.operations.push(prisma.product.create({ data: { ...product } }));
+                this.operations.push(prisma.product.create({
+                    data: {
+                        id: product.id.toString(),
+                        name: product.name,
+                        description: product.description,
+                        price: product.price,
+                        stock: product.stock,
+                        imageUrl: product.imageUrl,
+                        createdAt: product.createdAt
+                    }
+                }));
             },
             update: (product) => {
-                this.operations.push(prisma.product.update({ where: { id: product.id }, data: { stock: product.stock } }));
+                this.operations.push(prisma.product.update({ where: { id: product.id.toString() }, data: { stock: product.stock } }));
             }
         };
         this.carts = {
             save: (cart) => {
                 const cartItemsData = cart.items.map(item => ({
-                    productId: item.product.id,
+                    productId: item.product.id.toString(),
                     quantity: item.quantity,
                 }));
                 this.operations.push(
                     prisma.cart.update({
-                        where: { id: cart.id },
+                        where: { id: cart.id.toString() },
                         data: {
                             items: {
                                 deleteMany: {},
@@ -65,11 +118,14 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) return null;
         try {
-            // Mapeamos el DTO de la base de datos a la entidad de dominio.
-            // El constructor de la entidad validará las invariantes (ej. rol válido).
-            return new User(user.id, user.name, user.email, user.passwordHash, user.role as any, user.createdAt);
+            return User.create({
+                name: user.name,
+                email: user.email,
+                passwordHash: user.passwordHash,
+                role: user.role as any,
+                createdAt: user.createdAt
+            }, new UniqueEntityID(user.id));
         } catch (error: any) {
-            // Si la entidad no se puede construir, los datos de la BD son inconsistentes.
             console.error(`Data integrity issue for user ${user.id}: ${error.message}`);
             throw new Error(`Failed to map database data to User entity for user ID ${user.id}.`);
         }
@@ -79,7 +135,13 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         const user = await prisma.user.findUnique({ where: { id } });
         if (!user) return null;
         try {
-            return new User(user.id, user.name, user.email, user.passwordHash, user.role as any, user.createdAt);
+            return User.create({
+                name: user.name,
+                email: user.email,
+                passwordHash: user.passwordHash,
+                role: user.role as any,
+                createdAt: user.createdAt
+            }, new UniqueEntityID(user.id));
         } catch (error: any) {
             console.error(`Data integrity issue for user ${user.id}: ${error.message}`);
             throw new Error(`Failed to map database data to User entity for user ID ${user.id}.`);
@@ -91,8 +153,14 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         const product = await prisma.product.findUnique({ where: { id } });
         if (!product) return null;
         try {
-            // El constructor de Product valida que el precio y el stock no sean negativos.
-            return new Product(product.id, product.name, product.description, product.price, product.stock, product.createdAt);
+            return Product.create({
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                stock: product.stock,
+                imageUrl: product.imageUrl,
+                createdAt: product.createdAt
+            }, new UniqueEntityID(product.id));
         } catch (error: any) {
             console.error(`Data integrity issue for product ${product.id}: ${error.message}`);
             throw new Error(`Failed to map database data to Product entity for product ID ${product.id}.`);
@@ -103,13 +171,19 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         const productsData = await prisma.product.findMany();
         return productsData.map(p => {
             try {
-                return new Product(p.id, p.name, p.description, p.price, p.stock, p.createdAt);
+                return Product.create({
+                    name: p.name,
+                    description: p.description,
+                    price: p.price,
+                    stock: p.stock,
+                    imageUrl: p.imageUrl,
+                    createdAt: p.createdAt
+                }, new UniqueEntityID(p.id));
             } catch (error: any) {
-                // En una lista, podríamos optar por omitir el producto inválido y loggear el error.
                 console.error(`Skipping product with ID ${p.id} due to data integrity issue: ${error.message}`);
                 return null;
             }
-        }).filter((p): p is Product => p !== null); // Filtramos los nulos
+        }).filter((p): p is Product => p !== null);
     }
 
     // ICartFinder
@@ -126,19 +200,7 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
             });
         }
 
-        const cartItems = cart.items.map(item => {
-            try {
-                // Reconstituimos la entidad Product, que validará sus propias invariantes.
-                const product = new Product(item.product.id, item.product.name, item.product.description, item.product.price, item.product.stock, item.product.createdAt);
-                return new CartItem(product, item.quantity);
-            } catch (error: any) {
-                // Si un producto en el carrito tiene datos corruptos, lo omitimos y loggeamos el error.
-                console.error(`Skipping item with product ID ${item.productId} in cart ${cart.id} due to data integrity issue: ${error.message}`);
-                return null;
-            }
-        }).filter((item): item is CartItem => item !== null);
-
-        return new Cart(cart.id, cart.userId, cartItems);
+        return cartFromPersistence(cart);
     }
 
     async findByUserId(userId: string): Promise<Cart | null> {
@@ -149,16 +211,6 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
 
         if (!cart) return null;
 
-        const cartItems = cart.items.map(item => {
-            try {
-                const product = new Product(item.product.id, item.product.name, item.product.description, item.product.price, item.product.stock, item.product.createdAt);
-                return new CartItem(product, item.quantity);
-            } catch (error: any) {
-                console.error(`Skipping item with product ID ${item.productId} in cart ${cart.id} due to data integrity issue: ${error.message}`);
-                return null;
-            }
-        }).filter((item): item is CartItem => item !== null);
-
-        return new Cart(cart.id, cart.userId, cartItems);
+        return cartFromPersistence(cart);
     }
 }

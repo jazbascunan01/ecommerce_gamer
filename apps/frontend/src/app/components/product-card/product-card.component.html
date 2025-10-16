@@ -1,8 +1,6 @@
 <div class="card" [class.out-of-stock]="product.stock === 0">
   <a [routerLink]="['/products', product.id]" class="card-link">
-    <img [src]="product.imageUrl" [alt]="product.name" class="card-img">
-    <div class="card-body">
-      <h3 class="card-title">{{ product.name }}</h3>
+    <img [src]="product.imageUrl" alt="{{ product.name }}" class="card-img" />    <div class="card-body">      <h3 class="card-title">{{ product.name }}</h3>
       <p class="card-price">{{ product.price | currency:'ARS' }}</p>
     </div>
   </a>

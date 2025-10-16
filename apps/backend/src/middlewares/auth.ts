@@ -22,7 +22,7 @@ export const createAuthMiddleware = (userFinder: IUserFinder) => {
                 throw new UserNotFoundError(decoded.id);
             }
 
-            (req as any).userId = user.id; // Adjuntamos el userId a la request
+            (req as any).userId = user.id.toString(); // Adjuntamos el userId como string
             (req as any).userRole = user.role; // Adjuntamos también el rol para usarlo en otros middlewares
             next();
         } catch (error) {

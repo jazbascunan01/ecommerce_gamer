@@ -1,19 +1,21 @@
 import { Product } from "../entities/Product";
 import { IUnitOfWorkFactory } from "../services/IPersistence";
-import * as crypto from "crypto";
 
 export class CreateProduct {
     constructor(private unitOfWorkFactory: IUnitOfWorkFactory) {}
 
-    async execute(name: string, description: string, price: number, stock: number): Promise<Product> {
-        const product = new Product(
-            crypto.randomUUID(),
+    async execute(name: string, description: string, price: number, stock: number, imageUrl: string): Promise<Product> {
+        // Usamos el método estático 'create' para instanciar la entidad,
+        // pasándole las propiedades en un objeto.
+        // El ID se genera automáticamente dentro de la entidad si no se proporciona.
+        const product = Product.create({
             name,
             description,
             price,
             stock,
-            new Date()
-        );
+            imageUrl,
+            createdAt: new Date()
+        });
 
         const uow = this.unitOfWorkFactory.create();
         uow.products.save(product);

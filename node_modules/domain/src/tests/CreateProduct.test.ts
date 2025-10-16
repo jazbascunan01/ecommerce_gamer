@@ -25,7 +25,7 @@ describe("CreateProduct", () => {
         const createProduct = new CreateProduct(mockUowFactory);
         
         // Act
-        const product = await createProduct.execute("Mouse Gamer", "Mouse RGB 16000 DPI", 5999, 10);
+        const product = await createProduct.execute("Mouse Gamer", "Mouse RGB 16000 DPI", 5999, 10, "url-de-imagen.jpg");
         
         // Assert
         expect(product.id).toBeDefined();
