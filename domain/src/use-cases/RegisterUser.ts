@@ -18,15 +18,13 @@ export class RegisterUser {
 
         const passwordHash = await this.authService.hashPassword(password);
         
-        // Creamos la entidad User. Dejamos que la base de datos genere el ID.
-        const user = new User(
-            undefined, // El ID será generado por Prisma
+        const user = User.create({
             name,
             email,
             passwordHash,
-            'CUSTOMER',
-            new Date()
-        );
+            role: 'CUSTOMER',
+            createdAt: new Date()
+        });
 
         const uow = this.unitOfWorkFactory.create();
         const savedUser = await uow.users.save(user);

@@ -1,33 +1,41 @@
-import { CartFinder } from "../services/CartFinder";
-import { ProductFinder } from "../services/ProductFinder";
-import { UnitOfWork, UnitOfWorkFactory } from "../services/UnitOfWork";
+import { Cart } from "../entities/Cart";
+import { Product } from "../entities/Product";
+import { CartNotFoundError, ProductNotFoundError } from "../errors/DomainError";
+import { ICartFinder, IProductFinder, IUnitOfWork, IUnitOfWorkFactory } from "../services/IPersistence";
 
 export class AddToCart {
-    private readonly unitOfWork: UnitOfWork;
-    private readonly cartFinder: CartFinder;
-    private readonly productFinder: ProductFinder;
+    private readonly cartFinder: ICartFinder;
+    private readonly productFinder: IProductFinder;
+    private readonly unitOfWorkFactory: IUnitOfWorkFactory;
 
     constructor(
-        cartFinder: CartFinder,
-        productFinder: ProductFinder,
-        unitOfWorkFactory: UnitOfWorkFactory,
+        cartFinder: ICartFinder,
+        productFinder: IProductFinder,
+        unitOfWorkFactory: IUnitOfWorkFactory,
     ) {
-        this.unitOfWork = unitOfWorkFactory.create();
         this.cartFinder = cartFinder;
         this.productFinder = productFinder;
+        this.unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    async execute(userId: string, productId: string): Promise<void> {
-        const cart = await this.cartFinder.find(userId);
-        const product = await this.productFinder.find(productId);
+    async execute(userId: string, productId: string, quantity: number): Promise<void> {
+        const uow = this.unitOfWorkFactory.create();
 
-        // The business logic is now fully encapsulated in the Cart entity.
-        // The use case just orchestrates the operation.
-        cart.addItem(product);
+        const cart = await this.cartFinder.findOrCreateByUserId(userId);
+        if (!cart) {
+            throw new CartNotFoundError(userId);
+        }
 
-        await this.unitOfWork.cartRepository.save(cart);
-        await this.unitOfWork.productRepository.save(product);
+        const product = await this.productFinder.findProductById(productId);
+        if (!product) {
+            throw new ProductNotFoundError(productId);
+        }
 
-        return this.unitOfWork.commit();
+        cart.addItem(product, quantity);
+
+        uow.carts.save(cart);
+        uow.products.update(product);
+
+        await uow.commit();
     }
 }

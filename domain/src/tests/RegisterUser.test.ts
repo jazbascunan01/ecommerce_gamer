@@ -2,6 +2,7 @@ import { RegisterUser } from "../use-cases/RegisterUser";
 import { AuthService } from "../services/AuthService";
 import { UserAlreadyExistsError } from "../errors/DomainError";
 import { User } from "../entities/User";
+import { UniqueEntityID } from "../core/UniqueEntityID";
 
 // --- Mocking Dependencies ---
 // Creamos objetos falsos que simulan nuestras dependencias de persistencia.
@@ -59,14 +60,24 @@ describe("RegisterUser Use Case", () => {
 
     it("should throw UserAlreadyExistsError if email is already in use", async () => {
         // Arrange: Simulamos que el buscador SÍ encuentra un usuario.
-        mockUserFinder.findByEmail.mockResolvedValue(new User("id-existente", "Otro Nombre", "karen@example.com", "hash", "CUSTOMER"));
+        const existingUser = User.create({
+            name: "Otro Nombre",
+            email: "karen@example.com",
+            passwordHash: "hash",
+            role: "CUSTOMER",
+            createdAt: new Date()
+        }, new UniqueEntityID("id-existente"));
+        mockUserFinder.findByEmail.mockResolvedValue(existingUser);
 
         const registerUser = new RegisterUser(mockUserFinder, mockUowFactory, authService);
 
         // Act & Assert: Esperamos que la ejecución lance el error específico.
-        await expect(
-            registerUser.execute("Karen", "karen@example.com", "password123")
-        ).rejects.toThrow(UserAlreadyExistsError);
+        try {
+            await registerUser.execute("Karen", "karen@example.com", "password123");
+            fail("Expected RegisterUser.execute to throw an error, but it did not.");
+        } catch (error) {
+            expect(error).toBeInstanceOf(UserAlreadyExistsError);
+        }
 
         // Verificamos que, al haber un error, no se intentó guardar nada.
         expect(mockUnitOfWork.commit).not.toHaveBeenCalled();

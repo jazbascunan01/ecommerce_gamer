@@ -1,5 +1,6 @@
 import { Product } from "../entities/Product";
 import { ListProducts } from "../use-cases/ListProducts";
+import { UniqueEntityID } from "../core/UniqueEntityID";
 
 // --- Mocking Dependencies ---
 const mockProductFinder = {
@@ -26,7 +27,14 @@ describe("ListProducts", () => {
 
     it("should return all products found by the finder", async () => {
         // Arrange
-        const productsInDb = [new Product("p1", "Mouse Gamer", "desc", 100, 10, new Date()), new Product("p2", "Teclado", "desc", 200, 5, new Date())];
+        const productsInDb = [
+            Product.create({
+                name: "Mouse Gamer", description: "desc", price: 100, stock: 10, imageUrl: 'url1', createdAt: new Date()
+            }, new UniqueEntityID("p1")),
+            Product.create({
+                name: "Teclado", description: "desc", price: 200, stock: 5, imageUrl: 'url2', createdAt: new Date()
+            }, new UniqueEntityID("p2"))
+        ];
         mockProductFinder.findAllProducts.mockResolvedValue(productsInDb);
         const listProducts = new ListProducts(mockProductFinder);
         

@@ -2,6 +2,7 @@ import { AuthService } from "../services/AuthService";
 import { LoginUser } from "../use-cases/LoginUser";
 import { User } from "../entities/User";
 import { InvalidCredentialsError, UserNotFoundError } from "../errors/DomainError";
+import { UniqueEntityID } from "../core/UniqueEntityID";
 
 // --- Mocking Dependencies ---
 const mockUserFinder = {
@@ -18,9 +19,14 @@ beforeEach(() => {
 describe("LoginUser", () => {
     it("should login with correct credentials", async () => {
         // Arrange
-        const userInDb = new User(
-            "user-1", "Karen", "karen@example.com",
-            await authService.hashPassword("password123"), "CUSTOMER"
+        const userInDb = User.create(
+            {
+                name: "Karen",
+                email: "karen@example.com",
+                passwordHash: await authService.hashPassword("password123"),
+                role: "CUSTOMER",
+                createdAt: new Date(),
+            }, new UniqueEntityID("user-1")
         );
         mockUserFinder.findByEmail.mockResolvedValue(userInDb);
         const loginUser = new LoginUser(mockUserFinder, authService);
@@ -37,24 +43,35 @@ describe("LoginUser", () => {
         mockUserFinder.findByEmail.mockResolvedValue(null);
         const loginUser = new LoginUser(mockUserFinder, authService);
 
-        // Act & Assert
-        await expect(
-            loginUser.execute("noone@example.com", "password123")
-        ).rejects.toThrow(UserNotFoundError);
+        // Act & Assert - Usamos un bloque try/catch para una aserción más robusta
+        try {
+            await loginUser.execute("noone@example.com", "password123");
+            fail("Expected LoginUser.execute to throw an error, but it did not.");
+        } catch (error) {
+            expect(error).toBeInstanceOf(UserNotFoundError);
+        }
     });
 
     it("should throw error if password is wrong", async () => {
         // Arrange
-        const userInDb = new User(
-            "user-1", "Karen", "karen@example.com",
-            await authService.hashPassword("password123"), "CUSTOMER"
+        const userInDb = User.create(
+            {
+                name: "Karen",
+                email: "karen@example.com",
+                passwordHash: await authService.hashPassword("password123"),
+                role: "CUSTOMER",
+                createdAt: new Date(),
+            }, new UniqueEntityID("user-1")
         );
         mockUserFinder.findByEmail.mockResolvedValue(userInDb);
         const loginUser = new LoginUser(mockUserFinder, authService);
 
         // Act & Assert
-        await expect(
-            loginUser.execute("karen@example.com", "wrongpassword")
-        ).rejects.toThrow(InvalidCredentialsError);
+        try {
+            await loginUser.execute("karen@example.com", "wrongpassword");
+            fail("Expected LoginUser.execute to throw an error, but it did not.");
+        } catch (error) {
+            expect(error).toBeInstanceOf(InvalidCredentialsError);
+        }
     });
 });

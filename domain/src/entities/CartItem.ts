@@ -31,4 +31,19 @@ export class CartItem extends Entity<CartItemProps> {
     get price(): number {
         return this.props.product.price * this.props.quantity;
     }
+    public setQuantity(quantity: number): void {
+        this.props.quantity = quantity;
+    }
+
+    get id(): UniqueEntityID {
+        return this._id;
+    }
+
+    toJSON() {
+        return {
+            id: this.id.toString(),
+            quantity: this.quantity,
+            product: this.product.toJSON(),
+        };
+    }
 }

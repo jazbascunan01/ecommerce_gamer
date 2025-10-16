@@ -20,12 +20,12 @@ export class ClearCart {
         // Devolver el stock de cada producto en el carrito de forma segura
         for (const item of cart.items) {
             // Recargamos el producto desde la BD para evitar race conditions y tener el stock más actual
-            const product = await this.productFinder.findProductById(item.product.id);
+            const product = await this.productFinder.findProductById(item.product.id.toString());
             if (!product) {
                 // Este caso es improbable si la BD es consistente, pero es una guarda de seguridad
-                throw new ProductNotFoundError(item.product.id);
+                throw new ProductNotFoundError(item.product.id.toString());
             }
-            product.stock += item.quantity;
+            product.adjustStock(item.quantity);
             uow.products.update(product);
         }
 

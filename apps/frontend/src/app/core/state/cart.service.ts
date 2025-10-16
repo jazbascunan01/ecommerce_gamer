@@ -42,7 +42,7 @@ export class CartService {
   public loadInitialCart(): void {
     this.loadingSubject.next(true);
     this.http.get<any>(`${this.apiUrl}`).pipe(
-      map(response => response._items || []),
+      map(response => response?.items || []),
       finalize(() => this.loadingSubject.next(false))
     ).subscribe({
       next: items => this.itemsSubject.next(items),

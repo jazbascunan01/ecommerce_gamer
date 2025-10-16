@@ -1,14 +1,43 @@
+import { Entity } from "../core/Entity";
+import { UniqueEntityID } from "../core/UniqueEntityID";
+
 export type UserRole = 'CUSTOMER' | 'ADMIN';
 
-export class User {
-    constructor(
-        public id: string | undefined, // El ID puede no existir al crear un nuevo usuario
-        public name: string,
-        public email: string,
-        public passwordHash: string,
-        public role: UserRole,
-        public createdAt: Date = new Date() // Si no se provee, se usa la fecha actual
-    ) {
+interface UserProps {
+    name: string;
+    email: string;
+    passwordHash: string;
+    role: UserRole;
+    createdAt: Date;
+}
 
+export class User extends Entity<UserProps> {
+    private constructor(props: UserProps, id?: UniqueEntityID) {
+        super(props, id);
+    }
+
+    public static create(props: UserProps, id?: UniqueEntityID): User {
+        const user = new User({
+            ...props,
+            createdAt: props.createdAt ?? new Date()
+        }, id);
+        return user;
+    }
+
+    get name(): string { return this.props.name; }
+    get email(): string { return this.props.email; }
+    get passwordHash(): string { return this.props.passwordHash; }
+    get role(): UserRole { return this.props.role; }
+    get createdAt(): Date { return this.props.createdAt; }
+    get id(): UniqueEntityID { return this._id; }
+
+    toJSON() {
+        return {
+            id: this.id.toString(),
+            name: this.name,
+            email: this.email,
+            role: this.role,
+            createdAt: this.createdAt,
+        };
     }
 }

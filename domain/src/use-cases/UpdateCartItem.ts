@@ -28,14 +28,10 @@ export class UpdateCartItem {
             throw new ProductNotInCartError(productId);
         }
 
-        // Optimización: Si la cantidad no ha cambiado, no hacemos nada.
         if (itemInCart.quantity === newQuantity) {
             return;
         }
 
-        // La diferencia de cantidad determina cómo ajustamos el stock del producto.
-        // Si newQuantity > itemInCart.quantity, la diferencia es positiva y el stock disminuye.
-        // Si newQuantity < itemInCart.quantity, la diferencia es negativa y el stock aumenta (se devuelve al almacén).
         const stockAdjustment = itemInCart.quantity - newQuantity;
         try {
             product.adjustStock(stockAdjustment);
@@ -46,8 +42,7 @@ export class UpdateCartItem {
             }
             throw error; // Re-lanzar cualquier otro error inesperado
         }
-        cart.setItemQuantity(product, newQuantity);
-
+        cart.setItemQuantity(productId, newQuantity);
         uow.products.update(product);
         uow.carts.save(cart);
 

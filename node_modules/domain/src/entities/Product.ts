@@ -1,20 +1,40 @@
 import { InsufficientStockError, InvalidEntityStateError } from "../errors/DomainError";
+import { Entity } from "../core/Entity";
+import { UniqueEntityID } from "../core/UniqueEntityID";
 
-export class Product {
-    constructor(
-        public id: string,
-        public name: string,
-        public description: string,
-        public price: number,
-        public stock: number,
-        public createdAt: Date
-    ) {
-        if (price < 0) {
+interface ProductProps {
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    imageUrl: string;
+    createdAt: Date;
+}
+
+export class Product extends Entity<ProductProps> {
+    private constructor(props: ProductProps, id?: UniqueEntityID) {
+        super(props, id);
+
+        if (this.price < 0) {
             throw new InvalidEntityStateError("Product price cannot be negative.");
         }
-        if (stock < 0) {
+        if (this.stock < 0) {
             throw new InvalidEntityStateError("Product stock cannot be negative.");
         }
+    }
+    public static create(props: ProductProps, id?: UniqueEntityID): Product {
+        const product = new Product(props, id);
+        return product;
+    }
+
+    get name(): string { return this.props.name; }
+    get description(): string { return this.props.description; }
+    get price(): number { return this.props.price; }
+    get stock(): number { return this.props.stock; }
+    get imageUrl(): string { return this.props.imageUrl; }
+    get createdAt(): Date { return this.props.createdAt; }
+    get id(): UniqueEntityID {
+        return this._id;
     }
 
     /**
@@ -24,9 +44,7 @@ export class Product {
     adjustStock(amount: number): void {
         const newStock = this.stock + amount;
         if (newStock < 0) {
-            throw new InsufficientStockError(this.id, "Stock adjustment results in a negative value.");
-        }
-        this.stock += amount;
+            throw new InsufficientStockError(this._id.toString(), "Stock adjustment results in a negative value.");        }        this.props.stock += amount;
     }
 
     /**
@@ -34,6 +52,17 @@ export class Product {
      * @param amount The amount to decrease the stock by.
      */
     decreaseStock(amount: number): void {
-        this.adjustStock(-amount);
+        this.props.stock -= amount;    }
+
+    toJSON() {
+        return {
+            id: this.id.toString(),
+            name: this.name,
+            description: this.description,
+            price: this.price,
+            stock: this.stock,
+            imageUrl: this.imageUrl,
+            createdAt: this.createdAt,
+        };
     }
 }
