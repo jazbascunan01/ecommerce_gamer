@@ -1,5 +1,5 @@
-import { Product } from "../entities/Product";
-import { IUnitOfWorkFactory } from "../services/IPersistence";
+import { Product } from "../../entities/Product";
+import { IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class CreateProduct {
     constructor(private unitOfWorkFactory: IUnitOfWorkFactory) {}

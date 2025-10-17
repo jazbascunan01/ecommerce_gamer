@@ -1,7 +1,7 @@
 import { InsufficientStockError, InvalidEntityStateError } from "../errors/DomainError";
 import { Entity } from "../core/Entity";
 import { UniqueEntityID } from "../core/UniqueEntityID";
-import { UpdateProductData } from "../use-cases/UpdateProduct";
+import { UpdateProductData } from "../use-cases/product/UpdateProduct";
 
 interface ProductProps {
     name: string;

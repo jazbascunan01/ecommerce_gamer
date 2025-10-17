@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { AddToCart } from "@domain/use-cases/AddToCart";
-import { ClearCart } from "@domain/use-cases/ClearCart";
-import { GetCart } from "@domain/use-cases/GetCart";
-import { UpdateCartItem } from "@domain/use-cases/UpdateCartItem";
-import { RemoveFromCart } from "@domain/use-cases/RemoveFromCart";
+import { AddToCart } from "@domain/use-cases/cart/AddToCart";
+import { ClearCart } from "@domain/use-cases/cart/ClearCart";
+import { GetCart } from "@domain/use-cases/cart/GetCart";
+import { UpdateCartItem } from "@domain/use-cases/cart/UpdateCartItem";
+import { RemoveFromCart } from "@domain/use-cases/cart/RemoveFromCart";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
 import { ProductNotFoundError, InsufficientStockError, InvalidQuantityError, CartNotFoundError, ProductNotInCartError } from "@domain/errors/DomainError";
 

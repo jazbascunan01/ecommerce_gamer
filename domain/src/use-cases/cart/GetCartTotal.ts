@@ -1,4 +1,4 @@
-import { Cart } from "../entities/Cart";
+import { Cart } from "../../entities/Cart";
 
 export class GetCartTotal {
     constructor(private cart: Cart) {}

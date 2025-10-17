@@ -1,7 +1,7 @@
-import { User } from "../entities/User";
-import { InvalidCredentialsError, UserNotFoundError } from "../errors/DomainError";
-import { AuthService } from "../services/AuthService";
-import { IUserFinder } from "../services/IPersistence";
+import { User } from "../../entities/User";
+import { InvalidCredentialsError, UserNotFoundError } from "../../errors/DomainError";
+import { AuthService } from "../../services/AuthService";
+import { IUserFinder } from "../../services/IPersistence";
 
 export class LoginUser {
     constructor(

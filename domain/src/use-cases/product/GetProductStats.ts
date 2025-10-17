@@ -1,5 +1,5 @@
-import { Product } from "../entities/Product";
-import { IProductFinder } from "../services/IPersistence";
+import { Product } from "../../entities/Product";
+import { IProductFinder } from "../../services/IPersistence";
 
 export interface ProductStats {
     totalProducts: number;

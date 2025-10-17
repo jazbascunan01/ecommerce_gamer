@@ -1,6 +1,6 @@
 import { Product } from "../entities/Product";
 import { UniqueEntityID } from "../core/UniqueEntityID";
-import { UpdateProduct } from "../use-cases/UpdateProduct";
+import { UpdateProduct } from "../use-cases/product/UpdateProduct";
 import { ProductNotFoundError } from "../errors/DomainError";
 import {
     mockProductFinder,

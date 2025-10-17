@@ -1,6 +1,6 @@
-import { Product } from "../entities/Product";
-import { ProductNotFoundError } from "../errors/DomainError";
-import { IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
+import { Product } from "../../entities/Product";
+import { ProductNotFoundError } from "../../errors/DomainError";
+import { IProductFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export interface UpdateProductData {
     name?: string;

@@ -3,8 +3,8 @@ import { AuthService } from "@domain/services/AuthService";
 import { IUserFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
 import { InvalidCredentialsError } from "@domain/errors/DomainError";
 import jwt from 'jsonwebtoken';
-import { RegisterUser } from '@domain/use-cases/RegisterUser';
-import { LoginUser } from '@domain/use-cases/LoginUser';
+import { RegisterUser } from '@domain/use-cases/user/RegisterUser';
+import { LoginUser } from '@domain/use-cases/user/LoginUser';
 
 export const createUserController = (
     userFinder: IUserFinder,

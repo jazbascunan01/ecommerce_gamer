@@ -1,5 +1,5 @@
-import { ProductNotFoundError } from "../errors/DomainError";
-import { IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
+import { ProductNotFoundError } from "../../errors/DomainError";
+import { IProductFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class DeleteProduct {
     constructor(

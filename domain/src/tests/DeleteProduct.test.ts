@@ -1,6 +1,6 @@
 import { Product } from "../entities/Product";
 import { UniqueEntityID } from "../core/UniqueEntityID";
-import { DeleteProduct } from "../use-cases/DeleteProduct";
+import { DeleteProduct } from "../use-cases/product/DeleteProduct";
 import {
     mockProductFinder,
     mockUowFactory,

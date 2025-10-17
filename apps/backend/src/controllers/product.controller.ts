@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
-import { CreateProduct } from "@domain/use-cases/CreateProduct";
-import { ListProducts } from "@domain/use-cases/ListProducts";
-import { UpdateProduct } from "@domain/use-cases/UpdateProduct";
-import { GetProductStats } from "@domain/use-cases/GetProductStats";
-import { DeleteProduct } from "@domain/use-cases/DeleteProduct";
+import { CreateProduct } from "@domain/use-cases/product/CreateProduct";
+import { ListProducts } from "@domain/use-cases/product/ListProducts";
+import { UpdateProduct } from "@domain/use-cases/product/UpdateProduct";
+import { GetProductStats } from "@domain/use-cases/product/GetProductStats";
+import { DeleteProduct } from "@domain/use-cases/product/DeleteProduct";
 import { ProductNotFoundError } from "@domain/errors/DomainError";
 
 export const createProductController = (
