@@ -1,4 +1,4 @@
-import { CartNotFoundError, ProductNotFoundError } from "../../errors/DomainError";
+import { ProductNotFoundError } from "../../errors/DomainError";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class ClearCart {

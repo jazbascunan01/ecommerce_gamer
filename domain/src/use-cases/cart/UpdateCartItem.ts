@@ -1,6 +1,4 @@
-import { Cart } from "../../entities/Cart";
-import { CartItem } from "../../entities/CartItem";
-import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError, InvalidQuantityError, InsufficientStockError } from "../../errors/DomainError";
+import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError, InsufficientStockError } from "../../errors/DomainError";
 import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class UpdateCartItem {

@@ -4,7 +4,7 @@ import { ClearCart } from "@domain/use-cases/cart/ClearCart";
 import { GetCart } from "@domain/use-cases/cart/GetCart";
 import { UpdateCartItem } from "@domain/use-cases/cart/UpdateCartItem";
 import { RemoveFromCart } from "@domain/use-cases/cart/RemoveFromCart";
-import { ICartFinder, IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
+import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
 
 interface AuthenticatedRequest extends Request {
     userId?: string;
