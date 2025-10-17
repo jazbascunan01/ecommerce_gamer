@@ -6,6 +6,7 @@
   --accent-color: #66fcf1;
   --accent-hover-color: #45a29e;
   --border-color: #4b5d67;
+  --error-color: #ff6b6b;
 }
 
 .card {
@@ -64,6 +65,11 @@
   margin: 0;
 }
 
+.card-footer {
+  padding: 0 16px 16px;
+  margin-top: auto; // Empuja el footer hacia abajo
+}
+
 .card-button {
   width: 100%;
   padding: 12px;
@@ -85,5 +91,37 @@
     background-color: #4b5d67;
     cursor: not-allowed;
     opacity: 0.7;
+  }
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  font-size: 0.9rem;
+
+  &.edit {
+    background-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  &.delete {
+    background-color: var(--error-color);
+    color: white;
+  }
+
+  &:hover {
+    opacity: 0.8;
   }
 }

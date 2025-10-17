@@ -44,7 +44,7 @@ const cartFromPersistence = (cart: PrismaCartWithItems): Cart => {
 
 class PrismaUnitOfWork implements IUnitOfWork {
     public users: { save: (user: User) => Promise<User>; };
-    public products: { save: (product: Product) => void; update: (product: Product) => void; };
+    public products: { save: (product: Product) => void; update: (product: Product) => void; delete: (product: Product) => void; };
     public carts: { save: (cart: Cart) => void; };
 
     private operations: PrismaPromise<any>[] = [];
@@ -78,7 +78,20 @@ class PrismaUnitOfWork implements IUnitOfWork {
                 }));
             },
             update: (product) => {
-                this.operations.push(prisma.product.update({ where: { id: product.id.toString() }, data: { stock: product.stock } }));
+                // Ahora actualizamos todos los campos editables del producto.
+                this.operations.push(prisma.product.update({
+                    where: { id: product.id.toString() },
+                    data: {
+                        name: product.name,
+                        description: product.description,
+                        price: product.price,
+                        stock: product.stock,
+                        imageUrl: product.imageUrl
+                    }
+                }));
+            },
+            delete: (product) => {
+                this.operations.push(prisma.product.delete({ where: { id: product.id.toString() } }));
             }
         };
         this.carts = {

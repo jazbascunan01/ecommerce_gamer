@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { DomainError, ProductNotFoundError, CartNotFoundError, InsufficientStockError, InvalidQuantityError, ProductNotInCartError, UserAlreadyExistsError, InvalidCredentialsError, UserNotFoundError, AuthenticationError, InvalidEntityStateError } from '@domain/errors/DomainError';
+import { DomainError, ProductNotFoundError, CartNotFoundError, InsufficientStockError, InvalidQuantityError, ProductNotInCartError, UserAlreadyExistsError, InvalidCredentialsError, UserNotFoundError, AuthenticationError, AuthorizationError, InvalidEntityStateError } from '@domain/errors/DomainError';
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err); // Es una buena práctica registrar el error
@@ -16,6 +16,10 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
         case err instanceof AuthenticationError:
         case err instanceof InvalidCredentialsError:
             return res.status(401).json({ error: "Unauthorized" });
+
+        // 403 Forbidden
+        case err instanceof AuthorizationError:
+            return res.status(403).json({ error: err.message });
 
         // 409 Conflict
         case err instanceof UserAlreadyExistsError:

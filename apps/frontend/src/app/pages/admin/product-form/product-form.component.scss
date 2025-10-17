@@ -1,4 +1,3 @@
-// Usamos las mismas variables que en el header para mantener la consistencia.
 :host {
   --form-bg: #1a1a1d;
   --input-bg: #252a34;
@@ -7,24 +6,26 @@
   --accent-hover-color: #45a29e;
   --border-color: #4b5d67;
   --error-color: #ff6b6b;
+  --cancel-bg: #3a3f44;
+  --cancel-hover-bg: #4b5d67;
 }
 
-.login-container {
+.form-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 70px); // 70px es la altura del header
-  padding: 2rem;
-  background-color: #0b0c10; // Un fondo aún más oscuro para la página
+  align-items: flex-start;
+  min-height: calc(100vh - 70px);
+  padding: 3rem 2rem;
+  background-color: #0b0c10;
 }
 
-.login-form {
+.product-form {
   background-color: var(--form-bg);
   padding: 2.5rem;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   width: 100%;
-  max-width: 400px;
+  max-width: 700px; // Un poco más ancho para el formulario de producto
   border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -50,7 +51,8 @@
     font-weight: 500;
   }
 
-  input {
+  input,
+  textarea {
     background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     border-radius: 5px;
@@ -58,6 +60,7 @@
     color: white;
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 95%;
 
     &::placeholder {
       color: #6a737d;
@@ -68,20 +71,66 @@
       border-color: var(--accent-color);
       box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.2);
     }
+
+    &.ng-invalid.ng-touched {
+      border-color: var(--error-color);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
   }
 }
 
-button[type="submit"] {
-  background-color: var(--accent-color);
-  color: var(--form-bg);
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+
+  .form-group {
+    flex: 1;
+    width: 95%;
+  }
+  margin: auto;
+  width: 100%;
+  justify-content: space-between;
+}
+#price,#stock{
+  width: 90%;
+}
+.error-message {
+  color: var(--error-color);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+
+  p {
+    margin: 0;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.submit-btn,
+.cancel-btn {
+  padding: 0.8rem 1.5rem;
   border: none;
-  padding: 0.9rem;
   border-radius: 5px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.submit-btn {
+  background-color: var(--accent-color);
+  color: var(--form-bg);
 
   &:hover:not(:disabled) {
     background-color: var(--accent-hover-color);
@@ -94,37 +143,11 @@ button[type="submit"] {
   }
 }
 
-.error-message {
-  color: var(--error-color);
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-
-  &.server-error {
-    background-color: rgba(255, 107, 107, 0.1);
-    border: 1px solid var(--error-color);
-    padding: 0.8rem;
-    border-radius: 5px;
-    text-align: center;
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
-.register-link {
-  text-align: center;
-  font-size: 0.9rem;
+.cancel-btn {
+  background-color: var(--cancel-bg);
   color: var(--text-color);
-  margin-top: 1rem;
 
-  a {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: bold;
-
-    &:hover {
-      text-decoration: underline;
-    }
+  &:hover {
+    background-color: var(--cancel-hover-bg);
   }
 }

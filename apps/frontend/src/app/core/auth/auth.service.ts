@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, map } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../models/user.model';
 
@@ -16,6 +16,11 @@ export class AuthService {
 
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$: Observable<User | null> = this.userSubject.asObservable();
+
+  // Nuevo observable para verificar si el usuario es admin.
+  public isAdmin$: Observable<boolean> = this.user$.pipe(
+    map(user => user?.role === 'ADMIN')
+  );
 
   constructor(private http: HttpClient) {
     // Al iniciar el servicio, verificamos si hay un token válido en localStorage.
@@ -68,7 +73,7 @@ export class AuthService {
     this.saveToken(token);
     const decodedToken: any = jwtDecode(token);
     // Reconstruimos el objeto User a partir del contenido del token
-    const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name };
+    const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name, role: decodedToken.role };
     this.userSubject.next(user);
   }
 
@@ -102,10 +107,8 @@ export class AuthService {
         if (isExpired) {
           this.logout(); // Si el token ha expirado, limpiamos todo.
         } else {
-          // Si el token es válido, reconstruimos el objeto de usuario y lo emitimos.
-          // El token solo contiene id, email y role. El 'name' no está presente.
           // El token contiene id, name, email y role.
-          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name };
+          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name, role: decodedToken.role };
           this.userSubject.next(user);
         }
       } catch (error) {

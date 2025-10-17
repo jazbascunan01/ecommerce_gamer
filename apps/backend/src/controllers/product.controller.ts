@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
 import { CreateProduct } from "@domain/use-cases/CreateProduct";
 import { ListProducts } from "@domain/use-cases/ListProducts";
+import { UpdateProduct } from "@domain/use-cases/UpdateProduct";
+import { DeleteProduct } from "@domain/use-cases/DeleteProduct";
 import { ProductNotFoundError } from "@domain/errors/DomainError";
 
 export const createProductController = (
@@ -10,6 +12,8 @@ export const createProductController = (
 ) => {
     const createProductCase = new CreateProduct(unitOfWorkFactory);
     const listProductsCase = new ListProducts(productFinder);
+    const updateProductCase = new UpdateProduct(productFinder, unitOfWorkFactory);
+    const deleteProductCase = new DeleteProduct(productFinder, unitOfWorkFactory);
 
     const createProduct = async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -46,9 +50,33 @@ export const createProductController = (
         }
     };
 
+    const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+            const data = req.body;
+            const updatedProduct = await updateProductCase.execute(id, data);
+            res.status(200).json(updatedProduct);
+        } catch (err: any) {
+            next(err);
+        }
+    };
+
+    const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+            await deleteProductCase.execute(id);
+            // 204 No Content es una respuesta estándar para un borrado exitoso sin contenido.
+            res.status(204).send();
+        } catch (err: any) {
+            next(err);
+        }
+    };
+
     return {
         createProduct,
         listProducts,
         findProductById,
+        updateProduct,
+        deleteProduct,
     };
 };

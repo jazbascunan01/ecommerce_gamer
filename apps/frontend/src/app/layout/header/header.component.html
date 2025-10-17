@@ -17,6 +17,9 @@
       <a routerLink="/products" routerLinkActive="active">Productos</a>
       <a routerLink="/about" routerLinkActive="active">Nosotros</a>
       <a routerLink="/contact" routerLinkActive="active">Contacto</a>
+      @if (isAdmin$ | async) {
+        <a routerLink="/admin" routerLinkActive="active" class="admin-link">Admin</a>
+      }
     </nav>
     <div class="header-actions">
       @if (user$ | async; as user) {

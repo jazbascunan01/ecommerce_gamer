@@ -18,6 +18,7 @@ export interface IUnitOfWork {
     products: {
         save: (product: Product) => void;
         update: (product: Product) => void;
+        delete: (product: Product) => void;
     };
     carts: { save(cart: Cart): void };
     // Método para confirmar todos los cambios en una sola transacción

@@ -1,6 +1,7 @@
 import { InsufficientStockError, InvalidEntityStateError } from "../errors/DomainError";
 import { Entity } from "../core/Entity";
 import { UniqueEntityID } from "../core/UniqueEntityID";
+import { UpdateProductData } from "../use-cases/UpdateProduct";
 
 interface ProductProps {
     name: string;
@@ -35,6 +36,30 @@ export class Product extends Entity<ProductProps> {
     get createdAt(): Date { return this.props.createdAt; }
     get id(): UniqueEntityID {
         return this._id;
+    }
+
+    /**
+     * Updates the product details from a data object.
+     * Only updates fields that are provided and not undefined.
+     */
+    public updateDetails(data: UpdateProductData): void {
+        if (data.name !== undefined) {
+            this.props.name = data.name;
+        }
+        if (data.description !== undefined) {
+            this.props.description = data.description;
+        }
+        if (data.price !== undefined) {
+            if (data.price < 0) throw new InvalidEntityStateError("Product price cannot be negative.");
+            this.props.price = data.price;
+        }
+        if (data.stock !== undefined) {
+            if (data.stock < 0) throw new InvalidEntityStateError("Product stock cannot be negative.");
+            this.props.stock = data.stock;
+        }
+        if (data.imageUrl !== undefined) {
+            this.props.imageUrl = data.imageUrl;
+        }
     }
 
     /**
