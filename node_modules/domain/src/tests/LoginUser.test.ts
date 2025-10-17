@@ -1,5 +1,5 @@
 import { AuthService } from "../services/AuthService";
-import { LoginUser } from "../use-cases/user/LoginUser";
+import { LoginUser } from "../use-cases";
 import { User } from "../entities/User";
 import { InvalidCredentialsError, UserNotFoundError } from "../errors/DomainError";
 import { UniqueEntityID } from "../core/UniqueEntityID";
