@@ -3,33 +3,17 @@ import { AuthService } from "../services/AuthService";
 import { UserAlreadyExistsError } from "../errors/DomainError";
 import { User } from "../entities/User";
 import { UniqueEntityID } from "../core/UniqueEntityID";
-
-const mockUserFinder = {
-    findByEmail: jest.fn(),
-    findById: jest.fn(),
-};
-
-const mockUnitOfWork = {
-    users: {
-        save: jest.fn().mockImplementation(user => Promise.resolve(user)),
-    },
-    products: {
-        save: jest.fn(),
-        update: jest.fn(),
-        delete: jest.fn(),
-    },
-    carts: { save: jest.fn() },
-    commit: jest.fn().mockResolvedValue(undefined),
-};
-
-const mockUowFactory = {
-    create: () => mockUnitOfWork,
-};
+import {
+    mockUserFinder,
+    mockUowFactory,
+    mockUnitOfWork,
+    resetMocks,
+} from "./_mocks";
 
 const authService = new AuthService();
 
 beforeEach(() => {
-    jest.clearAllMocks();
+    resetMocks();
 });
 
 describe("RegisterUser Use Case", () => {
