@@ -1,18 +1,14 @@
 import { AuthService } from "../services/AuthService";
-import { LoginUser } from "../use-cases";
+import { LoginUser } from "../use-cases/user/LoginUser";
 import { User } from "../entities/User";
 import { InvalidCredentialsError, UserNotFoundError } from "../errors/DomainError";
 import { UniqueEntityID } from "../core/UniqueEntityID";
-
-const mockUserFinder = {
-    findByEmail: jest.fn(),
-    findById: jest.fn(),
-};
+import { mockUserFinder, resetMocks } from "./_mocks";
 
 const authService = new AuthService();
 
 beforeEach(() => {
-    jest.clearAllMocks();
+    resetMocks();
 });
 
 describe("LoginUser", () => {

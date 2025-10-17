@@ -69,7 +69,7 @@ export class Cart extends Entity<CartProps> {
         }
 
         // 5. In both cases, decrease product stock
-        product.decreaseStock(quantity);
+        product.adjustStock(-quantity);
         // 6. Recalculate total price
         this.recalculateTotal();
     }
