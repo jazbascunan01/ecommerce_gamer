@@ -1,4 +1,3 @@
-// Usamos las mismas variables que en el header para mantener la consistencia.
 :host {
   --form-bg: #1a1a1d;
   --input-bg: #252a34;
@@ -13,9 +12,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 70px); // 70px es la altura del header
+  min-height: calc(100vh - 70px);
   padding: 2rem;
-  background-color: #0b0c10; // Un fondo aún más oscuro para la página
+  background-color: #0b0c10;
 }
 
 .login-form {

@@ -72,12 +72,6 @@ export class Product extends Entity<ProductProps> {
             throw new InsufficientStockError(this._id.toString(), "Stock adjustment results in a negative value.");        }        this.props.stock += amount;
     }
 
-    /**
-     * Decreases the stock of the product by a given amount.
-     * @param amount The amount to decrease the stock by.
-     */
-    decreaseStock(amount: number): void {
-        this.props.stock -= amount;    }
 
     toJSON() {
         return {

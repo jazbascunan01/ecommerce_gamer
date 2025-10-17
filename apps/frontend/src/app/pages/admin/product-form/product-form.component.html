@@ -2,7 +2,6 @@
   <form class="product-form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <h2>{{ pageTitle }}</h2>
 
-    <!-- Campo Nombre -->
     <div class="form-group">
       <label for="name">Nombre del Producto</label>
       <input id="name" type="text" formControlName="name" placeholder="Ej: Teclado Mecánico HyperX">
@@ -26,7 +25,6 @@
     </div>
 
     <div class="form-row">
-      <!-- Campo Precio -->
       <div class="form-group">
         <label for="price">Precio (ARS)</label>
         <input id="price" type="number" formControlName="price" placeholder="0.00">
@@ -38,7 +36,6 @@
         }
       </div>
 
-      <!-- Campo Stock -->
       <div class="form-group">
         <label for="stock">Stock</label>
         <input id="stock" type="number" formControlName="stock" placeholder="0">
@@ -51,7 +48,6 @@
       </div>
     </div>
 
-    <!-- Campo URL de Imagen -->
     <div class="form-group">
       <label for="imageUrl">URL de la Imagen</label>
       <input id="imageUrl" type="url" formControlName="imageUrl" placeholder="https://ejemplo.com/imagen.jpg">

@@ -40,7 +40,7 @@ export class UpdateCartItem {
                 const availableStock = product.stock + itemInCart.quantity;
                 throw new InsufficientStockError(productId, `Not enough stock for '${product.name}'. Only ${availableStock} units available in total.`);
             }
-            throw error; // Re-lanzar cualquier otro error inesperado
+            throw error;
         }
         cart.setItemQuantity(productId, newQuantity);
         uow.products.update(product);

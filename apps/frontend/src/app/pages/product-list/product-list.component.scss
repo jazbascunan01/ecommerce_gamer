@@ -31,7 +31,7 @@
 
 .create-product-btn {
   background-color: var(--accent-color);
-  color: var(--container-dark); // Usamos la variable para el color de texto oscuro
+  color: var(--container-dark);
   padding: 10px 20px;
   border-radius: 5px;
   text-decoration: none;
@@ -40,7 +40,7 @@
 
   &:hover {
     background-color: var(--accent-hover-color);
-    transform: translateY(-2px); // Efecto de "elevación"
+    transform: translateY(-2px);
   }
 }
 

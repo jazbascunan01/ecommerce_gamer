@@ -15,8 +15,6 @@ export const productRoutes = (
     const authMiddleware = createAuthMiddleware(userFinder);
 
     router.get("/", productController.listProducts);
-    // Ruta para las estadísticas. Debe ir antes de la ruta "/:id"
-    // Es una ruta protegida solo para administradores.
     router.get("/summary/stats", authMiddleware, adminAuth, productController.getProductStats);
     router.get("/:id", productController.findProductById);
     router.post("/", authMiddleware, adminAuth, productController.createProduct);

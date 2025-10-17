@@ -38,12 +38,10 @@ export class ProductCardComponent {
   onDeleteProduct(): void {
     if (!this.product || !this.product.id) return;
 
-    // Pedimos confirmación al usuario antes de borrar
     if (confirm(`¿Estás seguro de que quieres eliminar "${this.product.name}"?`)) {
       this.productService.deleteProduct(this.product.id).subscribe({
         next: () => {
           console.log('Producto eliminado con éxito');
-          // Refrescamos la lista de productos para que el cambio se vea en la UI
           this.listProductsUseCase.refresh();
         },
         error: (err) => {

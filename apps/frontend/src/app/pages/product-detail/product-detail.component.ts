@@ -18,7 +18,6 @@ import { CartService } from '../../core/state/cart.service';
 export class ProductDetailComponent implements OnInit {
   product$!: Observable<Product | null>;
 
-  // Inyección de dependencias moderna con inject()
   private route = inject(ActivatedRoute);
   private getProductById = inject(GetProductByIdUseCase);
   private cartService = inject(CartService);
@@ -31,12 +30,11 @@ export class ProductDetailComponent implements OnInit {
           return this.getProductById.execute(id).pipe(
             catchError(error => {
               console.error('Error fetching product:', error);
-              // En caso de error (ej. producto no encontrado), devolvemos un observable con null
               return of(null);
             })
           );
         }
-        return of(null); // Si no hay ID, devolvemos un observable con null
+        return of(null);
       })
     );
   }

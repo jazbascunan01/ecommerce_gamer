@@ -4,7 +4,7 @@ export interface Product {
   description: string;
   price: number;
   stock: number;
-  imageUrl?: string; // La hacemos opcional por si no siempre viene
+  imageUrl?: string;
 }
 
 export interface ProductStats {

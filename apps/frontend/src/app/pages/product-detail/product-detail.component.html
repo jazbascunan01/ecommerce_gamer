@@ -1,4 +1,3 @@
-<!-- Usamos el pipe async para suscribirnos al observable product$ y manejar los estados de carga, error y éxito -->
 <div class="product-detail-container">
   <ng-container *ngIf="product$ | async as product; else loadingOrError">
     <div class="product-card">
@@ -21,8 +20,6 @@
   </ng-container>
 </div>
 
-<!-- Template para mostrar mientras se carga o si hay un error -->
 <ng-template #loadingOrError>
   <p class="loading-message">Cargando detalles del producto...</p>
-  <!-- Podríamos tener una lógica más compleja aquí para diferenciar entre carga y error -->
 </ng-template>

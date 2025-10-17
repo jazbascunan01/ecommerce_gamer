@@ -1,4 +1,3 @@
-// src/app/components/product-card/product-card.stories.ts
 import type { Meta, StoryObj } from '@storybook/angular';
 import { ProductCardComponent } from './product-card.component';
 import { Product } from '../../core/models/product.model';
@@ -22,14 +21,12 @@ const sampleProduct: Product = {
   imageUrl: 'https://via.placeholder.com/300' // URL de imagen de ejemplo
 };
 
-// 1. La historia para un producto normal y en stock
 export const Default: Story = {
   args: {
     product: sampleProduct,
   },
 };
 
-// 2. La historia para un producto sin stock
 export const OutOfStock: Story = {
   args: {
     product: {
@@ -39,7 +36,6 @@ export const OutOfStock: Story = {
   },
 };
 
-// 3. La historia para un producto con un nombre muy largo
 export const LongName: Story = {
   args: {
     product: {

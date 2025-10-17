@@ -6,13 +6,10 @@ import { ICartFinder, IProductFinder, IUnitOfWork, IUnitOfWorkFactory, IUserFind
 import { Prisma, PrismaPromise } from "@prisma/client";import prisma from "../prisma-client";
 import { UniqueEntityID } from "@domain/core/UniqueEntityID";
 
-// Definimos un tipo que representa la estructura del carrito que obtenemos de Prisma,
-// incluyendo los items y los productos dentro de cada item.
 const cartWithItemsAndProduct = Prisma.validator<Prisma.CartDefaultArgs>()({
     include: { items: { include: { product: true } } },
 });
 
-// Creamos un tipo a partir del validador anterior.
 type PrismaCartWithItems = Prisma.CartGetPayload<typeof cartWithItemsAndProduct>;
 
 const cartFromPersistence = (cart: PrismaCartWithItems): Cart => {
@@ -78,7 +75,6 @@ class PrismaUnitOfWork implements IUnitOfWork {
                 }));
             },
             update: (product) => {
-                // Ahora actualizamos todos los campos editables del producto.
                 this.operations.push(prisma.product.update({
                     where: { id: product.id.toString() },
                     data: {
@@ -121,12 +117,10 @@ class PrismaUnitOfWork implements IUnitOfWork {
 }
 
 export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFinder, IUnitOfWorkFactory {
-    // IUnitOfWorkFactory
     create(): IUnitOfWork {
         return new PrismaUnitOfWork();
     }
 
-    // IUserFinder
     async findByEmail(email: string): Promise<User | null> {
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) return null;
@@ -161,7 +155,6 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         }
     }
 
-    // IProductFinder
     async findProductById(id: string): Promise<Product | null> {
         const product = await prisma.product.findUnique({ where: { id } });
         if (!product) return null;
@@ -199,7 +192,6 @@ export class PrismaPersistence implements ICartFinder, IProductFinder, IUserFind
         }).filter((p): p is Product => p !== null);
     }
 
-    // ICartFinder
     async findOrCreateByUserId(userId: string): Promise<Cart> {
         let cart = await prisma.cart.findUnique({
             where: { userId },

@@ -33,10 +33,9 @@ export class ProductFormComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [0, [Validators.required, Validators.min(0)]],
       stock: [0, [Validators.required, Validators.min(0)]],
-      imageUrl: ['', [Validators.required]] // Eliminamos la validación de patrón
+      imageUrl: ['', [Validators.required]]
     });
 
-    // Lógica para cargar datos en modo edición (la implementaremos en los siguientes pasos)
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
       this.isEditMode = true;
@@ -49,7 +48,6 @@ export class ProductFormComponent implements OnInit {
     this.isLoading = true;
     this.productService.getProductById(id).subscribe({
       next: (product) => {
-        // Usamos patchValue para rellenar el formulario con los datos del producto.
         this.productForm.patchValue(product);
         this.isLoading = false;
       },
@@ -67,13 +65,11 @@ export class ProductFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.productForm.invalid) {
-      // Marcar todos los campos como 'touched' para mostrar los errores
       this.productForm.markAllAsTouched();
       return;
     }
 
     this.isLoading = true;
-    // Aseguramos que los valores numéricos se envíen como números
     const productData = {
       ...this.productForm.value,
       price: Number(this.productForm.value.price),
@@ -81,12 +77,11 @@ export class ProductFormComponent implements OnInit {
     };
 
     if (this.isEditMode && this.productId) {
-      // --- MODO EDICIÓN ---
       this.productService.updateProduct(this.productId, productData).subscribe({
         next: () => {
           console.log('Producto actualizado con éxito');
-          this.listProductsUseCase.refresh(); // Actualiza la lista de productos
-          this.router.navigate(['/products']); // Redirige a la lista
+          this.listProductsUseCase.refresh();
+          this.router.navigate(['/products']);
         },
         error: (err) => {
           console.error('Error al actualizar el producto:', err);
@@ -95,12 +90,11 @@ export class ProductFormComponent implements OnInit {
         }
       });
     } else {
-      // --- MODO CREACIÓN ---
       this.productService.createProduct(productData).subscribe({
         next: () => {
           console.log('Producto creado con éxito');
-          this.listProductsUseCase.refresh(); // Actualiza la lista de productos
-          this.router.navigate(['/products']); // Redirige a la lista
+          this.listProductsUseCase.refresh();
+          this.router.navigate(['/products']);
         },
         error: (err) => {
           console.error('Error al crear el producto:', err);

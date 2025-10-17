@@ -22,8 +22,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    canActivate: [adminGuard], // ¡Aquí aplicamos el guardián!
-    // Carga perezosa de todas las rutas hijas de la sección de administración.
+    canActivate: [adminGuard],
     loadChildren: () => import('./pages/admin/admin.routes').then(m => m.ADMIN_ROUTES)
   },
   {

@@ -15,7 +15,6 @@ export const mockProductFinder = {
 
 export const mockUnitOfWork = {
     products: { save: jest.fn(), update: jest.fn(), delete: jest.fn() },
-    // Hacemos que el mock de 'save' devuelva el usuario que recibe, simulando un guardado exitoso.
     users: {
         save: jest.fn().mockImplementation(user => Promise.resolve(user)),
     },
@@ -27,7 +26,6 @@ export const mockUowFactory = {
     create: () => mockUnitOfWork,
 };
 
-// Una función para resetear todos los mocks antes de cada test
 export const resetMocks = () => {
     mockCartFinder.findByUserId.mockClear();
     mockCartFinder.findOrCreateByUserId.mockClear();

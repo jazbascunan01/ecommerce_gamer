@@ -13,7 +13,6 @@ export interface IUserFinder {
 }
 
 export interface IUnitOfWork {
-    // Métodos para registrar cambios en las entidades
     users: { save(user: User): Promise<User> };
     products: {
         save: (product: Product) => void;
@@ -21,7 +20,6 @@ export interface IUnitOfWork {
         delete: (product: Product) => void;
     };
     carts: { save(cart: Cart): void };
-    // Método para confirmar todos los cambios en una sola transacción
     commit(): Promise<void>;
 }
 

@@ -15,7 +15,7 @@
   padding: 40px 20px;
   background-color: var(--page-bg);
   color: var(--text-color);
-  min-height: calc(100vh - 70px); // 70px es la altura del header
+  min-height: calc(100vh - 70px);
 }
 
 .cart-container {
@@ -32,13 +32,13 @@
 
 .cart-layout {
   display: flex;
-  flex-wrap: wrap; // Para que se adapte en móviles
+  flex-wrap: wrap;
   gap: 30px;
   align-items: flex-start;
 }
 
 .cart-items {
-  flex: 3; // Ocupa 3/4 del espacio
+  flex: 3;
   min-width: 300px;
   background-color: var(--container-bg);
   padding: 25px;
@@ -122,15 +122,15 @@
 }
 
 .order-summary {
-  flex: 1; // Ocupa 1/4 del espacio
+  flex: 1;
   min-width: 280px;
   background-color: var(--container-bg);
   padding: 25px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   border: 1px solid var(--border-color);
-  position: sticky; // Para que se quede fijo al hacer scroll
-  top: 90px; // 70px del header + 20px de margen
+  position: sticky;
+  top: 90px;
 
   h2 {
     margin-top: 0;

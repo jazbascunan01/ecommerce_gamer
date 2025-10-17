@@ -8,12 +8,11 @@ export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.isAdmin$.pipe(
-    take(1), // Tomamos solo el primer valor para evitar suscripciones abiertas.
+    take(1),
     map(isAdmin => {
       if (isAdmin) {
-        return true; // Si es admin, permite el acceso a la ruta.
+        return true;
       } else {
-        // Si no es admin, lo redirigimos a la página de inicio.
         router.navigate(['/']);
         return false;
       }

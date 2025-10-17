@@ -1,8 +1,6 @@
 <div class="product-list-container">
-  <!-- Contenedor para el título y el botón de crear -->
   <div class="list-header">
     <h1>Catálogo de Productos</h1>
-    <!-- El botón solo se muestra si el usuario es administrador -->
     @if (isAdmin$ | async) {
       <a routerLink="/admin/products/new" class="create-product-btn">Crear Nuevo Producto</a>
     }

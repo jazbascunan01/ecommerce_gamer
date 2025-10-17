@@ -23,7 +23,7 @@ export class Cart extends Entity<CartProps> {
 
     public static create(props: CartProps, id?: UniqueEntityID): Cart {
         const cart = new Cart(props, id);
-        cart.recalculateTotal(); // Recalculate total on creation
+        cart.recalculateTotal();
         return cart;
     }
 
@@ -47,9 +47,8 @@ export class Cart extends Entity<CartProps> {
         this.props.total = this.items.reduce((total, item) => total + item.price, 0);
     }
 
-    public addItem(product: Product, quantity: number): void {        // 1. Check for stock
+    public addItem(product: Product, quantity: number): void {
         if (product.stock <= 0) {
-            // No stock, do nothing.
             return;
         }
 
@@ -58,19 +57,15 @@ export class Cart extends Entity<CartProps> {
         );
 
         if (existingItem) {
-            // 3. If it exists, increase quantity
             existingItem.increaseQuantity(quantity);
         } else {
-            // 4. If it's new, create and add it
             const newItem = CartItem.create({
                 product,
                 quantity: quantity,            });
             this.props.items.push(newItem);
         }
 
-        // 5. In both cases, decrease product stock
         product.adjustStock(-quantity);
-        // 6. Recalculate total price
         this.recalculateTotal();
     }
 

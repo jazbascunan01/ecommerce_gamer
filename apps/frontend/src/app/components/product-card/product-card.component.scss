@@ -1,6 +1,5 @@
 :host {
   display: block;
-  // Usamos las mismas variables para consistencia
   --card-bg: #1a1a1d;
   --text-color: #c5c6c7;
   --accent-color: #66fcf1;
@@ -17,7 +16,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  height: 100%; // Para que todas las tarjetas tengan la misma altura en un grid
+  height: 100%;
 
   &:hover {
     transform: translateY(-5px);
@@ -52,7 +51,6 @@
   font-weight: 600;
   margin: 0 0 8px;
   color: #ffffff;
-  // Trunca el texto si es muy largo
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,7 +65,7 @@
 
 .card-footer {
   padding: 0 16px 16px;
-  margin-top: auto; // Empuja el footer hacia abajo
+  margin-top: auto;
 }
 
 .card-button {

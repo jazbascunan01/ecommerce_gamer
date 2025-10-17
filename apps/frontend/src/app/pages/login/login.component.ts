@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, // Necesario para directivas como ngIf
-    ReactiveFormsModule // El módulo para formularios reactivos
+    CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

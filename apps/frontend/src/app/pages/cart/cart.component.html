@@ -4,28 +4,21 @@
       <h1>Carrito de Compras</h1>
     </header>
 
-    <!-- Usamos el pipe async para obtener los items y los guardamos en la variable 'items' -->
     @if (cartItems$ | async; as items) {
 
-      <!-- Mostramos el layout principal solo si hay items en el carrito -->
       @if (items.length > 0) {
-        <!-- Añadimos una clase 'loading' cuando isLoading$ es true para poder aplicar estilos (ej. opacidad) -->
         <div class="cart-layout" [class.loading]="isLoading$ | async">
-          <!-- Columna de la izquierda: Lista de productos -->
           <div class="cart-items">
             <h2>Tus Productos</h2>
 
-            <!-- Iteramos sobre los productos reales del carrito -->
             @for (item of items; track item.product.id) {
               <div class="cart-item">
                 <img [src]="item.product.imageUrl" [alt]="item.product.name" class="item-img">
                 <div class="item-details">
                   <p class="item-name">{{ item.product.name }}</p>
-                  <!-- Usamos el pipe currency para formatear el precio -->
                   <p class="item-price">{{ item.product.price | currency:'ARS' }}</p>
                 </div>
                 <div class="item-quantity">
-                  <!-- Usamos una variable de referencia #quantityInput para acceder al valor de forma segura -->
                   <input #quantityInput type="number" [value]="item.quantity" min="1" (change)="onQuantityChange(item.product.id, quantityInput.value)" [disabled]="isLoading$ | async">
                 </div>
                 <button class="item-remove-btn" (click)="onRemoveProduct(item.product.id)" [disabled]="isLoading$ | async">Eliminar</button>
@@ -33,16 +26,12 @@
             }
           </div>
 
-          <!-- Columna de la derecha: Resumen del pedido -->
           <div class="order-summary">
             <h2>Resumen del Pedido</h2>
-            <!-- Mostramos el total dinámico con el pipe currency -->
             <div class="summary-row total"><p>Total:</p> <p>{{ (totalPrice$ | async) | currency:'ARS' }}</p></div>
-            <button class="checkout-btn" [disabled]="isLoading$ | async">Proceder al Pago</button>
-          </div>
+            <button class="checkout-btn" (click)="onCheckout()" [disabled]="(isLoading$ | async) || (cartItems$ | async)?.length === 0">Proceder al Pago</button>          </div>
         </div>
       } @else {
-        <!-- Mensaje que se muestra si el carrito está vacío -->
         <div class="cart-empty">
           <h2>Tu carrito está vacío</h2>
           <p>¡Añade productos para verlos aquí!</p>

@@ -5,9 +5,6 @@ export class CreateProduct {
     constructor(private unitOfWorkFactory: IUnitOfWorkFactory) {}
 
     async execute(name: string, description: string, price: number, stock: number, imageUrl: string): Promise<Product> {
-        // Usamos el método estático 'create' para instanciar la entidad,
-        // pasándole las propiedades en un objeto.
-        // El ID se genera automáticamente dentro de la entidad si no se proporciona.
         const product = Product.create({
             name,
             description,

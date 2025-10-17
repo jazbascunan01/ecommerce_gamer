@@ -10,15 +10,11 @@ export const cartRoutes = (
     unitOfWorkFactory: IUnitOfWorkFactory
 ) => {
     const router = Router();
-    // Pasamos solo las dependencias que el controlador necesita
     const cartController = createCartController(cartFinder, productFinder, unitOfWorkFactory);
 
-    // Middleware de autenticación reutilizable
-    // Le pasamos la dependencia que necesita (userFinder)
     const authMiddleware = createAuthMiddleware(userFinder);
     router.use(authMiddleware);
 
-    // Las rutas ahora solo mapean al controlador
     router.get("/", cartController.getCart);
     router.post("/items", cartController.addProductToCart);
     router.delete("/items/:productId", cartController.removeProductFromCart);

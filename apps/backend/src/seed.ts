@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 async function main() {
     console.log(`Start seeding ...`);
 
-    // --- Seed Products ---
     const productsData = [
         {
             id: 'product-1',
@@ -42,9 +41,8 @@ async function main() {
         console.log(`Created/updated product with id: ${product.id}`);
     }
 
-    // --- Seed Users ---
     console.log('Seeding users...');
-    const passwordHash = await bcrypt.hash('password123', 10); // Same password for both
+    const passwordHash = await bcrypt.hash('password123', 10);
 
 
     const usersData = [
@@ -68,7 +66,6 @@ async function main() {
         const user = await prisma.user.upsert({
             where: { email: u.email },
             update: {
-                // Si quieres asegurarte de que el rol y la contraseña estén siempre actualizados
                 role: u.role,
                 passwordHash: u.passwordHash,
             },

@@ -5,7 +5,6 @@
     <div class="form-group">
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email" placeholder="tu@email.com">
-      <!-- Mensajes de error para el campo email -->
       @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)) {
         <div class="error-message">
           @if (loginForm.get('email')?.hasError) {
