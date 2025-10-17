@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product.model';
+import { Product, ProductStats } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +25,9 @@ export class ProductService {
 
   createProduct(productData: Partial<Product>): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, productData);
+  }
+
+  getProductStats(): Observable<ProductStats> {
+    return this.http.get<ProductStats>(`${this.apiUrl}/summary/stats`);
   }
 }

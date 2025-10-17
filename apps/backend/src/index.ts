@@ -23,7 +23,7 @@ const authService = new AuthService();
 const persistence = new PrismaPersistence();
 
 app.use("/api/auth", userRoutes(persistence, persistence, authService));
-app.use("/api/products", productRoutes(persistence, persistence, persistence)); // Pasamos las dependencias correctas
+app.use("/api/products", productRoutes(persistence, persistence, persistence));
 app.use("/api/cart", cartRoutes(persistence, persistence, persistence, persistence));
 
 app.use(errorHandler);

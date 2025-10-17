@@ -3,6 +3,7 @@ import { IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/service
 import { CreateProduct } from "@domain/use-cases/CreateProduct";
 import { ListProducts } from "@domain/use-cases/ListProducts";
 import { UpdateProduct } from "@domain/use-cases/UpdateProduct";
+import { GetProductStats } from "@domain/use-cases/GetProductStats";
 import { DeleteProduct } from "@domain/use-cases/DeleteProduct";
 import { ProductNotFoundError } from "@domain/errors/DomainError";
 
@@ -13,6 +14,7 @@ export const createProductController = (
     const createProductCase = new CreateProduct(unitOfWorkFactory);
     const listProductsCase = new ListProducts(productFinder);
     const updateProductCase = new UpdateProduct(productFinder, unitOfWorkFactory);
+    const getProductStatsCase = new GetProductStats(productFinder);
     const deleteProductCase = new DeleteProduct(productFinder, unitOfWorkFactory);
 
     const createProduct = async (req: Request, res: Response, next: NextFunction) => {
@@ -40,11 +42,19 @@ export const createProductController = (
             const product = await productFinder.findProductById(id);
 
             if (!product) {
-                // Lanzamos un error específico que nuestro errorHandler puede manejar
                 throw new ProductNotFoundError(id);
             }
 
             res.status(200).json(product);
+        } catch (err: any) {
+            next(err);
+        }
+    };
+
+    const getProductStats = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const stats = await getProductStatsCase.execute();
+            res.status(200).json(stats);
         } catch (err: any) {
             next(err);
         }
@@ -65,7 +75,6 @@ export const createProductController = (
         try {
             const { id } = req.params;
             await deleteProductCase.execute(id);
-            // 204 No Content es una respuesta estándar para un borrado exitoso sin contenido.
             res.status(204).send();
         } catch (err: any) {
             next(err);
@@ -76,6 +85,7 @@ export const createProductController = (
         createProduct,
         listProducts,
         findProductById,
+        getProductStats,
         updateProduct,
         deleteProduct,
     };

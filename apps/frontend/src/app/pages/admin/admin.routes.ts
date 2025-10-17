@@ -10,4 +10,8 @@ export const ADMIN_ROUTES: Routes = [
     path: 'products/new',
     loadComponent: () => import('./product-form/product-form.component').then(m => m.ProductFormComponent)
   },
+  {
+    path: '',
+    loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent)
+  },
 ];
