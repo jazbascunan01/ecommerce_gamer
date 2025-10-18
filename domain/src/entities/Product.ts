@@ -3,6 +3,44 @@ import { Entity } from "../core/Entity";
 import { UniqueEntityID } from "../core/UniqueEntityID";
 import { UpdateProductData } from "../use-cases/product/UpdateProduct";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: El ID único del producto.
+ *           example: 'clx123abc'
+ *         name:
+ *           type: string
+ *           description: El nombre del producto.
+ *           example: 'Teclado Mecánico RGB'
+ *         description:
+ *           type: string
+ *           description: La descripción detallada del producto.
+ *           example: 'Teclado mecánico con switches rojos, retroiluminación RGB personalizable.'
+ *         price:
+ *           type: number
+ *           format: float
+ *           description: El precio del producto.
+ *           example: 89.99
+ *         stock:
+ *           type: integer
+ *           description: La cantidad de stock disponible.
+ *           example: 15
+ *         imageUrl:
+ *           type: string
+ *           description: La URL de la imagen del producto.
+ *           example: 'https://example.com/image.jpg'
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: La fecha de creación del producto.
+ */
+
 interface ProductProps {
     name: string;
     description: string;

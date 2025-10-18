@@ -1,12 +1,14 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import swaggerUi from 'swagger-ui-express';
 import { userRoutes } from "./routes/userRoutes";
 import { productRoutes } from "./routes/productRoutes";
 import { cartRoutes } from "./routes/cartRoutes";
 import { errorHandler } from './middlewares/errorHandler';
 import {PrismaPersistence} from "./persistence/PrismaPersistence";
 import {AuthService} from "@domain/services/AuthService";
+import { swaggerSpec } from "./swagger";
 
 
 
@@ -18,6 +20,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+
+// Servir la documentación de Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const authService = new AuthService();
 const persistence = new PrismaPersistence();

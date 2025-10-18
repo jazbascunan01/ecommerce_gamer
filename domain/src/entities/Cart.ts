@@ -3,6 +3,29 @@ import { UniqueEntityID } from "../core/UniqueEntityID";
 import { CartItem } from "./CartItem";
 import { Product } from "./Product";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Cart:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: El ID único del carrito.
+ *         userId:
+ *           type: string
+ *           description: El ID del usuario al que pertenece el carrito.
+ *         items:
+ *           type: array
+ *           description: La lista de ítems en el carrito.
+ *           items:
+ *             $ref: '#/components/schemas/CartItem'
+ *         total:
+ *           type: number
+ *           description: El precio total de todos los ítems en el carrito.
+ */
+
 interface CartProps {
     items: CartItem[];
     userId: UniqueEntityID;
