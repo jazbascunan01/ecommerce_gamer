@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { CommonModule } from '@angular/common';
 
@@ -8,8 +8,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, // Necesario para directivas como ngIf
-    ReactiveFormsModule // El módulo para formularios reactivos
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

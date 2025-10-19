@@ -1,14 +1,25 @@
+:host {
+  --page-bg: #0b0c10;
+  --container-bg: #1a1a1d;
+  --text-color: #c5c6c7;
+  --accent-color: #66fcf1;
+  --border-color: #4b5d67;
+}
 .about-page {
+  background-color: var(--page-bg);
+  color: var(--text-color);
   padding: 40px 20px;
-  font-family: sans-serif;
-  background-color: #ffffff;
-  color: #333;
-  min-height: calc(100vh - 200px); // Asegura que ocupe espacio vertical
+  min-height: calc(100vh - 70px);
 }
 
 .about-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  background-color: var(--container-bg);
+  padding: 2.5rem 3rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .about-header {
@@ -17,22 +28,22 @@
 
   h1 {
     font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: #1a1a1a;
+    color: white;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   p {
     font-size: 1.2rem;
-    color: #666;
+    color: var(--text-color);
   }
 }
 
 .about-content {
   h2 {
     font-size: 1.8rem;
-    color: #1a1a1a;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 10px;
+    color: var(--accent-color);
     margin-top: 30px;
     margin-bottom: 20px;
   }
@@ -40,6 +51,7 @@
   p {
     font-size: 1rem;
     line-height: 1.6;
-    margin-bottom: 20px;
+    color: var(--text-color);
+    margin-bottom: 1rem;
   }
 }

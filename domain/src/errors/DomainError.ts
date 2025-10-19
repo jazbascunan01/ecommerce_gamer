@@ -63,3 +63,9 @@ export class AuthenticationError extends DomainError {
         super(message);
     }
 }
+
+export class AuthorizationError extends DomainError {
+    constructor(message: string = "Authorization failed: Access denied.") {
+        super(message);
+    }
+}

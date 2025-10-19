@@ -1,7 +1,5 @@
-import { Cart } from "../entities/Cart";
-import { CartItem } from "../entities/CartItem";
-import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError, InvalidQuantityError, InsufficientStockError } from "../errors/DomainError";
-import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
+import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError, InsufficientStockError } from "../../errors/DomainError";
+import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class UpdateCartItem {
     constructor(
@@ -40,7 +38,7 @@ export class UpdateCartItem {
                 const availableStock = product.stock + itemInCart.quantity;
                 throw new InsufficientStockError(productId, `Not enough stock for '${product.name}'. Only ${availableStock} units available in total.`);
             }
-            throw error; // Re-lanzar cualquier otro error inesperado
+            throw error;
         }
         cart.setItemQuantity(productId, newQuantity);
         uow.products.update(product);

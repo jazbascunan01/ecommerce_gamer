@@ -17,10 +17,12 @@
       <a routerLink="/products" routerLinkActive="active">Productos</a>
       <a routerLink="/about" routerLinkActive="active">Nosotros</a>
       <a routerLink="/contact" routerLinkActive="active">Contacto</a>
+      @if (isAdmin$ | async) {
+        <a routerLink="/admin" routerLinkActive="active" class="admin-link">Admin</a>
+      }
     </nav>
     <div class="header-actions">
       @if (user$ | async; as user) {
-        <!-- Contenido para usuarios logueados -->
         <span class="user-greeting">Hola, {{ user.name }}</span>
         <a (click)="logout()" class="nav-link logout-button">Cerrar Sesión</a>
         <a routerLink="/cart" class="cart-button">
@@ -30,7 +32,6 @@
           }
         </a>
       } @else {
-        <!-- Contenido para usuarios no logueados -->
         <a routerLink="/login" class="auth-link login">Iniciar Sesión</a>
         <a routerLink="/register" class="auth-link register">Registrarse</a>
       }

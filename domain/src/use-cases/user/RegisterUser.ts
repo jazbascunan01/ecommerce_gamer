@@ -1,7 +1,7 @@
-import { User } from "../entities/User";
-import { AuthService } from "../services/AuthService";
-import { IUserFinder, IUnitOfWorkFactory } from "../services/IPersistence";
-import { UserAlreadyExistsError } from "../errors/DomainError";
+import { User } from "../../entities/User";
+import { AuthService } from "../../services/AuthService";
+import { IUserFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
+import { UserAlreadyExistsError } from "../../errors/DomainError";
 
 export class RegisterUser {
     constructor(

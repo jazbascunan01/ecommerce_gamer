@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, map } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../models/user.model';
 
@@ -10,15 +10,16 @@ const TOKEN_KEY = 'auth-token';
   providedIn: 'root'
 })
 export class AuthService {
-  // La URL base de la API. Las rutas de usuario están en /api/users
-  // según la configuración del backend.
   private apiUrl = 'http://localhost:3000/api/auth'; // Corregido: la ruta es /api/auth
 
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$: Observable<User | null> = this.userSubject.asObservable();
 
+  public isAdmin$: Observable<boolean> = this.user$.pipe(
+    map(user => user?.role === 'ADMIN')
+  );
+
   constructor(private http: HttpClient) {
-    // Al iniciar el servicio, verificamos si hay un token válido en localStorage.
     this.checkTokenOnLoad();
   }
 
@@ -29,10 +30,7 @@ export class AuthService {
    */
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials).pipe(      tap(response => {
-        // El 'tap' nos permite ejecutar una acción sin modificar la respuesta.
-        // Asumimos que el backend devuelve un objeto con una propiedad 'token' y 'user'.
         if (response && response.token) {
-          // El backend solo devuelve el token, lo manejamos aquí
           this.handleAuthentication(response.token);
         }
       })
@@ -52,12 +50,8 @@ export class AuthService {
    * Cierra la sesión del usuario.
    */
   logout(): void {
-    // Elimina el token del almacenamiento
     localStorage.removeItem(TOKEN_KEY);
-    // Informa a toda la aplicación que ya no hay un usuario logueado
     this.userSubject.next(null);
-    // Opcional: podrías querer redirigir al usuario a la página de inicio
-    // this.router.navigate(['/']);
   }
 
   /**
@@ -67,8 +61,7 @@ export class AuthService {
   private handleAuthentication(token: string): void {
     this.saveToken(token);
     const decodedToken: any = jwtDecode(token);
-    // Reconstruimos el objeto User a partir del contenido del token
-    const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name };
+    const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name, role: decodedToken.role };
     this.userSubject.next(user);
   }
 
@@ -100,16 +93,13 @@ export class AuthService {
         const isExpired = decodedToken.exp * 1000 < Date.now();
 
         if (isExpired) {
-          this.logout(); // Si el token ha expirado, limpiamos todo.
+          this.logout();
         } else {
-          // Si el token es válido, reconstruimos el objeto de usuario y lo emitimos.
-          // El token solo contiene id, email y role. El 'name' no está presente.
-          // El token contiene id, name, email y role.
-          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name };
+          const user: User = { id: decodedToken.id, email: decodedToken.email, name: decodedToken.name, role: decodedToken.role };
           this.userSubject.next(user);
         }
       } catch (error) {
-        this.logout(); // Si el token es inválido o malformado, limpiamos todo.
+        this.logout();
       }
     }
   }

@@ -2,6 +2,24 @@ import { Product } from "./Product";
 import { Entity } from "../core/Entity";
 import { UniqueEntityID } from "../core/UniqueEntityID";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CartItem:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: El ID único del ítem del carrito.
+ *         quantity:
+ *           type: integer
+ *           description: La cantidad del producto en el carrito.
+ *           example: 2
+ *         product:
+ *           $ref: '#/components/schemas/Product'
+ */
+
 interface CartItemProps {
     product: Product;
     quantity: number;

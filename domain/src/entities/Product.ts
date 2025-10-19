@@ -1,6 +1,45 @@
 import { InsufficientStockError, InvalidEntityStateError } from "../errors/DomainError";
 import { Entity } from "../core/Entity";
 import { UniqueEntityID } from "../core/UniqueEntityID";
+import { UpdateProductData } from "../use-cases/product/UpdateProduct";
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: El ID único del producto.
+ *           example: 'clx123abc'
+ *         name:
+ *           type: string
+ *           description: El nombre del producto.
+ *           example: 'Teclado Mecánico RGB'
+ *         description:
+ *           type: string
+ *           description: La descripción detallada del producto.
+ *           example: 'Teclado mecánico con switches rojos, retroiluminación RGB personalizable.'
+ *         price:
+ *           type: number
+ *           format: float
+ *           description: El precio del producto.
+ *           example: 89.99
+ *         stock:
+ *           type: integer
+ *           description: La cantidad de stock disponible.
+ *           example: 15
+ *         imageUrl:
+ *           type: string
+ *           description: La URL de la imagen del producto.
+ *           example: 'https://example.com/image.jpg'
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: La fecha de creación del producto.
+ */
 
 interface ProductProps {
     name: string;
@@ -38,6 +77,30 @@ export class Product extends Entity<ProductProps> {
     }
 
     /**
+     * Updates the product details from a data object.
+     * Only updates fields that are provided and not undefined.
+     */
+    public updateDetails(data: UpdateProductData): void {
+        if (data.name !== undefined) {
+            this.props.name = data.name;
+        }
+        if (data.description !== undefined) {
+            this.props.description = data.description;
+        }
+        if (data.price !== undefined) {
+            if (data.price < 0) throw new InvalidEntityStateError("Product price cannot be negative.");
+            this.props.price = data.price;
+        }
+        if (data.stock !== undefined) {
+            if (data.stock < 0) throw new InvalidEntityStateError("Product stock cannot be negative.");
+            this.props.stock = data.stock;
+        }
+        if (data.imageUrl !== undefined) {
+            this.props.imageUrl = data.imageUrl;
+        }
+    }
+
+    /**
      * Ajusta el stock del producto. Un número positivo lo incrementa, uno negativo lo disminuye.
      * @throws Error si el ajuste resulta en un stock negativo.
      */
@@ -47,12 +110,6 @@ export class Product extends Entity<ProductProps> {
             throw new InsufficientStockError(this._id.toString(), "Stock adjustment results in a negative value.");        }        this.props.stock += amount;
     }
 
-    /**
-     * Decreases the stock of the product by a given amount.
-     * @param amount The amount to decrease the stock by.
-     */
-    decreaseStock(amount: number): void {
-        this.props.stock -= amount;    }
 
     toJSON() {
         return {

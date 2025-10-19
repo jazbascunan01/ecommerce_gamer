@@ -1,5 +1,5 @@
-import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError } from "../errors/DomainError";
-import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../services/IPersistence";
+import { CartNotFoundError, ProductNotFoundError, ProductNotInCartError } from "../../errors/DomainError";
+import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class RemoveFromCart {
     constructor(

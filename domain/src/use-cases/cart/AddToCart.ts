@@ -1,7 +1,7 @@
-import { Cart } from "../entities/Cart";
-import { Product } from "../entities/Product";
-import { CartNotFoundError, ProductNotFoundError } from "../errors/DomainError";
-import { ICartFinder, IProductFinder, IUnitOfWork, IUnitOfWorkFactory } from "../services/IPersistence";
+import { Cart } from "../../entities/Cart";
+import { Product } from "../../entities/Product";
+import { CartNotFoundError, ProductNotFoundError } from "../../errors/DomainError";
+import { ICartFinder, IProductFinder, IUnitOfWork, IUnitOfWorkFactory } from "../../services/IPersistence";
 
 export class AddToCart {
     private readonly cartFinder: ICartFinder;

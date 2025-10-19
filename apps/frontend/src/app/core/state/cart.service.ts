@@ -57,7 +57,6 @@ export class CartService {
     const currentItems = this.itemsSubject.getValue();
     const itemInCart = currentItems.find(item => item.product.id === product.id);
     if (itemInCart) {
-      // --- SI EL PRODUCTO YA EXISTE ---
       const newQuantity = itemInCart.quantity + 1;
 
       if (product.stock<0) {
@@ -67,7 +66,6 @@ export class CartService {
 
       this.updateQuantity(product.id, newQuantity);
     } else {
-      // --- SI EL PRODUCTO ES NUEVO ---
       const payload = { productId: product.id, quantity: 1 };
       this.loadingSubject.next(true);
       this.http.post<any>(`${this.apiUrl}/items`, payload).pipe(
@@ -108,6 +106,21 @@ export class CartService {
       error: err => {
         console.error('Error al actualizar la cantidad del producto:', err);
       }
+    });
+  }
+
+  /**
+   * Vacía completamente el carrito del usuario, tanto en el frontend como en el backend.
+   */
+  public clearCart(): void {
+    this.loadingSubject.next(true);
+    this.http.post<any>(`${this.apiUrl}/clear`, {}).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    ).subscribe({
+      next: () => {
+        this.itemsSubject.next([]);
+      },
+      error: err => console.error('Error al vaciar el carrito:', err)
     });
   }
 }

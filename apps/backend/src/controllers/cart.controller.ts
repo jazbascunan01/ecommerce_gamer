@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
-import { AddToCart } from "@domain/use-cases/AddToCart";
-import { ClearCart } from "@domain/use-cases/ClearCart";
-import { GetCart } from "@domain/use-cases/GetCart";
-import { UpdateCartItem } from "@domain/use-cases/UpdateCartItem";
-import { RemoveFromCart } from "@domain/use-cases/RemoveFromCart";
-import { ICartFinder, IProductFinder, IUnitOfWorkFactory, IUserFinder } from "@domain/services/IPersistence";
-import { ProductNotFoundError, InsufficientStockError, InvalidQuantityError, CartNotFoundError, ProductNotInCartError } from "@domain/errors/DomainError";
+import { AddToCart } from "@domain/use-cases/cart/AddToCart";
+import { ClearCart } from "@domain/use-cases/cart/ClearCart";
+import { GetCart } from "@domain/use-cases/cart/GetCart";
+import { UpdateCartItem } from "@domain/use-cases/cart/UpdateCartItem";
+import { RemoveFromCart } from "@domain/use-cases/cart/RemoveFromCart";
+import { ICartFinder, IProductFinder, IUnitOfWorkFactory } from "@domain/services/IPersistence";
 
-// Extendemos la interfaz Request para incluir userId
 interface AuthenticatedRequest extends Request {
     userId?: string;
 }
@@ -17,7 +15,6 @@ export const createCartController = (
     productFinder: IProductFinder, 
     unitOfWorkFactory: IUnitOfWorkFactory
 ) => {
-    // Instanciamos los casos de uso una sola vez, cuando se crea el controlador.
     const getCartCase = new GetCart(cartFinder);
     const addToCartCase = new AddToCart(cartFinder, productFinder, unitOfWorkFactory);
     const removeFromCartCase = new RemoveFromCart(cartFinder, productFinder, unitOfWorkFactory);
@@ -26,11 +23,8 @@ export const createCartController = (
     
     const getCart = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
-            // Reutilizamos la instancia del caso de uso.
             const cart = await getCartCase.execute(req.userId!);
             if (!cart) {
-                // Si no hay carrito, es correcto devolver null o un objeto de carrito vacío.
-                // Devolver null es más preciso para indicar que el recurso no existe.
                 return res.status(200).json(null);
             }
             res.status(200).json(cart);
@@ -59,9 +53,9 @@ export const createCartController = (
     };
     const updateCartItem = async (req: AuthenticatedRequest, res: Response, next: Function) => {
         try {
-            const { productId } = req.params; // Leemos el ID de la URL
-            const { quantity } = req.body; // Leemos la cantidad del cuerpo
-            await updateCartItemCase.execute(req.userId!, productId, quantity); // Pasamos ambos al caso de uso
+            const { productId } = req.params;
+            const { quantity } = req.body;
+            await updateCartItemCase.execute(req.userId!, productId, quantity);
             res.status(200).json({ message: "CartComponent item quantity updated" });
         } catch (err: any) {
             next(err);

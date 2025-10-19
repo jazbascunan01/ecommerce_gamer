@@ -16,6 +16,7 @@ import { User } from '../../core/models/user.model';
 export class HeaderComponent {
   totalItemsInCart$: Observable<number>;
   user$: Observable<User | null>;
+  isAdmin$: Observable<boolean>;
   constructor(
     private cartService: CartService,
     private authService: AuthService,
@@ -23,6 +24,7 @@ export class HeaderComponent {
   ) {
     this.totalItemsInCart$ = this.cartService.totalItems$;
     this.user$ = this.authService.user$;
+    this.isAdmin$ = this.authService.isAdmin$;
   }
   logout(): void {
     this.authService.logout();

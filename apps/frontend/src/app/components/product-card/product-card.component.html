@@ -4,7 +4,16 @@
       <p class="card-price">{{ product.price | currency:'ARS' }}</p>
     </div>
   </a>
-  <div class="card-footer">
-    <button class="card-button" [disabled]="product.stock === 0" (click)="onAddToCart()">{{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}</button>
-  </div>
+  @if (user$ | async; as user) {
+    <div class="card-footer">
+      @if (isAdmin$ | async) {
+        <div class="admin-actions">
+          <a [routerLink]="['/admin/products/edit', product.id]" class="admin-button edit">Editar</a>
+          <button (click)="onDeleteProduct()" class="admin-button delete">Eliminar</button>
+        </div>
+      } @else {
+        <button class="card-button" [disabled]="product.stock === 0" (click)="onAddToCart()">{{ product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}</button>
+      }
+    </div>
+  }
 </div>

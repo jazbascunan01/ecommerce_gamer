@@ -3,6 +3,29 @@ import { UniqueEntityID } from "../core/UniqueEntityID";
 import { CartItem } from "./CartItem";
 import { Product } from "./Product";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Cart:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: El ID único del carrito.
+ *         userId:
+ *           type: string
+ *           description: El ID del usuario al que pertenece el carrito.
+ *         items:
+ *           type: array
+ *           description: La lista de ítems en el carrito.
+ *           items:
+ *             $ref: '#/components/schemas/CartItem'
+ *         total:
+ *           type: number
+ *           description: El precio total de todos los ítems en el carrito.
+ */
+
 interface CartProps {
     items: CartItem[];
     userId: UniqueEntityID;
@@ -23,7 +46,7 @@ export class Cart extends Entity<CartProps> {
 
     public static create(props: CartProps, id?: UniqueEntityID): Cart {
         const cart = new Cart(props, id);
-        cart.recalculateTotal(); // Recalculate total on creation
+        cart.recalculateTotal();
         return cart;
     }
 
@@ -47,9 +70,8 @@ export class Cart extends Entity<CartProps> {
         this.props.total = this.items.reduce((total, item) => total + item.price, 0);
     }
 
-    public addItem(product: Product, quantity: number): void {        // 1. Check for stock
+    public addItem(product: Product, quantity: number): void {
         if (product.stock <= 0) {
-            // No stock, do nothing.
             return;
         }
 
@@ -58,19 +80,15 @@ export class Cart extends Entity<CartProps> {
         );
 
         if (existingItem) {
-            // 3. If it exists, increase quantity
             existingItem.increaseQuantity(quantity);
         } else {
-            // 4. If it's new, create and add it
             const newItem = CartItem.create({
                 product,
                 quantity: quantity,            });
             this.props.items.push(newItem);
         }
 
-        // 5. In both cases, decrease product stock
-        product.decreaseStock(quantity);
-        // 6. Recalculate total price
+        product.adjustStock(-quantity);
         this.recalculateTotal();
     }
 
