@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';import { CartService } from '../../core/state/cart.service';
+import { Router, RouterLink } from '@angular/router';import { CartService } from '../../core/state/cart.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,7 @@ import { User } from '../../core/models/user.model';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
