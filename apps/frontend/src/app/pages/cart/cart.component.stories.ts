@@ -34,6 +34,20 @@ const mockCartItems: CartItem[] = [
 
 const mockTotalPrice = mockCartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
+/**
+ * Crea un mock del CartService para las historias.
+ * @param items - Array de items en el carrito.
+ * @param loading - Estado de carga.
+ * @returns Un objeto que simula el CartService.
+ */
+const createMockCartService = (items: CartItem[], loading: boolean) => ({
+  items$: of(items),
+  totalPrice$: of(items.reduce((total, item) => total + item.product.price * item.quantity, 0)),
+  loading$: of(loading),
+  removeProduct: () => {},
+  updateQuantity: () => {},
+});
+
 const meta: Meta<CartComponent> = {
   title: 'Pages/Cart',
   component: CartComponent,
@@ -53,16 +67,7 @@ export const WithItems: Story = {
     applicationConfig({
       providers: [
         provideRouter([]),
-        {
-          provide: CartService,
-          useValue: {
-            items$: of(mockCartItems),
-            totalPrice$: of(mockTotalPrice),
-            loading$: of(false),
-            removeProduct: () => {},
-            updateQuantity: () => {},
-          },
-        },
+        { provide: CartService, useValue: createMockCartService(mockCartItems, false) },
       ],
     }),
   ],
@@ -76,16 +81,7 @@ export const Empty: Story = {
   decorators: [
     applicationConfig({
       providers: [
-        {
-          provide: CartService,
-          useValue: {
-            items$: of([]),
-            totalPrice$: of(0),
-            loading$: of(false),
-            removeProduct: () => {},
-            updateQuantity: () => {},
-          },
-        },
+        { provide: CartService, useValue: createMockCartService([], false) },
       ],
     }),
   ],
@@ -99,16 +95,7 @@ export const Loading: Story = {
   decorators: [
     applicationConfig({
       providers: [
-        {
-          provide: CartService,
-          useValue: {
-            items$: of(mockCartItems),
-            totalPrice$: of(mockTotalPrice),
-            loading$: of(true),
-            removeProduct: () => {},
-            updateQuantity: () => {},
-          },
-        },
+        { provide: CartService, useValue: createMockCartService(mockCartItems, true) },
       ],
     }),
   ],
