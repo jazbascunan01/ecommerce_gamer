@@ -1,0 +1,47 @@
+:host {
+  --container-bg: #1a1a1d;
+  --text-color: #c5c6c7;
+  --border-color: #4b5d67;
+}
+
+.stat-card-container {
+  background-color: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(102, 252, 241, 0.1);
+  }
+}
+
+.stat-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.stat-info {
+  text-align: center;
+
+  // Estilos para el contenido proyectado
+  ::ng-deep .stat-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    word-break: break-all;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin: 5px 0 0;
+  }
+}

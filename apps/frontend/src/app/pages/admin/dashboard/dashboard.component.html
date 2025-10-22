@@ -3,53 +3,29 @@
 
   @if (stats$ | async; as stats) {
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">📦</div>
-        <div class="stat-info">
-          <p class="stat-value">{{ stats.totalProducts }}</p>
-          <p class="stat-label">Productos Diferentes</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📈</div>
-        <div class="stat-info">
-          <p class="stat-value">{{ stats.totalStock }}</p>
-          <p class="stat-label">Unidades en Stock</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">💰</div>
-        <div class="stat-info">
-          <p class="stat-value">{{ stats.totalStockValue | currency:'ARS':'$' }}</p>
-          <p class="stat-label">Valor Total del Stock</p>
-        </div>
-      </div>
-      <div class="stat-card out-of-stock">
-        <div class="stat-icon">⚠️</div>
-        <div class="stat-info">
-          <p class="stat-value">{{ stats.productsOutOfStock }}</p>
-          <p class="stat-label">Productos sin Stock</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📊</div>
-        <div class="stat-info">
-          <p class="stat-value">{{ stats.averageProductPrice | currency:'ARS':'$' }}</p>
-          <p class="stat-label">Precio Promedio</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">👑</div>
-        <div class="stat-info">
-          @if (stats.highestStockProduct) {
-            <p class="stat-value small-text">{{ stats.highestStockProduct.name }}</p>
-            <p class="stat-label">Producto con más stock ({{ stats.highestStockProduct.stock }} u.)</p>
-          } @else {
-            <p class="stat-value small-text">N/A</p>
-            <p class="stat-label">Producto con más stock</p>
-          }
-        </div>
-      </div>
+      <app-stat-card icon="📦" label="Productos Diferentes">
+        <p class="stat-value">{{ stats.totalProducts }}</p>
+      </app-stat-card>
+
+      <app-stat-card icon="📈" label="Unidades en Stock">
+        <p class="stat-value">{{ stats.totalStock }}</p>
+      </app-stat-card>
+
+      <app-stat-card icon="💰" label="Valor Total del Stock">
+        <p class="stat-value">{{ stats.totalStockValue | currency:'ARS':'$' }}</p>
+      </app-stat-card>
+
+      <app-stat-card icon="⚠️" label="Productos sin Stock" class="out-of-stock">
+        <p class="stat-value">{{ stats.productsOutOfStock }}</p>
+      </app-stat-card>
+
+      <app-stat-card icon="📊" label="Precio Promedio">
+        <p class="stat-value">{{ stats.averageProductPrice | currency:'ARS':'$' }}</p>
+      </app-stat-card>
+
+      <app-stat-card icon="👑" [label]="stats.highestStockProduct ? 'Producto con más stock (' + stats.highestStockProduct.stock + ' u.)' : 'Producto con más stock'">
+        <p class="stat-value small-text">{{ stats.highestStockProduct?.name || 'N/A' }}</p>
+      </app-stat-card>
     </div>
   } @else {
     <p class="loading-message">Cargando estadísticas...</p>

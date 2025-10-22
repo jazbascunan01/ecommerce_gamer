@@ -1,0 +1,13 @@
+<div class="cart-item-container">
+  <img [src]="item.product.imageUrl" [alt]="item.product.name" class="item-img">
+  <div class="item-details">
+    <p class="item-name">{{ item.product.name }}</p>
+    <p class="item-price">{{ item.product.price | currency:'ARS' }}</p>
+  </div>
+  <div class="item-quantity">
+    <input #quantityInput type="number" [value]="item.quantity" min="1"
+           (change)="onQuantityChange(quantityInput.value)"
+           [disabled]="isLoading">
+  </div>
+  <button class="item-remove-btn" (click)="onRemove()" [disabled]="isLoading">Eliminar</button>
+</div>

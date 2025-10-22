@@ -5,12 +5,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 
 import { ProductCardComponent } from './product-card.component';
-import { Product } from '../../core/models/product.model';
-import { CartService } from '../../core/state/cart.service';
-import { AuthService } from '../../core/auth/auth.service';
-import { ProductService } from '../../core/services/product.service';
-import { ListProductsUseCase } from '../../application/list-products.service';
-import { User } from '../../core/models/user.model';
+import { Product } from '../../../core/models/product.model';
+import { CartService } from '../../../core/state/cart.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ProductService } from '../../../core/services/product.service';
+import { ListProductsUseCase } from '../../../application/list-products.service';
+import { User } from '../../../core/models/user.model';
 
 const mockProduct: Product = {
   id: 'prod-1',

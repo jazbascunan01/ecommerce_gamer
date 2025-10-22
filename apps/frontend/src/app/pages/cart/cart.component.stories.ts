@@ -26,7 +26,7 @@ const mockCartItems: CartItem[] = [
       description: 'Precisión y libertad de movimiento.',
       price: 49.99,
       stock: 30,
-      imageUrl: 'https://images.unsplash.com/photo-1615663249853-2d423550354a?q=80&w=1974&auto=format&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1694175640153-00c83f4a36ef?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2080',
     },
     quantity: 1,
   },

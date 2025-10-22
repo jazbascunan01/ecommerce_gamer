@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { Product } from '../../core/models/product.model';
+import { Product } from '../../../core/models/product.model';
 import { RouterLink } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { CartService } from '../../core/state/cart.service';
-import { AuthService } from '../../core/auth/auth.service';
-import { ProductService } from '../../core/services/product.service';
-import { ListProductsUseCase } from '../../application/list-products.service';
+import { CartService } from '../../../core/state/cart.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ProductService } from '../../../core/services/product.service';
+import { ListProductsUseCase } from '../../../application/list-products.service';
 import { Observable } from 'rxjs';
-import { User } from '../../core/models/user.model';
+import { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-product-card',

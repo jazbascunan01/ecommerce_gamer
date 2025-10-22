@@ -2,7 +2,7 @@ import { Component } from '@angular/core';import { Observable } from 'rxjs';
 import { Product } from '../../core/models/product.model';
 import { ListProductsUseCase } from '../../application/list-products.service';
 import { AuthService } from '../../core/auth/auth.service';
-import { ProductCardComponent } from '../../components/product-card/product-card.component';
+import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
