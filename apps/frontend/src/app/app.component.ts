@@ -6,9 +6,9 @@ import { FooterComponent } from './layout/footer/footer.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
-export class App {
+export class AppComponent {
   protected readonly title = signal('frontend');
 }

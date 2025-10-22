@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -5,6 +6,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../../core/auth/auth.service';
+@Component({
+  selector: 'app-dummy',
+  template: '',
+  standalone: true,
+})
+class DummyComponent {}
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -17,13 +24,13 @@ describe('LoginComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideRouter([]),
-        // Usamos un mock del AuthService para controlar su comportamiento en las pruebas
+        provideRouter([
+          { path: 'products', component: DummyComponent }
+        ]),
         {
           provide: AuthService,
           useValue: {
-            login: jest.fn().mockReturnValue(of({ token: 'fake-token' })),
-          },
+            login: jasmine.createSpy('login').and.returnValue(of({ token: 'fake-token' })),          },
         },
       ],
     }).compileComponents();
@@ -62,19 +69,16 @@ describe('LoginComponent', () => {
   });
 
   it('should call authService.login on submit', fakeAsync(() => {
-    const loginSpy = jest.spyOn(authService, 'login');
     component.loginForm.controls['email'].setValue('test@example.com');
     component.loginForm.controls['password'].setValue('password123');
 
     component.onSubmit();
     tick();
 
-    expect(loginSpy).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123' });
-  }));
+    expect(authService.login).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123' });  }));
 
   it('should navigate to /products on successful login', fakeAsync(() => {
-    const navigateSpy = jest.spyOn(router, 'navigate');
-    component.loginForm.controls['email'].setValue('test@example.com');
+    const navigateSpy = spyOn(router, 'navigate');    component.loginForm.controls['email'].setValue('test@example.com');
     component.loginForm.controls['password'].setValue('password123');
 
     component.onSubmit();
@@ -84,8 +88,7 @@ describe('LoginComponent', () => {
   }));
 
   it('should set an error message on failed login', () => {
-    jest.spyOn(authService, 'login').mockReturnValue(throwError(() => new Error('Invalid credentials')));
-    component.loginForm.controls['email'].setValue('wrong@example.com');
+    (authService.login as jasmine.Spy).and.returnValue(throwError(() => new Error('Invalid credentials')));    component.loginForm.controls['email'].setValue('wrong@example.com');
     component.loginForm.controls['password'].setValue('wrongpassword');
 
     component.onSubmit();
