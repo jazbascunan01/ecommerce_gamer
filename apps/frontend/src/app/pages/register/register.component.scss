@@ -100,11 +100,14 @@ button[type="submit"] {
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease-out;
   margin-top: 1rem;
 
   &:hover:not(:disabled) {
     background-color: var(--accent-hover-color);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.98);
   }
 
   &:disabled {
@@ -118,6 +121,7 @@ button[type="submit"] {
   color: var(--error-color);
   font-size: 0.85rem;
   margin-top: 0.5rem;
+  animation: slide-down-fade-in 0.3s ease-out;
 
   p {
     margin: 0;
@@ -138,5 +142,16 @@ button[type="submit"] {
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+@keyframes slide-down-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
