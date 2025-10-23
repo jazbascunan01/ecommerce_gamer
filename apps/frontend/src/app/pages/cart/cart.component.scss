@@ -28,21 +28,13 @@
 .cart-items {
   flex: 3;
   min-width: 300px;
-  background-color: var(--container-bg);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
+  @include panel-style;
 }
 
 .order-summary {
   flex: 1;
   min-width: 280px;
-  background-color: var(--container-bg);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
+  @include panel-style;
   position: sticky;
   top: 90px;
 

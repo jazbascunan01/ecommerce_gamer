@@ -20,5 +20,11 @@
   --background-dark: #0b0c10;
   --container-dark: #1a1a1d;
   --card-bg: #1a1a1d;
-
+}
+@mixin panel-style {
+  background-color: var(--container-bg);
+  padding: 25px;
+  border-radius: 8px;
+  //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
 }

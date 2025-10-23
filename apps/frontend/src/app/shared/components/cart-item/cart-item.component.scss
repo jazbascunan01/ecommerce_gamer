@@ -7,11 +7,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
-  background-color: var(--container-bg);
+  @include panel-style;
 
   &:last-child {
     border-bottom: none;
