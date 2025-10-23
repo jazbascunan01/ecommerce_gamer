@@ -72,10 +72,14 @@
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease, transform 0.1s ease-out;
 
   &:hover:not(:disabled) {
     background-color: var(--success-hover-color);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
   }
 
   &:disabled {

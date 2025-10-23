@@ -14,6 +14,9 @@ export class CartService {
   private itemsSubject = new BehaviorSubject<CartItem[]>([]);
   public items$: Observable<CartItem[]> = this.itemsSubject.asObservable();
 
+  private itemAddedSubject = new BehaviorSubject<boolean>(false);
+  public itemAdded$ = this.itemAddedSubject.asObservable();
+
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$: Observable<boolean> = this.loadingSubject.asObservable();
 
@@ -71,7 +74,10 @@ export class CartService {
       this.http.post<any>(`${this.apiUrl}/items`, payload).pipe(
         finalize(() => this.loadingSubject.next(false))
       ).subscribe({
-        next: () => this.loadInitialCart(),
+        next: () => {
+          this.loadInitialCart();
+          this.itemAddedSubject.next(true);
+        },
         error: err => console.error('Error al añadir producto al carrito:', err)
       });
     }
