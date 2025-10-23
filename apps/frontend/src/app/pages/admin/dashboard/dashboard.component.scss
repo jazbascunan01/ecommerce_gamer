@@ -1,12 +1,4 @@
-:host {
-  --page-bg: #0b0c10;
-  --container-bg: #1a1a1d;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --border-color: #4b5d67;
-  --error-color: #ff6b6b;
-}
-
+@use 'variables' as *;
 .dashboard-container {
   padding: 40px 20px;
   background-color: var(--page-bg);

@@ -1,12 +1,5 @@
-:host {
-  --page-bg: #0b0c10;
-  --container-bg: #1a1a1d;
-  --input-bg: #252a34;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --accent-hover-color: #45a29e;
-  --border-color: #4b5d67;
-}.contact-page {
+@use 'variables' as *;
+.contact-page {
   padding: 40px 20px;
 }
 .contact-page {

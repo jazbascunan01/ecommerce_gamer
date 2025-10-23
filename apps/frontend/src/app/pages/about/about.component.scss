@@ -1,10 +1,4 @@
-:host {
-  --page-bg: #0b0c10;
-  --container-bg: #1a1a1d;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --border-color: #4b5d67;
-}
+@use 'variables' as *;
 .about-page {
   background-color: var(--page-bg);
   color: var(--text-color);

@@ -1,10 +1,4 @@
-:host {
-  --footer-background: #1a1a1a;
-  --footer-text-color: #a0a0a0;
-  --footer-link-hover-color: #ffffff;
-  --border-color: #333;
-}
-
+@use 'variables' as *;
 .footer {
   background-color: var(--footer-background);
   color: var(--footer-text-color);

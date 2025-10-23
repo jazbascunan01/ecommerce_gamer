@@ -1,9 +1,4 @@
-:host {
-  --container-bg: #1a1a1d;
-  --text-color: #c5c6c7;
-  --border-color: #4b5d67;
-}
-
+@use 'variables' as *;
 .stat-card-container {
   background-color: var(--container-bg);
   border: 1px solid var(--border-color);

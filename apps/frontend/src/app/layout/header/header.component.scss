@@ -1,12 +1,4 @@
-/* Variables para colores y espaciados, facilitan mantener la consistencia */
-:host {
-  --header-bg: #1a1a1d;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --accent-hover-color: #45a29e;
-  --border-color: #4b5d67;
-}
-
+@use 'variables' as *;
 .header {
   background-color: var(--header-bg);
   color: var(--text-color);

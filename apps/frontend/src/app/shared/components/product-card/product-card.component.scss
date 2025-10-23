@@ -1,13 +1,7 @@
+@use 'variables' as *;
 :host {
   display: block;
-  --card-bg: #1a1a1d;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --accent-hover-color: #45a29e;
-  --border-color: #4b5d67;
-  --error-color: #ff6b6b;
 }
-
 .card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);  border-radius: 8px;

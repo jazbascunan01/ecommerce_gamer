@@ -1,11 +1,6 @@
+@use 'variables' as *;
 :host {
   display: block;
-  --container-bg: #1a1a1d;
-  --input-bg: #252a34;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --border-color: #4b5d67;
-  --error-color: #ff6b6b;
 }
 .cart-item-container {
   margin: 0 auto;
