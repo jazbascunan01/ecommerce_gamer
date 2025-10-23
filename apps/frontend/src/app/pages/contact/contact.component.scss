@@ -1,8 +1,6 @@
 @use 'variables' as *;
 .contact-page {
   padding: 40px 20px;
-}
-.contact-page {
   background-color: var(--page-bg);
   color: var(--text-color);
   min-height: calc(100vh - 70px);
@@ -15,6 +13,7 @@
   border-radius: 10px;
   border: 1px solid var(--border-color);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: slide-up-fade-in 0.6s ease-out forwards;
 }
 
 .contact-header {
@@ -24,9 +23,22 @@
   h1 {
     font-size: 2.5rem;
     color: white;
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 0.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
     margin-bottom: 1rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--accent-color);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: draw-line 0.5s ease-out 0.4s forwards;
+    }
   }
 
   p {
@@ -37,13 +49,18 @@
 
 .contact-content {
   display: flex;
-  gap: 40px;
+  gap: 60px;
   flex-wrap: wrap;
 }
 
 .contact-form-container {
   flex: 2;
   min-width: 300px;
+  // Animación para el contenedor del formulario
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slide-up-fade-in 0.5s ease-out 0.5s forwards;
+
 }
 
 .contact-info {
@@ -52,6 +69,10 @@
   background-color: #252a34;
   padding: 2rem;
   border-radius: 10px;
+  // Animación para la tarjeta de información
+  opacity: 0;
+  transform: translateX(20px);
+  animation: slide-in-from-right 0.5s ease-out 0.7s forwards;
 
   h2 {
     margin-top: 0;
@@ -77,7 +98,12 @@ h2 {
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem; // Reducimos un poco el gap para que se vea más compacto
+
+  .form-group {
+    opacity: 0;
+    animation: fade-in 0.5s ease-out forwards;
+  }
 }
 
 .form-group {
@@ -89,6 +115,19 @@ h2 {
     font-weight: 500;
     color: var(--text-color);
   }
+  // Aplicamos un retraso escalonado a cada campo del formulario
+  &:nth-child(1) { animation-delay: 0.8s; }
+  &:nth-child(2) { animation-delay: 0.9s; }
+  &:nth-child(3) { animation-delay: 1.0s; }
+
+  // Y al botón
+  + .submit-btn {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slide-up-fade-in 0.5s ease-out 1.1s forwards;
+  }
+
+
 
   input,
   textarea {
@@ -110,7 +149,7 @@ h2 {
 }
 
 .submit-btn {
-  padding: 0.9rem;
+  padding: 0.9rem 2.5rem;
   background-color: var(--accent-color);
   color: var(--container-dark);
   border: none;
@@ -118,9 +157,49 @@ h2 {
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.1s ease-out;
+  align-self: center;
 
   &:hover {
     background-color: var(--accent-hover-color);
+  }
+}
+
+@keyframes slide-in-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-up-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
