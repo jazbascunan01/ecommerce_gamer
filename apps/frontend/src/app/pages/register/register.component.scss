@@ -1,13 +1,4 @@
-:host {
-  --form-bg: #1a1a1d;
-  --input-bg: #252a34;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --accent-hover-color: #45a29e;
-  --border-color: #4b5d67;
-  --error-color: #ff6b6b;
-}
-
+@use 'variables' as *;
 .register-container {
   display: flex;
   justify-content: center;
@@ -28,6 +19,20 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  animation: form-fade-in 0.5s ease-out forwards;
+
+  // Animación escalonada para los hijos
+  & > * {
+    opacity: 0;
+    animation: slide-up-fade-in 0.5s ease-out forwards;
+  }
+
+  h2 { animation-delay: 0.1s; }
+  .form-group:nth-of-type(1) { animation-delay: 0.2s; }
+  .form-group:nth-of-type(2) { animation-delay: 0.3s; }
+  .form-group:nth-of-type(3) { animation-delay: 0.4s; }
+  button[type="submit"] { animation-delay: 0.5s; }
+  .login-link { animation-delay: 0.6s; }
 
   h2 {
     color: white;
@@ -65,8 +70,24 @@
     &:focus {
       outline: none;
       border-color: var(--accent-color);
-      box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.2);
+      box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.2), 0 0 10px rgba(102, 252, 241, 0.3) inset;
     }
+  }
+}
+
+@keyframes form-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -79,11 +100,14 @@ button[type="submit"] {
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease-out;
   margin-top: 1rem;
 
   &:hover:not(:disabled) {
     background-color: var(--accent-hover-color);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.98);
   }
 
   &:disabled {
@@ -97,6 +121,7 @@ button[type="submit"] {
   color: var(--error-color);
   font-size: 0.85rem;
   margin-top: 0.5rem;
+  animation: slide-down-fade-in 0.3s ease-out;
 
   p {
     margin: 0;
@@ -117,5 +142,16 @@ button[type="submit"] {
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+@keyframes slide-down-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

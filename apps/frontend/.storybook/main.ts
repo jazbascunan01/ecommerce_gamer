@@ -19,8 +19,8 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-onboarding')
   ],
   "framework": {
-    "name": getAbsolutePath('@storybook/angular'),
-    "options": {}
+    name: '@storybook/angular',
+    options: {},
   }
 };
 export default config;

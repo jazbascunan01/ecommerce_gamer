@@ -1,7 +1,7 @@
 import { Product } from "@domain/entities/Product";
 import { User } from "@domain/entities/User";
 import { IUnitOfWork, IUnitOfWorkFactory } from "@domain/services/IPersistence";
-import { PrismaPromise } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import prisma from "../prisma-client";
 import { Cart } from "@domain/entities/Cart";
 
@@ -10,7 +10,7 @@ class PrismaUnitOfWork implements IUnitOfWork {
     public products: { save: (product: Product) => void; update: (product: Product) => void; delete: (product: Product) => void; };
     public carts: { save: (cart: Cart) => void; };
 
-    private operations: PrismaPromise<any>[] = [];
+    private operations: Prisma.PrismaPromise<any>[] = [];
 
     constructor() {
         this.users = {

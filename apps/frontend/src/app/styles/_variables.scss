@@ -1,0 +1,30 @@
+:root {
+  --page-bg: #0b0c10;
+  --container-bg: #1a1a1d;
+  --input-bg: #252a34;
+  --text-color: #c5c6c7;
+  --accent-color: #66fcf1;
+  --accent-hover-color: #45a29e;
+  --border-color: #4b5d67;
+  --error-color: #ff6b6b;
+  --success-color: #28a745;
+  --success-hover-color: #218838;
+  --footer-background: #1a1a1a;
+  --footer-text-color: #a0a0a0;
+  --footer-link-hover-color: #ffffff;
+  //--border-color: #333;
+  --header-bg: #1a1a1d;
+  --form-bg: #1a1a1d;
+  --cancel-bg: #3a3f44;
+  --cancel-hover-bg: #4b5d67;
+  --background-dark: #0b0c10;
+  --container-dark: #1a1a1d;
+  --card-bg: #1a1a1d;
+}
+@mixin panel-style {
+  background-color: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

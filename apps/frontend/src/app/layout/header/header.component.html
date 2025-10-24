@@ -25,7 +25,7 @@
       @if (user$ | async; as user) {
         <span class="user-greeting">Hola, {{ user.name }}</span>
         <a (click)="logout()" class="nav-link logout-button">Cerrar Sesión</a>
-        <a routerLink="/cart" class="cart-button">
+        <a routerLink="/cart" class="cart-button" [class.animate]="isCartAnimating">
           <span class="cart-icon">🛒</span>
           @if (totalItemsInCart$ | async; as total) {
             @if (total > 0) { <span class="cart-count">{{ total }}</span> }

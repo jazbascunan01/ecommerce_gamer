@@ -1,16 +1,4 @@
-:host {
-  --page-bg: #0b0c10;
-  --container-bg: #1a1a1d;
-  --input-bg: #252a34;
-  --text-color: #c5c6c7;
-  --accent-color: #66fcf1;
-  --accent-hover-color: #45a29e;
-  --border-color: #4b5d67;
-  --error-color: #ff6b6b;
-  --success-color: #28a745;
-  --success-hover-color: #218838;
-}
-
+@use 'variables' as *;
 .cart-page {
   padding: 40px 20px;
   background-color: var(--page-bg);
@@ -40,95 +28,13 @@
 .cart-items {
   flex: 3;
   min-width: 300px;
-  background-color: var(--container-bg);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
-
-  h2 {
-    margin-top: 0;
-    margin-bottom: 25px;
-    font-size: 1.8rem;
-    color: white;
-  }
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border-color);
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.item-img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.item-details {
-  flex-grow: 1;
-}
-
-.item-name {
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin: 0 0 5px;
-  color: white;
-}
-
-.item-price {
-  margin: 0;
-  color: var(--text-color);
-}
-
-.item-quantity input {
-  width: 60px;
-  padding: 8px;
-  text-align: center;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background-color: var(--input-bg);
-  color: white;
-  font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.2);
-  }
-}
-
-.item-remove-btn {
-  background: none;
-  border: none;
-  color: var(--error-color);
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: bold;
-  padding: 5px;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  @include panel-style;
 }
 
 .order-summary {
   flex: 1;
   min-width: 280px;
-  background-color: var(--container-bg);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
+  @include panel-style;
   position: sticky;
   top: 90px;
 
@@ -166,10 +72,14 @@
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease, transform 0.1s ease-out;
 
   &:hover:not(:disabled) {
     background-color: var(--success-hover-color);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
   }
 
   &:disabled {
