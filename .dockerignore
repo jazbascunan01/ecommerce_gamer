@@ -1,0 +1,21 @@
+# Ignorar node_modules
+**/node_modules
+
+# Ignorar builds previos
+**/dist
+**/build
+
+# Ignorar archivos temporales
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Ignorar el .git y otras carpetas de control de versiones
+.git
+.gitignore
+
+# Ignorar los archivos de entorno (los pasamos por variables)
+.env
+
+# Ignorar la carpeta de Docker Desktop (Windows)
+DockerDesktopData
