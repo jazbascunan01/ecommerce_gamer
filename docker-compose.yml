@@ -9,12 +9,10 @@ services:
     environment:
       DATABASE_URL: file:./dev.db
       JWT_SECRET: ${JWT_SECRET}
-    # Volúmenes para desarrollo
     volumes:
       - ./apps/backend:/app/apps/backend
       - ./domain:/app/domain
       - backend_data:/app/dev.db
-      # Ignorar node_modules del host para no romper deps en contenedor
       - /app/apps/backend/node_modules
       - /app/domain/node_modules
     command: npm run start --prefix ./apps/backend
