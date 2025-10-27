@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma:seed": "npx prisma db seed"
+    "prisma:seed": "npx prisma db seed",
+    "postinstall": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,8 @@
   ],
   "description": "",
   "devDependencies": {
-    "@types/cors": "^2.8.19"
+    "@types/cors": "^2.8.19",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "jwt-decode": "^4.0.0"

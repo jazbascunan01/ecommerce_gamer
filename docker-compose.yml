@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+    container_name: backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: file:./dev.db
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./apps/backend:/app/apps/backend
+      - ./domain:/app/domain
+      - backend_data:/app/dev.db
+      - /app/apps/backend/node_modules
+      - /app/domain/node_modules
+    command: npm run start --prefix ./apps/backend
+
+  frontend:
+    build:
+      context: ./apps/frontend
+    container_name: frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
