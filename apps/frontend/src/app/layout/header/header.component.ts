@@ -29,7 +29,7 @@ export class HeaderComponent implements OnDestroy {
     this.cartSub = this.cartService.itemAdded$.subscribe(added => {
       if (added) {
         this.isCartAnimating = true;
-        setTimeout(() => this.isCartAnimating = false, 600); // Duración de la animación
+        setTimeout(() => this.isCartAnimating = false, 600);
       }
     });
   }

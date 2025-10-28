@@ -1,19 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ProductCardComponent } from './product-card.component';
 import { provideRouter } from '@angular/router';
+import { IProductRepository } from '../../../core/repositories/product.repository';
+import { of } from 'rxjs';
+
 describe('ProductCardComponent', () => {
   let component: ProductCardComponent;
   let fixture: ComponentFixture<ProductCardComponent>;
+  let productRepositoryMock: Partial<IProductRepository>;
 
   beforeEach(async () => {
+    productRepositoryMock = {
+      getAllProducts: () => of([]),
+    };
+
     await TestBed.configureTestingModule({
       imports: [ProductCardComponent],
       providers: [
         provideHttpClient(),
-        provideHttpClientTesting(),
         provideRouter([]),
+        { provide: IProductRepository, useValue: productRepositoryMock },
       ],
     }).compileComponents();
 

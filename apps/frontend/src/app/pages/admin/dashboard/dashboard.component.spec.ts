@@ -1,16 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DashboardComponent } from './dashboard.component';
+import { IProductRepository } from '../../../core/repositories/product.repository';
+import { of } from 'rxjs';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let productRepositoryMock: Partial<IProductRepository>;
 
   beforeEach(async () => {
+    productRepositoryMock = {
+      getProductStats: () =>
+        of({
+          totalProducts: 0,
+          totalStock: 0,
+          totalStockValue: 0,
+          productsOutOfStock: 0,
+          averageProductPrice: 0,
+          highestStockProduct: null,
+        }),
+      getAllProducts: () => of([]),
+    };
+
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(),
+        { provide: IProductRepository, useValue: productRepositoryMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);

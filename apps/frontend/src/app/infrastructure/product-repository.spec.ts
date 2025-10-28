@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ProductRepository } from './product-repository.service';
+import { PrismaProductRepository } from './product-repository.service';
 
 describe('ProductRepository', () => {
-  let service: ProductRepository;
+  let service: PrismaProductRepository;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
-    service = TestBed.inject(ProductRepository);
+    service = TestBed.inject(PrismaProductRepository);
   });
 
   it('should be created', () => {

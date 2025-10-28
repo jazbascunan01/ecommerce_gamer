@@ -21,7 +21,6 @@
   gap: 1.5rem;
   animation: form-fade-in 0.5s ease-out forwards;
 
-  // Animación escalonada para los hijos
   & > * {
     opacity: 0;
     animation: slide-up-fade-in 0.5s ease-out forwards;

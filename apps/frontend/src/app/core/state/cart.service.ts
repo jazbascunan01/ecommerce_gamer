@@ -63,7 +63,7 @@ export class CartService {
     if (itemInCart) {
       const newQuantity = itemInCart.quantity + 1;
 
-      if (product.stock<0) {
+      if (newQuantity > product.stock) {
         console.warn(`No se puede agregar más. Stock máximo (${product.stock}) alcanzado para ${product.name}.`);
         return;
       }
@@ -126,6 +126,7 @@ export class CartService {
     ).subscribe({
       next: () => {
         this.itemsSubject.next([]);
+        this.listProductsUseCase.refresh();
       },
       error: err => console.error('Error al vaciar el carrito:', err)
     });
