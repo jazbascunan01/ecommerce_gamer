@@ -4,7 +4,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { of, throwError, NEVER } from 'rxjs';
 
-import { ProductDetailComponent } from './product-detail.component'; 
+import { ProductDetailComponent } from './product-detail.component';
 import { CartService } from '../../core/state/cart.service';
 import { Product } from '../../core/models/product.model';
 import { GetProductByIdUseCase } from '../../application/get-product-by-id.service';
@@ -23,7 +23,6 @@ const meta: Meta<ProductDetailComponent> = {
   title: 'Pages/ProductDetail',
   component: ProductDetailComponent,
   tags: ['autodocs'],
-  // Dejamos los decoradores generales vacíos para que cada historia sea explícita.
 };
 
 export default meta;
@@ -38,17 +37,13 @@ export const Found: Story = {
   decorators: [
     applicationConfig({
       providers: [
-        // Providers generales
         provideHttpClient(),
         provideRouter([]),
         { provide: CartService, useValue: { addProduct: () => {} } },
-        // Provider específico: El caso de uso devuelve el producto.
         { provide: GetProductByIdUseCase, useValue: { execute: () => of(mockProduct) } },
-        // Provider específico: La ruta tiene un ID.
         {
           provide: ActivatedRoute,
           useValue: {
-            // Usamos `paramMap` porque el componente lo usa para leer el 'id'.
             paramMap: of(new Map([['id', 'prod-1']])),
           },
         },
@@ -65,13 +60,10 @@ export const Loading: Story = {
   decorators: [
     applicationConfig({
       providers: [
-        // Providers generales
         provideHttpClient(),
         provideRouter([]),
         { provide: CartService, useValue: { addProduct: () => {} } },
-        // Provider específico: El caso de uso nunca emite un valor.
         { provide: GetProductByIdUseCase, useValue: { execute: () => NEVER } },
-        // Provider específico: La ruta tiene un ID.
         {
           provide: ActivatedRoute,
           useValue: { paramMap: of(new Map([['id', 'prod-1']])) },
@@ -89,13 +81,10 @@ export const NotFound: Story = {
   decorators: [
     applicationConfig({
       providers: [
-        // Providers generales
         provideHttpClient(),
         provideRouter([]),
         { provide: CartService, useValue: { addProduct: () => {} } },
-        // Provider específico: El caso de uso devuelve un error.
         { provide: GetProductByIdUseCase, useValue: { execute: () => throwError(() => new Error('Product not found')) } },
-        // Provider específico: La ruta tiene un ID.
         {
           provide: ActivatedRoute,
           useValue: { paramMap: of(new Map([['id', 'prod-1']])) },

@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HeaderComponent } from './header.component';
+import { CartService } from '../../core/state/cart.service';
+import { MockCartService } from '../../core/state/mock-cart.service';
+import { AuthService } from '../../core/auth/auth.service';
+import { MockAuthService } from '../../core/auth/mock-auth.service';
+import { provideRouter } from '@angular/router';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -10,11 +13,11 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
+      imports: [HeaderComponent, HttpClientTestingModule],
       providers: [
         provideRouter([]),
-        provideHttpClient(),
-        provideHttpClientTesting(),
+        { provide: CartService, useClass: MockCartService },
+        { provide: AuthService, useClass: MockAuthService },
       ],
     }).compileComponents();
 

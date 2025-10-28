@@ -5,12 +5,13 @@ import { CartItem } from '../models/cart-item.model';
 import { Product } from '../models/product.model';
 import { AuthService } from '../auth/auth.service';
 import { ListProductsUseCase } from '../../application/list-products.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = 'http://localhost:3000/api/cart';
+  private readonly apiUrl = `${environment.apiUrl}/cart`;
   private itemsSubject = new BehaviorSubject<CartItem[]>([]);
   public items$: Observable<CartItem[]> = this.itemsSubject.asObservable();
 
@@ -62,7 +63,7 @@ export class CartService {
     if (itemInCart) {
       const newQuantity = itemInCart.quantity + 1;
 
-      if (product.stock<0) {
+      if (newQuantity > product.stock) {
         console.warn(`No se puede agregar más. Stock máximo (${product.stock}) alcanzado para ${product.name}.`);
         return;
       }
@@ -125,6 +126,7 @@ export class CartService {
     ).subscribe({
       next: () => {
         this.itemsSubject.next([]);
+        this.listProductsUseCase.refresh();
       },
       error: err => console.error('Error al vaciar el carrito:', err)
     });
