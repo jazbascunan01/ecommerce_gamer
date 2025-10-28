@@ -5,12 +5,13 @@ import { CartItem } from '../models/cart-item.model';
 import { Product } from '../models/product.model';
 import { AuthService } from '../auth/auth.service';
 import { ListProductsUseCase } from '../../application/list-products.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = 'http://localhost:3000/api/cart';
+  private readonly apiUrl = `${environment.apiUrl}/cart`;
   private itemsSubject = new BehaviorSubject<CartItem[]>([]);
   public items$: Observable<CartItem[]> = this.itemsSubject.asObservable();
 

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product, ProductStats } from '../core/models/product.model';
 import { IProductRepository } from '../core/repositories/product.repository';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrismaProductRepository implements IProductRepository {
-  private apiUrl = 'http://localhost:3000/api/products';
+  private readonly apiUrl = `${environment.apiUrl}/products`;
 
   constructor(private http: HttpClient) {}
 
