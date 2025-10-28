@@ -1,33 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product, ProductStats } from '../models/product.model';
+import { IProductRepository } from '../repositories/product.repository';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/api/products';
-
-  constructor(private http: HttpClient) { }
+  constructor(private productRepository: IProductRepository) { }
 
   getProductById(productId: string): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${productId}`);
+    return this.productRepository.getProductById(productId);
   }
 
   deleteProduct(productId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${productId}`);
+    return this.productRepository.deleteProduct(productId);
   }
 
   updateProduct(productId: string, productData: Partial<Product>): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${productId}`, productData);
+    return this.productRepository.updateProduct(productId, productData);
   }
 
   createProduct(productData: Partial<Product>): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, productData);
+    return this.productRepository.createProduct(productData);
   }
 
   getProductStats(): Observable<ProductStats> {
-    return this.http.get<ProductStats>(`${this.apiUrl}/summary/stats`);
+    return this.productRepository.getProductStats();
   }
 }
