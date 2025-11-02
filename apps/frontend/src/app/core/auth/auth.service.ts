@@ -51,6 +51,11 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  /** Obtiene el token JWT del localStorage */
+  getToken(): string | null {
+    return localStorage.getItem('auth-token');
+  }
+
   /** Carga usuario desde token almacenado */
   private loadUserFromToken(): void {
     const token = localStorage.getItem('auth-token');
