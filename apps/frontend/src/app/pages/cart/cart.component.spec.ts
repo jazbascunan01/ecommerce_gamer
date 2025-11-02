@@ -3,6 +3,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { CartComponent } from './cart.component';
 import { IProductRepository } from '../../core/repositories/product.repository';
+import { AuthService } from '../../core/auth/auth.service';
+import { MockAuthService } from '../../core/auth/mock-auth.service';
 import { of } from 'rxjs';
 
 describe('CartComponent', () => {
@@ -21,6 +23,7 @@ describe('CartComponent', () => {
         provideHttpClient(),
         provideRouter([]),
         { provide: IProductRepository, useValue: productRepositoryMock },
+        { provide: AuthService, useClass: MockAuthService }, // <-- AÑADIR ESTA LÍNEA
       ],
     }).compileComponents();
 
