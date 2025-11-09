@@ -1,6 +1,26 @@
 version: '3.8'
 
 services:
+  database:
+    image: postgres:15-alpine
+    container_name: database
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+
   backend:
     build:
       context: .
@@ -10,18 +30,17 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # La ruta dentro del contenedor donde se guardará la BD
-      DATABASE_URL: file:/app/data/dev.db
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
       JWT_SECRET: ${JWT_SECRET}
     volumes:
       # Montamos el código fuente para desarrollo (hot-reloading)
       - ./apps/backend:/app/apps/backend
       - ./domain:/app/domain
-      # Volumen nombrado para persistir la base de datos
-      - backend_data:/app/data
       # Volúmenes anónimos para evitar sobreescribir node_modules del host
       - /app/apps/backend/node_modules
       - /app/domain/node_modules
+    depends_on:
+      - database
     networks:
       - app-network
 
@@ -38,7 +57,7 @@ services:
       - app-network
 
 volumes:
-  backend_data:
+  postgres_data:
 
 networks:
   app-network:
