@@ -27,7 +27,10 @@ export const createUserController = (
         try {
             const { email, password } = req.body;
             const user = await loginUserCase.execute(email, password);
-            const secretKey = 'YOUR_SUPER_SECRET_KEY';
+            const secretKey = process.env.JWT_SECRET;
+            if (!secretKey) {
+                throw new Error('JWT_SECRET no está configurado en el entorno.');
+            }
             const token = jwt.sign({ id: user.id.toString(), name: user.name, email: user.email, role: user.role }, secretKey, { expiresIn: '1h' });
 
             res.status(200).json({ token });
