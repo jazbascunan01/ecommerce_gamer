@@ -11,7 +11,10 @@ export const createAuthMiddleware = (userFinder: IUserFinder) => {
                 throw new AuthenticationError("Unauthorized: No token provided.");
             }
             const token = authHeader.split(' ')[1];
-            const secretKey = 'YOUR_SUPER_SECRET_KEY';
+            const secretKey = process.env.JWT_SECRET;
+            if (!secretKey) {
+                throw new Error('JWT_SECRET no está configurado en el entorno.');
+            }
             const decoded = jwt.verify(token, secretKey) as { id: string };
             const user = await userFinder.findById(decoded.id);
 
